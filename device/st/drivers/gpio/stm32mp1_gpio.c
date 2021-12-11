@@ -151,7 +151,7 @@ static int32_t Stm32Mp157GpioRead(struct GpioCntlr *cntlr, uint16_t gpio, uint16
         return ret;
     }
 
-    addr = STM32MP15X_GPIO_ODR(group->regBase);
+    addr = STM32MP15X_GPIO_IDR(group->regBase);
     valCur = OSAL_READL(addr);
     if (valCur & (1 << bitNum)) {
         *val = GPIO_VAL_HIGH;   

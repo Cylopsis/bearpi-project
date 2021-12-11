@@ -37,7 +37,7 @@ extern "C" {
 
 #define STM32MP15X_GPIO_DIR(base)        ((base) + 0x00)
 #define STM32MP15X_GPIO_DATA(base)       ((base) + 0x18)
-#define STM32MP15X_GPIO_ODR(base)       ((base) + 0x14)
+#define STM32MP15X_GPIO_IDR(base)        ((base) + 0x10)
 
 
 
