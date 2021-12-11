@@ -1,0 +1,22 @@
+root {
+    module = "stm32mp157_uart";
+    platform {
+        template uart_controller {
+            match_attr = "";
+            num = 0;
+            baudrate = 115200;
+            fifoRxEn = 1;
+            fifoTxEn = 1;
+            flags = 4;
+            regPbase = 0x12040000;
+            interrupt = 39;
+            iomemCount = 0x48;
+        }
+        controller_0x40010000 :: uart_controller {
+            num = 4;
+            regPbase = 0x40010000;
+            interrupt = 84;
+            match_attr = "st_stm32mp157_uart_4";
+        }
+    }
+}

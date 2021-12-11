@@ -1,0 +1,53 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/config/ohos/rules.gni")
+import("//build/ohos.gni")
+import("//foundation/multimedia/image_standard/ide/image_decode_config.gni")
+
+group("image_decode_only") {
+  if (host_os == "mac") {
+    deps = [
+      "//foundation/multimedia/image_standard/frameworks/jni/imagesource:image_source_jni(${mac_buildtool})",
+      "//foundation/multimedia/image_standard/frameworks/jni/incrementalpixelmap:incremental_pixelmap_jni(${mac_buildtool})",
+      "//foundation/multimedia/image_standard/frameworks/jni/pixelmap:pixelmap_jni(${mac_buildtool})",
+      "//foundation/multimedia/image_standard/interfaces/innerkits:image(${mac_buildtool})",
+      "//foundation/multimedia/image_standard/plugins/common/libs:multimediaplugin(${mac_buildtool})",
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager(${mac_buildtool})",
+    ]
+  } else {
+    deps = [
+      "//foundation/multimedia/image_standard/frameworks/jni/imagesource:image_source_jni(${windows_buildtool})",
+      "//foundation/multimedia/image_standard/frameworks/jni/incrementalpixelmap:incremental_pixelmap_jni(${windows_buildtool})",
+      "//foundation/multimedia/image_standard/frameworks/jni/pixelmap:pixelmap_jni(${windows_buildtool})",
+      "//foundation/multimedia/image_standard/interfaces/innerkits:image(${windows_buildtool})",
+      "//foundation/multimedia/image_standard/plugins/common/libs:multimediaplugin(${windows_buildtool})",
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager(${windows_buildtool})",
+    ]
+  }
+}
+
+#ohos_combine_jars("image_decode_only_java") {
+#  deps = [
+#    "//foundation/multimedia/image_standard/interfaces/kits/java:image_decode_java",
+#    "//foundation/multimedia/image_standard/mock/java/src/ohos:mock_java",
+#  ]
+#  subsystem_name = "multimedia"
+#}
+
+config("media_config") {
+  defines = []
+  if (current_cpu == "arm64" || (current_cpu == "arm" && arm_use_neon)) {
+    defines += [ "USE_NEON" ]
+  }
+}

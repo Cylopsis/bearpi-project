@@ -1,0 +1,86 @@
+{
+  "subsystem": "multimedia",
+  "parts": {
+    "multimedia_audio_standard": {
+      "variants": [
+        "phone"
+      ],
+      "module_list": [
+        "//foundation/multimedia/audio_standard/services:audio_service",
+        "//foundation/multimedia/audio_standard/services:pulseaudio.rc",
+        "//foundation/multimedia/audio_standard/sa_profile:audio_service_sa_profile",
+        "//foundation/multimedia/audio_standard/interfaces/kits/js/audio_manager:audio",
+        "//foundation/multimedia/audio_standard/interfaces/kits/js/audio_manager:audio_js",
+        "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio:pulseaudio_packages",
+        "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiomanager:audio_client_test_packages",
+        "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocapturer:audio_capturer_test_packages",
+        "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiorenderer:audio_renderer_test",
+        "//foundation/multimedia/audio_standard/services:audio_policy_service_packages",
+        "//foundation/multimedia/audio_standard/sa_profile:audio_policy_service_sa_profile",
+        "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiopolicy:audio_policy_test",
+        "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audiocapturer:audio_capturer_source",
+        "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audiorenderer:audio_renderer_sink",
+        "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audioadapter:pulse_audio_service_adapter"
+      ],
+      "inner_kits": [
+        {
+          "type": "none",
+          "name": "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiomanager:audio_client",
+          "header": {
+          "header_files": [
+              "audio_system_manager.h",
+              "audio_session.h",
+              "audio_stream.h",
+              "audio_info.h"
+          ],
+            "header_base": [
+              "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiomanager/include",
+              "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiosession/include",
+              "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiostream/include",
+              "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocommon/include"
+          ]
+          }
+        },
+        {
+          "type": "none",
+          "name": "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocapturer:audio_capturer",
+          "header": {
+          "header_files": [
+              "audio_capturer.h",
+              "audio_info.h"
+          ],
+            "header_base": [
+            "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocapturer/include",
+            "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocommon/include"
+          ]
+          }
+        },
+        {
+          "type": "none",
+          "name": "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiorenderer:audio_renderer",
+          "header": {
+          "header_files": [
+              "audio_renderer.h",
+              "audio_info.h"
+          ],
+            "header_base": "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiorenderer/include"
+          }
+        },
+        {
+          "type": "none",
+          "name": "//foundation/multimedia/audio_standard/interfaces/kits/js/audio_manager:audio",
+          "header": {
+          "header_files": [
+              "audio_manager_napi.h",
+              "audio_device_descriptor_napi.h"
+          ],
+            "header_base": "//foundation/multimedia/audio_standard/interfaces/kits/js/audio_manager/include"
+          }
+        }
+      ],
+      "test_list": [
+        "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/test:audio_module_test"
+      ]
+    }
+  }
+}

@@ -1,0 +1,117 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+import("//foundation/multimedia/image_standard/ide/image_decode_config.gni")
+
+ohos_shared_library("image_utils") {
+  include_dirs = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "//foundation/multimedia/utils/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//utils/native/base/include",
+    "//foundation/multimedia/utils/lite/interfaces/kits",
+    "//foundation/communication/ipc/utils/include",
+  ]
+
+  sources = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/src/image_trace.cpp",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/src/image_utils.cpp",
+  ]
+
+  if (use_mingw_win) {
+    defines = image_decode_windows_defines
+    sources -= [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/src/image_trace.cpp" ]
+    include_dirs +=
+        [ "//foundation/multimedia/image_standard/mock/native/include" ]
+    deps = [
+      "//foundation/multimedia/image_standard/mock/native:log_mock_static",
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager_static",
+    ]
+  } else if (use_clang_mac) {
+    defines = image_decode_mac_defines
+    sources -= [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/src/image_trace.cpp" ]
+    include_dirs += [
+      "//foundation/multimedia/image_standard/mock/native/include",
+      "//utils/native/base/include",
+    ]
+    deps = [
+      "//foundation/multimedia/image_standard/mock/native:log_mock_static",
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager_static",
+      "//utils/native/base:utilsecurec",
+    ]
+  } else {
+    defines = [ "DUAL_ADAPTER" ]
+
+    deps = [
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager",
+      "//utils/native/base:utils",
+    ]
+
+    external_deps = [
+      "bytrace_standard:bytrace_core",
+      "hiviewdfx_hilog_native:libhilog",
+    ]
+  }
+
+  #relative_install_dir = "module/multimedia"
+  subsystem_name = "multimedia"
+  part_name = "multimedia_image_standard"
+}
+
+ohos_static_library("image_utils_static") {
+  include_dirs = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "//foundation/multimedia/utils/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//utils/native/base/include",
+  ]
+
+  sources = [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/src/image_utils.cpp" ]
+
+  if (use_mingw_win) {
+    defines = image_decode_windows_defines
+    include_dirs +=
+        [ "//foundation/multimedia/image_standard/mock/native/include" ]
+    deps = [
+      "//foundation/multimedia/image_standard/mock/native:log_mock_static",
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager_static",
+    ]
+  } else if (use_clang_mac) {
+    defines = image_decode_mac_defines
+    include_dirs += [
+      "//foundation/multimedia/image_standard/mock/native/include",
+      "//utils/native/base/include",
+    ]
+    deps = [
+      "//foundation/multimedia/image_standard/mock/native:log_mock_static",
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager_static",
+      "//utils/native/base:utilsecurec",
+    ]
+  } else {
+    sources += [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/src/image_trace.cpp" ]
+    deps = [
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager",
+      "//utils/native/base:utils",
+    ]
+
+    external_deps = [
+      "bytrace_standard:bytrace_core",
+      "hiviewdfx_hilog_native:libhilog",
+    ]
+  }
+  subsystem_name = "multimedia"
+  part_name = "multimedia_image_standard"
+}

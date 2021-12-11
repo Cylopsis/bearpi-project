@@ -1,0 +1,56 @@
+# none hdf driver configs
+choice
+    prompt "Enable Uart"
+    default DRIVERS_HDF_PLATFORM_UART
+    help
+      Enable simple uart (without vfs) only for litekernel.
+      Enable general uart (with vfs) for full code.
+
+config DRIVERS_HDF_PLATFORM_UART
+    bool "Enable HDF platform uart driver"
+    depends on DRIVERS_HDF_PLATFORM
+    help
+      Answer Y to enable HDF platform uart driver.
+
+config PLATFORM_UART_WITHOUT_VFS
+    bool "Simple Uart"
+config PLATFORM_NO_UART
+    bool "NO Uart"
+endchoice
+
+# mmc config start
+config DRIVERS_MMC
+    depends on DRIVERS
+    bool "Enable MMC"
+    default y
+    depends on DRIVERS && FS_VFS
+    help
+      Answer Y to enable LiteOS support MMC driver.
+
+config DRIVERS_EMMC
+    depends on DRIVERS_MMC && PLATFORM_STM32MP157 
+    bool "Enable MMC0 support eMMC type"
+# mmc config end
+# mtd configs tart
+config DRIVERS_MTD
+    bool "Enable MTD"
+    default y
+    depends on DRIVERS && FS_VFS
+    help
+      Answer Y to enable LiteOS support jffs2 multipartion.
+
+# spi nor
+config DRIVERS_MTD_SPI_NOR
+    bool "Enable MTD spi_nor flash"
+    default y
+    depends on DRIVERS_MTD
+    help
+      Answer Y to support spi_nor flash.
+      
+config DRIVERS_HI3881
+      bool "Enable Hi3881 Host driver"
+      default n
+      depends on DRIVERS_HDF_WIFI
+      help
+        Answer Y to enable Hi3881 Host driver.
+  

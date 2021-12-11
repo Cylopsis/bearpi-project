@@ -1,0 +1,19 @@
+{
+  "subsystem": "ccruntime",
+  "parts": {
+    "jsapi_util": {
+      "variants": [
+        "wearable",
+        "phone"
+      ],
+      "module_list": [
+        "//base/compileruntime/js_util_module/util:util_packages"
+      ],
+      "inner_kits": [
+      ],
+      "test_list": [
+        "//base/compileruntime/js_util_module/test/unittest:unittest"
+      ]
+    }
+  }
+}

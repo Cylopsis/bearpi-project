@@ -1,0 +1,354 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import("//build/ohos.gni")
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Black") {
+  source = "fonts/HarmonyOS_Sans_Black.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Black_Italic") {
+  source = "fonts/HarmonyOS_Sans_Black_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Bold") {
+  source = "fonts/HarmonyOS_Sans_Bold.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Bold_Italic") {
+  source = "fonts/HarmonyOS_Sans_Bold_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Black") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Black.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Black_Italic") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Black_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Bold") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Bold.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Bold_Italic") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Bold_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Light") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Light.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Light_Italic") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Light_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Medium") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Medium.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Medium_Italic") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Medium_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Regular") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Regular.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Regular_Italic") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Regular_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Thin") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Thin.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Condensed_Thin_Italic") {
+  source = "fonts/HarmonyOS_Sans_Condensed_Thin_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Light") {
+  source = "fonts/HarmonyOS_Sans_Light.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Light_Italic") {
+  source = "fonts/HarmonyOS_Sans_Light_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Medium") {
+  source = "fonts/HarmonyOS_Sans_Medium.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Medium_Italic") {
+  source = "fonts/HarmonyOS_Sans_Medium_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_UI_Black") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_UI_Black.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_Black") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_Black.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_UI_Bold") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_UI_Bold.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_Bold") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_Bold.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_UI_Light") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_UI_Light.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_Light") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_Light.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_UI_Medium") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_UI_Medium.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_Medium") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_Medium.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_UI_Regular") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_UI_Regular.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_Regular") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_Regular.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_UI_Thin") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_UI_Thin.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Naskh_Arabic_Thin") {
+  source = "fonts/HarmonyOS_Sans_Naskh_Arabic_Thin.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Regular") {
+  source = "fonts/HarmonyOS_Sans_Regular.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Regular_Italic") {
+  source = "fonts/HarmonyOS_Sans_Regular_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_SC_Black") {
+  source = "fonts/HarmonyOS_Sans_SC_Black.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_SC_Bold") {
+  source = "fonts/HarmonyOS_Sans_SC_Bold.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_SC_Light") {
+  source = "fonts/HarmonyOS_Sans_SC_Light.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_SC_Medium") {
+  source = "fonts/HarmonyOS_Sans_SC_Medium.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_SC_Regular") {
+  source = "fonts/HarmonyOS_Sans_SC_Regular.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_SC_Thin") {
+  source = "fonts/HarmonyOS_Sans_SC_Thin.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_TC_Black") {
+  source = "fonts/HarmonyOS_Sans_TC_Black.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_TC_Bold") {
+  source = "fonts/HarmonyOS_Sans_TC_Bold.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_TC_Light") {
+  source = "fonts/HarmonyOS_Sans_TC_Light.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_TC_Medium") {
+  source = "fonts/HarmonyOS_Sans_TC_Medium.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_TC_Regular") {
+  source = "fonts/HarmonyOS_Sans_TC_Regular.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_TC_Thin") {
+  source = "fonts/HarmonyOS_Sans_TC_Thin.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Thin") {
+  source = "fonts/HarmonyOS_Sans_Thin.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+ohos_prebuilt_etc("HarmonyOS_Sans_Thin_Italic") {
+  source = "fonts/HarmonyOS_Sans_Thin_Italic.ttf"
+  module_install_dir = "fonts"
+  part_name = "ace_engine_standard"
+}
+
+group("ohos_fonts") {
+  deps = [
+    ":HarmonyOS_Sans_Black",
+    ":HarmonyOS_Sans_Black_Italic",
+    ":HarmonyOS_Sans_Bold",
+    ":HarmonyOS_Sans_Bold_Italic",
+    ":HarmonyOS_Sans_Condensed_Black",
+    ":HarmonyOS_Sans_Condensed_Black_Italic",
+    ":HarmonyOS_Sans_Condensed_Bold",
+    ":HarmonyOS_Sans_Condensed_Bold_Italic",
+    ":HarmonyOS_Sans_Condensed_Light",
+    ":HarmonyOS_Sans_Condensed_Light_Italic",
+    ":HarmonyOS_Sans_Condensed_Medium",
+    ":HarmonyOS_Sans_Condensed_Medium_Italic",
+    ":HarmonyOS_Sans_Condensed_Regular",
+    ":HarmonyOS_Sans_Condensed_Regular_Italic",
+    ":HarmonyOS_Sans_Condensed_Thin",
+    ":HarmonyOS_Sans_Condensed_Thin_Italic",
+    ":HarmonyOS_Sans_Light",
+    ":HarmonyOS_Sans_Light_Italic",
+    ":HarmonyOS_Sans_Medium",
+    ":HarmonyOS_Sans_Medium_Italic",
+    ":HarmonyOS_Sans_Naskh_Arabic_Black",
+    ":HarmonyOS_Sans_Naskh_Arabic_Bold",
+    ":HarmonyOS_Sans_Naskh_Arabic_Light",
+    ":HarmonyOS_Sans_Naskh_Arabic_Medium",
+    ":HarmonyOS_Sans_Naskh_Arabic_Regular",
+    ":HarmonyOS_Sans_Naskh_Arabic_Thin",
+    ":HarmonyOS_Sans_Naskh_Arabic_UI_Black",
+    ":HarmonyOS_Sans_Naskh_Arabic_UI_Bold",
+    ":HarmonyOS_Sans_Naskh_Arabic_UI_Light",
+    ":HarmonyOS_Sans_Naskh_Arabic_UI_Medium",
+    ":HarmonyOS_Sans_Naskh_Arabic_UI_Regular",
+    ":HarmonyOS_Sans_Naskh_Arabic_UI_Thin",
+    ":HarmonyOS_Sans_Regular",
+    ":HarmonyOS_Sans_Regular_Italic",
+    ":HarmonyOS_Sans_SC_Black",
+    ":HarmonyOS_Sans_SC_Bold",
+    ":HarmonyOS_Sans_SC_Light",
+    ":HarmonyOS_Sans_SC_Medium",
+    ":HarmonyOS_Sans_SC_Regular",
+    ":HarmonyOS_Sans_SC_Thin",
+    ":HarmonyOS_Sans_TC_Black",
+    ":HarmonyOS_Sans_TC_Bold",
+    ":HarmonyOS_Sans_TC_Light",
+    ":HarmonyOS_Sans_TC_Medium",
+    ":HarmonyOS_Sans_TC_Regular",
+    ":HarmonyOS_Sans_TC_Thin",
+    ":HarmonyOS_Sans_Thin",
+    ":HarmonyOS_Sans_Thin_Italic",
+  ]
+}

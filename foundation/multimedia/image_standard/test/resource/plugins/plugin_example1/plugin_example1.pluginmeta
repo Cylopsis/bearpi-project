@@ -1,0 +1,44 @@
+{
+  "packageName":"plugin_example1",
+  "version":"1.0.0.10",
+  "targetVersion":"10.0.0.0",
+  "libraryPath":"libpluginexample1.z.so",
+  "classes": [
+    {
+      "className":"OHOS::PluginExample::LabelDetector",
+      "services": [
+        {
+          "interfaceID":0,
+          "serviceType":0
+        }
+      ],
+      "priority":10,
+      "maxInstance":2,
+      "capabilities": [
+        {
+          "name":"labelNum",
+          "type":"uint32",
+          "value": 256
+        }
+      ]
+    },
+    {
+      "className":"OHOS::PluginExample::CloudLabelDetector",
+      "services": [
+        {
+          "interfaceID":0,
+          "serviceType":0
+        }
+      ],
+      "priority":5,
+      "maxInstance":3,
+      "capabilities": [
+        {
+          "name":"labelNum",
+          "type":"uint32",
+          "value": 10000
+        }
+      ]
+    }
+  ]
+}

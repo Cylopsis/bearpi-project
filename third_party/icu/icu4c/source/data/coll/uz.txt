@@ -1,0 +1,14 @@
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
+uz{
+    Version{"37"}
+    collations{
+        standard{
+            Sequence{
+                "[caseFirst upper]"
+                "&Z<oʻ<<<Oʻ<gʻ<<<Gʻ<CH<<<Ch<<<cH<<<ch<SH<<<Sh<<<sH<<<sh<NG<<<Ng<<<nG<<<ng"
+            }
+            Version{"37"}
+        }
+    }
+}

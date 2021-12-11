@@ -1,0 +1,50 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+config("image_ndk_test_jni_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    "//utils/native/base/include",
+    "//utils/jni/jnikit/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//foundation/multimedia/utils/include",
+    "//foundation/multimedia/image_standard/interfaces/kits/native/include",
+    "//foundation/multimedia/image_standard/frameworks/jni/common/include",
+    "//foundation/multimedia/image_standard/frameworks/jni/pixelmap/include",
+  ]
+}
+
+group("g_image_ndk_test_jni") {
+  deps = [ ":image_ndk_test_jni" ]
+}
+
+ohos_shared_library("image_ndk_test_jni") {
+  sources = [ "ohos_image_PixelMapNdkTest.cpp" ]
+
+  configs = [ ":image_ndk_test_jni_config" ]
+
+  deps = [
+    "//base/hiviewdfx/hilog/frameworks/native:libhilogutil",
+    "//foundation/multimedia/image_standard/interfaces/kits/native:multimedia_target",
+
+    #    "//utils/jni:utils_jnikit",
+    "//utils/native/base:utils",
+  ]
+
+  #  external_deps = [ "hilog:libhilog" ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_image"
+}

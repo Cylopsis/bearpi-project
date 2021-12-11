@@ -1,0 +1,58 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+## Install graphic.rc to /system/etc/init/graphic.rc {{{
+ohos_prebuilt_etc("graphic.rc") {
+  if (use_musl) {
+    source = "graphic.cfg"
+  } else {
+    source = "graphic.rc"
+  }
+  relative_install_dir = "init"
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
+## Install graphic.rc to /system/etc/init/graphic.rc }}}
+
+## Install default.scss to /system/etc/wmlayout.d/default.scss {{{
+ohos_prebuilt_etc("default.scss") {
+  source = "default.scss"
+  relative_install_dir = "wmlayout.d"
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
+## Install default.scss to /system/etc/wmlayout.d/default.scss }}}
+
+group("libsurface") {
+  public_deps = [ "frameworks/surface:surface" ]
+}
+
+group("libvsync_client") {
+  public_deps = [ "frameworks/vsync:libvsync_client" ]
+}
+
+group("libwms_client") {
+  public_deps = [ "frameworks/wm:wms_client" ]
+}
+
+group("libwmclient") {
+  public_deps = [ "frameworks/wm:libwmclient" ]
+}
+
+group("libwmservice") {
+  public_deps = [ "frameworks/wmservice:libwmservice" ]
+}

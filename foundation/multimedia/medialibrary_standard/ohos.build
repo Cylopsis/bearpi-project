@@ -1,0 +1,17 @@
+{
+  "subsystem": "multimedia",
+  "parts": {
+    "multimedia_media_library_standard": {
+      "variants": [
+        "phone"
+      ],
+      "module_list": [
+        "//foundation/multimedia/medialibrary_standard/frameworks/innerkitsimpl/media_library:media_library_packages",
+        "//foundation/multimedia/medialibrary_standard/sa_profile:medialibrary_service_sa_profile",
+        "//foundation/multimedia/medialibrary_standard/interfaces/kits/js/medialibrary:medialibrary",
+        "//foundation/multimedia/medialibrary_standard/interfaces/kits/js/medialibrary:medialibrary_js",
+        "//foundation/multimedia/medialibrary_standard/services:media_library_service_packages"
+      ]
+    }
+  }
+}

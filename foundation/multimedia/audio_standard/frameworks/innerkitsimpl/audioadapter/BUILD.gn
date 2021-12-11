@@ -1,0 +1,51 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+ohos_shared_library("pulse_audio_service_adapter") {
+  install_enable = true
+  sources = [ "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audioadapter/src/pulse_audio_service_adapter_impl.cpp" ]
+  cflags = [ "-fPIC" ]
+  cflags += [ "-Wall" ]
+  cflags_cc = cflags
+
+  include_dirs = [
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audioadapter/include",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/common/include",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audioadapter/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocommon/include",
+    "//third_party/libxml2/include",
+    "//third_party/pulseaudio/src",
+    "//third_party/pulseaudio/confgure/src",
+    "//third_party/pulseaudio/include",
+    "//utils/native/base/include",
+  ]
+
+  public_configs = [ ":audio_external_library_config" ]
+
+  deps = [
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio/src/pulse:pulse",
+    "//third_party/libxml2:xml2",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+  part_name = "multimedia_audio_standard"
+  subsystem_name = "multimedia"
+}
+
+config("audio_external_library_config") {
+  include_dirs = [ "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/common/include" ]
+}

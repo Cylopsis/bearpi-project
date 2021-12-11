@@ -1,0 +1,87 @@
+{
+  "components": [
+    {
+        "component": "bearpi_sample_app",
+        "description": "bearpi_hm_micro samples.",
+        "optional": "true",
+        "dirs": [
+          "applications/BearPi/BearPi-HM_Micro/samples/launcher",
+          "applications/BearPi/BearPi-HM_Micro/samples/setting"
+        ],
+        "targets": [
+          "//applications/BearPi/BearPi-HM_Micro/samples/launcher:launcher_hap",
+          "//applications/BearPi/BearPi-HM_Micro/samples/setting:setting_hap"
+        ],
+        "rom": "",
+        "ram": "",
+        "output": [
+          "launcher.so",
+          "setting.so"
+        ],
+        "adapted_kernel": [ "liteos_a","linux" ],
+        "features": [],
+        "deps": {
+          "third_party": [
+            "bounds_checking_function",
+            "wpa_supplicant"
+          ],
+          "kernel_special": {},
+          "board_special": {},
+          "components": [
+            "aafwk_lite",
+            "appexecfwk_lite",
+            "surface",
+            "ui",
+            "graphic_utils",
+            "kv_store",
+            "syspara_lite",
+            "permission",
+            "ipc_lite",
+            "samgr_lite",
+            "utils_base"
+          ]
+        }
+      },
+      {
+        "component": "bearpi_screensaver_app",
+        "description": "screensaver sample",
+        "optional": "true",
+        "dirs": [
+          "applications/BearPi/BearPi-HM_Micro/samples/screensaver"
+        ],
+        "targets": [
+          "//applications/BearPi/BearPi-HM_Micro/samples/screensaver:screensaver_hap"
+        ],
+        "rom": "",
+        "ram": "",
+        "output": [
+          "screensaver.so"
+        ],
+        "adapted_kernel": [ "liteos_a","linux" ],
+        "features": [],
+        "deps": {
+          "third_party": [
+            "libjpeg",
+            "libpng",
+            "bounds_checking_function",
+            "cjson",
+            "giflib"
+          ],
+          "kernel_special": {},
+          "board_special": {},
+          "components": [
+            "aafwk_lite",
+            "appexecfwk_lite",
+            "surface",
+            "ui",
+            "graphic_utils",
+            "kv_store",
+            "syspara_lite",
+            "ipc_lite",
+            "samgr_lite",
+            "utils_base"
+          ]
+        }
+      }
+  ]
+}

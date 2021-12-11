@@ -1,0 +1,116 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_dir = "//third_party/pulseaudio"
+pulseaudio_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+
+group("audio_client_test_packages") {
+  deps = [
+    ":playback_test",
+    ":record_test",
+  ]
+}
+
+config("audio_client_public_config") {
+  include_dirs = [
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/common/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiocommon/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiomanager/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiopolicy/include",
+    "//foundation/multimedia/audio_standard/services/include",
+    "//foundation/multimedia/audio_standard/services/include/client",
+    "//foundation/multimedia/audio_standard/services/include/audiopolicy/client",
+    "//utils/system/safwk/native/include",
+    "//utils/native/base/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiosession/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiostream/include",
+    "$pulseaudio_dir/src",
+    "$pulseaudio_dir/confgure/src",
+    "$pulseaudio_dir/include",
+    "$pulseaudio_build_path/include",
+    "//third_party/bounds_checking_function/include",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+  ]
+
+  if (target_cpu == "arm") {
+    cflags += [ "-DBINDER_IPC_32BIT" ]
+  }
+}
+
+ohos_shared_library("audio_client") {
+  install_enable = true
+  sources = [
+    "//foundation/multimedia/audio_standard/services/src/client/audio_manager_proxy.cpp",
+    "//foundation/multimedia/audio_standard/services/src/client/audio_service_client.cpp",
+    "//foundation/multimedia/audio_standard/services/src/client/audio_session.cpp",
+    "//foundation/multimedia/audio_standard/services/src/client/audio_stream.cpp",
+    "//foundation/multimedia/audio_standard/services/src/client/audio_system_manager.cpp",
+  ]
+
+  public_configs = [ ":audio_client_public_config" ]
+
+  deps = [
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio/src/pulse:pulse",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiopolicy:audio_policy_client",
+    "//third_party/bounds_checking_function:libsec_static",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "samgr_L2:samgr_proxy",
+  ]
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_executable("playback_test") {
+  install_enable = false
+
+  sources = [
+    "//foundation/multimedia/audio_standard/services/test/playback_test.cpp",
+  ]
+
+  configs = [ ":audio_client_public_config" ]
+
+  deps = [ ":audio_client" ]
+
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+
+  part_name = "multimedia_audio_standard"
+  subsystem_name = "multimedia"
+}
+
+ohos_executable("record_test") {
+  install_enable = false
+
+  sources =
+      [ "//foundation/multimedia/audio_standard/services/test/record_test.cpp" ]
+
+  configs = [ ":audio_client_public_config" ]
+
+  deps = [ ":audio_client" ]
+
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+
+  part_name = "multimedia_audio_standard"
+  subsystem_name = "multimedia"
+}

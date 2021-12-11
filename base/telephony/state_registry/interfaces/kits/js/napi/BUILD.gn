@@ -1,0 +1,59 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import("//build/ohos.gni")
+SUBSYSTEM_DIR = "//base/telephony"
+ohos_shared_library("observer") {
+  include_dirs = [
+    "//third_party/node/src",
+    "include",
+    "$SUBSYSTEM_DIR/state_registry/interfaces/kits/include",
+    "$SUBSYSTEM_DIR/core_service/interfaces/innerkits/state_registry/proxy",
+    "$SUBSYSTEM_DIR/core_service/interfaces/innerkits/api",
+    "$SUBSYSTEM_DIR/core_service/interfaces/innerkits/cellular_call/common",
+    "$SUBSYSTEM_DIR/core_service/interfaces/innerkits/common",
+    "$SUBSYSTEM_DIR/core_service/interfaces/innerkits/cellular_data/common",
+    "$SUBSYSTEM_DIR/core_service/interfaces/innerkits/call_manager/common",
+    "$SUBSYSTEM_DIR/core_service/interfaces/kits/js/napi/sim/include",
+  ]
+
+  sources = [
+    "src/napi_state_registry.cpp",
+    "src/napi_telephony_observer.cpp",
+  ]
+
+  deps = [
+    "$SUBSYSTEM_DIR/core_service:tel_core_service",
+    "$SUBSYSTEM_DIR/core_service/common:libtelephony_common",
+    "$SUBSYSTEM_DIR/ril_adapter/hril:hril",
+    "$SUBSYSTEM_DIR/state_registry/interfaces/kits:tel_state_registry_api",
+    "//foundation/ace/napi:ace_napi",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [
+    "appexecfwk_standard:libeventhandler",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_L2:samgr_proxy",
+  ]
+
+  defines = [
+    "TELEPHONY_LOG_TAG = \"STATE_REGISTRY_NAPI\"",
+    "LOG_DOMAIN = 0",
+  ]
+
+  relative_install_dir = "module/telephony"
+  part_name = "state_registry"
+  subsystem_name = "telephony"
+}

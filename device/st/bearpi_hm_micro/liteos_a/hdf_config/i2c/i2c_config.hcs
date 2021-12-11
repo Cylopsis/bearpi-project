@@ -1,0 +1,47 @@
+root {
+    platform {
+        i2c_config {
+            match_attr = "st_stm32mp157_i2c";
+
+            template i2c_controller {
+                bus = 1;
+                reg_pbase = 0x40012000;
+                reg_size = 0x400;
+                timing = 0x10909CEC;
+                own_address1 = 0;
+                addressing_mode = 0x00000001;
+                dual_address_mode = 0x00000000;
+                own_address2 = 0;
+                own_address_2_masks = 0x00;
+                general_call_mode = 0x00000000;
+                no_stretch_mode = 0x00000000;
+            }
+
+            controller_0x40012000 :: i2c_controller {
+                bus = 1;
+                reg_pbase = 0x40012000;
+
+                /* [port,pin]
+                    <port> 0:GPIOA 1:GPIOB 3:GPIOC ......
+                    <pin>  0:PIN0 1:PIN1 2:PIN2 ......
+                */                    
+                i2cClkIomux = [3, 12];   //PD12
+                i2cDataIomux = [5, 15];  //PF15
+            }
+            controller_0x40013000 :: i2c_controller {
+                bus = 2;
+                reg_pbase = 0x40013000;
+
+                i2cClkIomux = [7, 4];   //PH4
+                i2cDataIomux = [7, 5];  //PH5
+            }
+             controller_0x40015000 :: i2c_controller {
+                bus = 5;
+                reg_pbase = 0x40015000;
+
+                i2cClkIomux = [0, 11];   //PA11
+                i2cDataIomux = [0, 12];  //PA12
+            }
+        }
+    }
+}

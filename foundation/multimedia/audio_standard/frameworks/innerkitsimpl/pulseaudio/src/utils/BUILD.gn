@@ -1,0 +1,87 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_dir = "//third_party/pulseaudio"
+pulseaudio_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+libsndfile_dir = "//third_party/libsnd"
+libsndfile_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/libsnd"
+
+config("pulseutils_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$pulseaudio_dir",
+    "$pulseaudio_dir/include",
+    "$pulseaudio_build_path/src",
+    "$pulseaudio_build_path/include",
+    "$pulseaudio_dir/src",
+    "$libsndfile_dir/include",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-Wno-implicit-function-declaration",
+    "-DHAVE_CONFIG_H",
+    "-D_GNU_SOURCE",
+  ]
+}
+
+ohos_executable("pacat") {
+  sources = [ "$pulseaudio_dir/src/utils/pacat.c" ]
+
+  configs = [ ":pulseutils_config" ]
+
+  deps = [
+    "$libsndfile_build_path:sndfile",
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_executable("pactl") {
+  sources = [ "$pulseaudio_dir/src/utils/pactl.c" ]
+
+  configs = [ ":pulseutils_config" ]
+
+  deps = [
+    "$libsndfile_build_path:sndfile",
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+  ]
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_executable("pacmd") {
+  install_enable = true
+
+  sources = [ "$pulseaudio_dir/src/utils/pacmd.c" ]
+
+  configs = [ ":pulseutils_config" ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}

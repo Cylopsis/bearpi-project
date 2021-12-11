@@ -1,0 +1,140 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+libsndfile_dir = "//third_party/libsnd"
+
+config("sndfile_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$libsndfile_dir/src",
+    "$libsndfile_dir/include",
+    "$libsndfile_dir/src/GSM610",
+    "$libsndfile_dir/src/G72x",
+    "$libsndfile_dir/src/ALAC",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+  ]
+}
+
+ohos_source_set("sndfile_sources") {
+  sources = [
+    "$libsndfile_dir/src/ALAC/ALACBitUtilities.c",
+    "$libsndfile_dir/src/ALAC/ag_dec.c",
+    "$libsndfile_dir/src/ALAC/ag_enc.c",
+    "$libsndfile_dir/src/ALAC/alac_decoder.c",
+    "$libsndfile_dir/src/ALAC/alac_encoder.c",
+    "$libsndfile_dir/src/ALAC/dp_dec.c",
+    "$libsndfile_dir/src/ALAC/dp_enc.c",
+    "$libsndfile_dir/src/ALAC/matrix_dec.c",
+    "$libsndfile_dir/src/ALAC/matrix_enc.c",
+    "$libsndfile_dir/src/G72x/g721.c",
+    "$libsndfile_dir/src/G72x/g723_16.c",
+    "$libsndfile_dir/src/G72x/g723_24.c",
+    "$libsndfile_dir/src/G72x/g723_40.c",
+    "$libsndfile_dir/src/G72x/g72x.c",
+
+    #"$libsndfile_dir/src/mpeg.c",
+    #"$libsndfile_dir/src/mpeg_decode.c",
+    #"$libsndfile_dir/src/mpeg_l3_encode.c",
+    "$libsndfile_dir/src/GSM610/add.c",
+    "$libsndfile_dir/src/GSM610/code.c",
+    "$libsndfile_dir/src/GSM610/decode.c",
+    "$libsndfile_dir/src/GSM610/gsm_create.c",
+    "$libsndfile_dir/src/GSM610/gsm_decode.c",
+    "$libsndfile_dir/src/GSM610/gsm_destroy.c",
+    "$libsndfile_dir/src/GSM610/gsm_encode.c",
+    "$libsndfile_dir/src/GSM610/gsm_option.c",
+    "$libsndfile_dir/src/GSM610/long_term.c",
+    "$libsndfile_dir/src/GSM610/lpc.c",
+    "$libsndfile_dir/src/GSM610/preprocess.c",
+    "$libsndfile_dir/src/GSM610/rpe.c",
+    "$libsndfile_dir/src/GSM610/short_term.c",
+    "$libsndfile_dir/src/GSM610/table.c",
+    "$libsndfile_dir/src/aiff.c",
+    "$libsndfile_dir/src/alac.c",
+    "$libsndfile_dir/src/alaw.c",
+    "$libsndfile_dir/src/au.c",
+    "$libsndfile_dir/src/audio_detect.c",
+    "$libsndfile_dir/src/avr.c",
+    "$libsndfile_dir/src/broadcast.c",
+    "$libsndfile_dir/src/caf.c",
+    "$libsndfile_dir/src/cart.c",
+    "$libsndfile_dir/src/chanmap.c",
+    "$libsndfile_dir/src/chunk.c",
+    "$libsndfile_dir/src/command.c",
+    "$libsndfile_dir/src/common.c",
+    "$libsndfile_dir/src/dither.c",
+    "$libsndfile_dir/src/double64.c",
+    "$libsndfile_dir/src/dwd.c",
+    "$libsndfile_dir/src/dwvw.c",
+    "$libsndfile_dir/src/file_io.c",
+    "$libsndfile_dir/src/flac.c",
+    "$libsndfile_dir/src/float32.c",
+    "$libsndfile_dir/src/g72x.c",
+    "$libsndfile_dir/src/gsm610.c",
+    "$libsndfile_dir/src/htk.c",
+    "$libsndfile_dir/src/id3.c",
+    "$libsndfile_dir/src/ima_adpcm.c",
+    "$libsndfile_dir/src/ima_oki_adpcm.c",
+    "$libsndfile_dir/src/interleave.c",
+    "$libsndfile_dir/src/ircam.c",
+    "$libsndfile_dir/src/macos.c",
+    "$libsndfile_dir/src/mat4.c",
+    "$libsndfile_dir/src/mat5.c",
+    "$libsndfile_dir/src/mpc2k.c",
+    "$libsndfile_dir/src/ms_adpcm.c",
+    "$libsndfile_dir/src/nist.c",
+    "$libsndfile_dir/src/nms_adpcm.c",
+    "$libsndfile_dir/src/ogg.c",
+    "$libsndfile_dir/src/ogg_opus.c",
+    "$libsndfile_dir/src/ogg_pcm.c",
+    "$libsndfile_dir/src/ogg_speex.c",
+    "$libsndfile_dir/src/ogg_vcomment.c",
+    "$libsndfile_dir/src/ogg_vorbis.c",
+    "$libsndfile_dir/src/paf.c",
+    "$libsndfile_dir/src/pcm.c",
+    "$libsndfile_dir/src/pvf.c",
+    "$libsndfile_dir/src/raw.c",
+    "$libsndfile_dir/src/rf64.c",
+    "$libsndfile_dir/src/rx2.c",
+    "$libsndfile_dir/src/sd2.c",
+    "$libsndfile_dir/src/sds.c",
+    "$libsndfile_dir/src/sndfile.c",
+    "$libsndfile_dir/src/strings.c",
+    "$libsndfile_dir/src/svx.c",
+    "$libsndfile_dir/src/txw.c",
+    "$libsndfile_dir/src/ulaw.c",
+    "$libsndfile_dir/src/voc.c",
+    "$libsndfile_dir/src/vox_adpcm.c",
+    "$libsndfile_dir/src/w64.c",
+    "$libsndfile_dir/src/wav.c",
+    "$libsndfile_dir/src/wavlike.c",
+    "$libsndfile_dir/src/wve.c",
+    "$libsndfile_dir/src/xi.c",
+  ]
+
+  configs = [ ":sndfile_config" ]
+}
+
+ohos_shared_library("sndfile") {
+  deps = [ ":sndfile_sources" ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}

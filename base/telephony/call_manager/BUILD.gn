@@ -1,0 +1,140 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+ohos_shared_library("tel_call_manager") {
+  sources = [
+    "//base/telephony/core_service/interfaces/innerkits/call_manager/proxy/call_ability_callback_proxy.cpp",
+    "//base/telephony/core_service/interfaces/innerkits/cellular_call/proxy/cellular_call_death_recipient.cpp",
+    "//base/telephony/core_service/interfaces/innerkits/cellular_call/proxy/cellular_call_proxy.cpp",
+    "//base/telephony/core_service/interfaces/innerkits/state_registry/proxy/state_registry_death_recipient.cpp",
+    "//base/telephony/core_service/interfaces/innerkits/state_registry/proxy/telephony_state_registry_proxy.cpp",
+    "services/audio/src/audio_control_manager.cpp",
+    "services/audio/src/audio_device_manager.cpp",
+    "services/audio/src/audio_event.cpp",
+    "services/audio/src/audio_event_handler.cpp",
+    "services/audio/src/audio_proxy.cpp",
+    "services/audio/src/audio_state/cs_call_state.cpp",
+    "services/audio/src/audio_state/devices_inactive.cpp",
+    "services/audio/src/audio_state/enable_bluetooth_device.cpp",
+    "services/audio/src/audio_state/enable_mic_device.cpp",
+    "services/audio/src/audio_state/enable_speaker_device.cpp",
+    "services/audio/src/audio_state/enable_wired_headset_device.cpp",
+    "services/audio/src/audio_state/holding_state.cpp",
+    "services/audio/src/audio_state/ims_call_state.cpp",
+    "services/audio/src/audio_state/inactive_state.cpp",
+    "services/audio/src/audio_state/ott_call_state.cpp",
+    "services/audio/src/audio_state/ringing_state.cpp",
+    "services/audio/src/call_state_process.cpp",
+    "services/audio/src/ring.cpp",
+    "services/audio/src/tone.cpp",
+    "services/bluetooth/src/bluetooth_call_manager.cpp",
+    "services/call/call_state_observer/src/call_recording_tone.cpp",
+    "services/call/call_state_observer/src/call_state_broadcast.cpp",
+    "services/call/call_state_observer/src/hang_up_sms.cpp",
+    "services/call/call_state_observer/src/incoming_call_notification.cpp",
+    "services/call/call_state_observer/src/incoming_call_wake_up.cpp",
+    "services/call/call_state_observer/src/missed_call_notification.cpp",
+    "services/call/call_state_observer/src/proximity_sensor.cpp",
+    "services/call/call_state_observer/src/status_bar.cpp",
+    "services/call/call_state_observer/src/wired_headset.cpp",
+    "services/call/src/call_base.cpp",
+    "services/call/src/call_control_manager.cpp",
+    "services/call/src/call_manager_broadcast_subscriber.cpp",
+    "services/call/src/call_object_manager.cpp",
+    "services/call/src/call_policy.cpp",
+    "services/call/src/call_request_handler.cpp",
+    "services/call/src/call_request_process.cpp",
+    "services/call/src/call_state_listener.cpp",
+    "services/call/src/call_status_manager.cpp",
+    "services/call/src/call_status_policy.cpp",
+    "services/call/src/carrier_call.cpp",
+    "services/call/src/cs_call.cpp",
+    "services/call/src/cs_conference_base.cpp",
+    "services/call/src/ims_call.cpp",
+    "services/call/src/net_call_base.cpp",
+    "services/call/src/ott_call.cpp",
+    "services/call_manager_service/src/call_manager_service.cpp",
+    "services/call_manager_service/src/call_manager_service_stub.cpp",
+    "services/call_manager_service/src/cellular_call_info_handler.cpp",
+    "services/call_manager_service/src/report_call_state_handler.cpp",
+    "services/call_setting/src/call_setting_manager.cpp",
+    "services/call_ui_interaction/src/call_ability_handler.cpp",
+    "services/call_ui_interaction/src/call_ability_report_ipc_proxy.cpp",
+    "services/call_ui_interaction/src/call_state_report_proxy.cpp",
+    "services/telephony_interaction/src/call_status_callback.cpp",
+    "services/telephony_interaction/src/call_status_callback_stub.cpp",
+    "services/telephony_interaction/src/cellular_call_ipc_interface_proxy.cpp",
+    "utils/src/call_number_utils.cpp",
+  ]
+
+  include_dirs = [
+    "utils/include",
+    "//third_party/libphonenumber/cpp/src",
+    "//third_party/libphonenumber/cpp/src/phonenumbers",
+    "//third_party/protobuf/src",
+    "//third_party/protobuf/src/google/protobuf",
+    "//base/telephony/core_service/interfaces/innerkits/cellular_call/proxy",
+    "//base/telephony/core_service/interfaces/innerkits/cellular_call/common",
+    "//base/telephony/core_service/interfaces/innerkits/state_registry/proxy",
+    "//base/telephony/core_service/interfaces/innerkits/common",
+    "//base/telephony/core_service/interfaces/innerkits/call_manager/common",
+    "//base/telephony/core_service/interfaces/innerkits/call_manager/proxy",
+    "//base/telephony/core_service/interfaces/innerkits/sms_mms/proxy",
+    "//base/telephony/sms_mms/interfaces/kits/include",
+    "services/audio/include",
+    "services/audio/include/audio_state",
+    "services/bluetooth/include",
+    "services/call/include",
+    "services/call_manager_service/include",
+    "services/call_setting/include",
+    "services/telephony_interaction/include",
+    "services/call_ui_interaction/include",
+    "services/video/include",
+    "services/call/call_state_observer/include",
+  ]
+
+  deps = [
+    "//base/telephony/core_service/common:libtelephony_common",
+    "//base/telephony/sms_mms/interfaces/kits:tel_sms_mms_api",
+    "//third_party/libphonenumber/cpp:phonenumber_standard",
+    "//third_party/protobuf/src:protobuf_standard",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [
+    "aafwk_standard:want",
+    "appexecfwk_standard:libeventhandler",
+    "ces_standard:cesfwk_innerkits",
+    "display_manager_native:displaymgr",
+    "ipc:ipc_core",
+    "multimedia_audio_standard:audio_client",
+    "power_manager_native:powermgr_client",
+    "safwk:system_ability_fwk",
+    "samgr_L2:samgr_proxy",
+  ]
+
+  defines = [
+    "TELEPHONY_LOG_TAG = \"CallManager\"",
+    "LOG_DOMAIN = 0xD002B01",
+  ]
+
+  if (is_standard_system) {
+    external_deps += [ "hiviewdfx_hilog_native:libhilog" ]
+  } else {
+    external_deps += [ "hilog:libhilog" ]
+  }
+  part_name = "call_manager"
+  subsystem_name = "telephony"
+}

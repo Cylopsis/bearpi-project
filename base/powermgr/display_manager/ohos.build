@@ -1,0 +1,28 @@
+{
+  "subsystem": "powermgr",
+  "parts": {
+    "display_manager_native": {
+      "module_list": [
+        "//base/powermgr/display_manager/interfaces/innerkits:displaymgr",
+        "//base/powermgr/display_manager/sa_profile:displaymgr_sa_profile",
+        "//base/powermgr/display_manager/service:displaymgrservice",
+        "//base/powermgr/display_manager/interfaces/kits/js/napi:brightness"
+      ],
+      "inner_kits": [
+        {
+          "name": "//base/powermgr/display_manager/interfaces/innerkits:displaymgr",
+          "header": {
+            "header_files": [
+                "display_info.h",
+                "display_manager.h"
+            ],
+            "header_base": "//base/powermgr/display_manager/interfaces/innerkits/native/include"
+          }
+        }
+      ],
+      "test_list": [
+        "//base/powermgr/display_manager/test/native:displaymgr_native_test"
+      ]
+    }
+  }
+}

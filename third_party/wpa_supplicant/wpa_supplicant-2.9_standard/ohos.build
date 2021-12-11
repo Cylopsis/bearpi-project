@@ -1,0 +1,20 @@
+{
+  "subsystem": "wpa_supplicant-2.9",
+  "parts": {
+    "wpa_supplicant-2.9": {
+      "module_list": [
+        "//third_party/wpa_supplicant/wpa_supplicant-2.9_standard:wpa",
+        "//third_party/wpa_supplicant/wpa_supplicant-2.9_standard:wpa_client",
+        "//third_party/wpa_supplicant/wpa_supplicant-2.9_standard:wpa_supplicant",
+        "//third_party/wpa_supplicant/wpa_supplicant-2.9_standard:wpa_cli",
+        "//third_party/wpa_supplicant/wpa_supplicant-2.9_standard:hostapd"
+      ],
+      "inner_kits": [
+              ],
+      "system_kits": [
+      ],
+      "test_list": [
+      ]
+    }
+  }
+}

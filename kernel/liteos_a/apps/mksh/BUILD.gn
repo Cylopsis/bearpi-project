@@ -1,0 +1,99 @@
+# Copyright (c) 2013-2019 Huawei Technologies Co., Ltd. All rights reserved.
+# Copyright (c) 2020-2021 Huawei Device Co., Ltd. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this list of
+#    conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice, this list
+#    of conditions and the following disclaimer in the documentation and/or other materials
+#    provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its contributors may be used
+#    to endorse or promote products derived from this software without specific prior written
+#    permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import("//build/lite/config/component/lite_component.gni")
+import("//kernel/liteos_a/liteos.gni")
+
+group("mksh") {
+  deps = [ ":build_mksh" ]
+}
+
+copy("copy_mksh_src") {
+  sources = [ "$LITEOSTHIRDPARTY/mksh" ]
+  outputs = [ "$target_out_dir/mksh_build" ]
+}
+
+build_ext_component("build_mksh") {
+  deps = [ ":copy_mksh_src" ]
+  deps += [ "//prebuilts/lite/sysroot" ]
+  exec_path = rebase_path("$target_out_dir/mksh_build")
+
+  cflags = [
+    "-flto",
+    "-fdata-sections",
+    "-ffunction-sections",
+    "-fstack-protector-strong",
+    "-D_FORTIFY_SOURCE=2",
+    "-DMKSH_DISABLE_TTY_WARNING",
+    "-DMKSH_SMALL=1",
+    "-DMKSH_ASSUME_UTF8=1",
+    "-DMKSH_SMALL_BUT_FAST=0",
+    "-DMKSH_S_NOVI=1",
+    "-DHAVE_CAN_FSTACKPROTECTORSTRONG=1",
+    "-DMKSH_LESS_CMDLINE_EDITING",
+    "-DMKSH_LESS_BUILDINS",
+    "-DMKSH_NO_INITCOMS",
+    "-DADAPT_FOR_LITEOS_A",
+  ]
+  if (defined(LOSCFG_COMPILER_CLANG_LLVM)) {
+    cflags += [ "-Oz" ]
+  } else {
+    cflags += [ "-O2" ]
+  }
+  cflags = string_join(" ", cflags)
+
+  extra_flags = string_join(" ", target_arch_cflags)
+  if (ohos_build_compiler == "clang") {
+    extra_flags += " --target=$target_triple"
+    extra_flags += " --sysroot=" + rebase_path(ohos_current_sysroot)
+  }
+
+  command = "rm -rf .git && env"
+  command += " CC=\"$ohos_current_cc_command\""
+  command += " TARGET_OS=OpenHarmony"
+  command += " CFLAGS=\"$cflags $extra_flags\""
+  command += " LDFLAGS=\"-Wl,--gc-sections -flto -O2\""
+  command += " sh ./Build.sh -r"
+
+  # copy mksh and .mkshrc to out dir
+  command += " && mkdir -p "
+  command += rebase_path("$root_out_dir/bin", exec_path)
+  command += " && install -D mksh "
+  command += rebase_path("$root_out_dir/unstripped/bin/mksh", exec_path)
+  command += " && $ohos_current_strip_command mksh -o "
+  command += rebase_path("$root_out_dir/bin/mksh", exec_path)
+  command += " && install -D .mkshrc "
+  command += rebase_path("$root_out_dir/etc/.mkshrc", exec_path)
+
+  outputs = [
+    "$root_out_dir/unstripped/bin/mksh",
+    "$root_out_dir/bin/mksh",
+    "$root_out_dir/etc/.mkshrc",
+  ]
+}

@@ -1,0 +1,148 @@
+ root {
+    device_info {
+        match_attr = "hdf_manager";
+        template host {
+            hostName = "";
+            priority = 100;
+            template device{
+                template deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "";
+                    serviceName = "";
+                    deviceMatchAttr = "";
+                }
+            }
+        }
+        platform :: host {
+            hostName = "platform_host";
+            priority = 50;
+            device_gpio :: device {
+                device0 :: deviceNode {
+                    policy = 0;
+                    priority = 10;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_GPIO";
+                    serviceName = "HDF_PLATFORM_GPIO";
+                    deviceMatchAttr = "st_stm32mp157_gpio";
+                }
+            }
+            device_iwdg :: device {
+                device0 :: deviceNode {
+                    policy = 1;
+                    priority = 20;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_WATCHDOG";
+                    serviceName = "HDF_PLATFORM_WATCHDOG_0";
+                    deviceMatchAttr = "st_stm32mp1_iwdg_0";
+                }
+                device1 :: deviceNode {
+                    policy = 1;
+                    priority = 20;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_WATCHDOG";
+                    serviceName = "HDF_PLATFORM_WATCHDOG_1";
+                    deviceMatchAttr = "st_stm32mp1_iwdg_1";
+                }
+            }
+
+            device_uart :: device {
+                device0 :: deviceNode {
+                    policy = 1;
+                    priority = 40;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_UART";
+                    serviceName = "HDF_PLATFORM_UART_4";
+                    deviceMatchAttr = "st_stm32mp157_uart_4";
+                }
+            }
+
+            device_mmc:: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 10;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_SDMMC";
+                    serviceName = "HDF_PLATFORM_MMC_2";
+                    deviceMatchAttr = "st_stm32mp1_sdmmc_emmc";
+                }
+                device1 :: deviceNode {
+                    policy = 2;
+                    priority = 20;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_SDMMC";
+                    serviceName = "HDF_PLATFORM_MMC_1";
+                    deviceMatchAttr = "st_stm32mp1_sdmmc_sd";
+                }
+            }
+            device_ltdc:: device {
+                device0 :: deviceNode {
+                    policy = 0;
+                    priority = 170;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_LTDC";
+                    serviceName = "HDF_PLATFORM_LTDC";
+                    deviceMatchAttr = "st_stm32mp157_ltdc";
+                }
+            }
+            device_i2c :: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 50;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_I2C_MANAGER";
+                    serviceName = "HDF_PLATFORM_I2C_MANAGER";
+                    deviceMatchAttr = "hdf_platform_i2c_manager";
+                }
+                device1 :: deviceNode {
+                    policy = 0;
+                    priority = 55;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_I2C";
+                    serviceName = "HDF_PLATFORM_I2C";
+                    deviceMatchAttr = "st_stm32mp157_i2c";
+                }
+            }
+        }
+        input :: host {
+            hostName = "input_host";
+            priority = 100;
+            device_input_manager :: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0660;
+                    moduleName = "HDF_INPUT_MANAGER";
+                    serviceName = "hdf_input_host";
+                    deviceMatchAttr = "";
+                }
+            }
+            device_hdf_touch :: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 120;
+                    preload = 0;
+                    permission = 0660;
+                    moduleName = "HDF_TOUCH";
+                    serviceName = "hdf_input_event1";
+                    deviceMatchAttr = "touch_device1";
+                }
+            }
+
+            device_touch_chip :: device {
+                device0 :: deviceNode {
+                    policy = 0;
+                    priority = 130;
+                    preload = 0;
+                    permission = 0660;
+                    moduleName = "HDF_TOUCH_GT911";
+                    serviceName = "hdf_touch_gt911_service";
+                    deviceMatchAttr = "zsj_gt911_5p5";
+                }
+            }
+        }        
+    }
+}

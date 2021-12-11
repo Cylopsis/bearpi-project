@@ -1,0 +1,63 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+pulseaudio_dir = "//third_party/pulseaudio"
+
+config("daemon_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$pulseaudio_build_path/include",
+    "$pulseaudio_dir/include",
+    "$pulseaudio_dir/src/daemon",
+    "$pulseaudio_dir/src",
+    "$pulseaudio_dir",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-Wno-unused-function",
+    "-DHAVE_CONFIG_H",
+    "-DHAVE_UNISTD_H",
+  ]
+}
+
+ohos_source_set("pulseaudio_sources") {
+  sources = [
+    "$pulseaudio_dir/src/daemon/caps.c",
+    "$pulseaudio_dir/src/daemon/cmdline.c",
+    "$pulseaudio_dir/src/daemon/cpulimit.c",
+    "$pulseaudio_dir/src/daemon/ohos_daemon-conf.c",
+    "$pulseaudio_dir/src/daemon/ohos_pa_main.c",
+  ]
+
+  configs = [ ":daemon_config" ]
+}
+
+ohos_shared_library("pulseaudio") {
+  ldflags = [ "-ffast-math" ]
+  deps = [
+    ":pulseaudio_sources",
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+  ]
+
+  part_name = "multimedia_audio_standard"
+  subsystem_name = "multimedia"
+}

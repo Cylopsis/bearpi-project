@@ -1,0 +1,189 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_dir = "//third_party/pulseaudio"
+pulseaudio_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+libsndfile_dir = "//third_party/libsnd"
+libsndfile_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/libsnd"
+
+config("pulsecore_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$pulseaudio_dir/include",
+    "$pulseaudio_dir",
+    "$pulseaudio_dir/src",
+    "$pulseaudio_build_path/include",
+    "$pulseaudio_build_path/src",
+    "//third_party/glib/glib",
+    "//third_party/glib",
+    "$libsndfile_dir/include",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-Wno-implicit-function-declaration",
+    "-Wno-unused-function",
+    "-Wno-uninitialized",
+    "-DHAVE_CONFIG_H",
+    "-D_GNU_SOURCE",
+    "-D__INCLUDED_FROM_PULSE_AUDIO",
+  ]
+}
+
+ohos_source_set("pulsecore_sources") {
+  sources = [
+    "$pulseaudio_build_path/src/pulsecore/ltdl-stub.c",
+    "$pulseaudio_dir/src/pulsecore/asyncmsgq.c",
+    "$pulseaudio_dir/src/pulsecore/asyncq.c",
+    "$pulseaudio_dir/src/pulsecore/auth-cookie.c",
+    "$pulseaudio_dir/src/pulsecore/card.c",
+    "$pulseaudio_dir/src/pulsecore/cli-command.c",
+    "$pulseaudio_dir/src/pulsecore/cli-text.c",
+    "$pulseaudio_dir/src/pulsecore/client.c",
+    "$pulseaudio_dir/src/pulsecore/core-scache.c",
+    "$pulseaudio_dir/src/pulsecore/core-subscribe.c",
+    "$pulseaudio_dir/src/pulsecore/core.c",
+
+    #"$pulseaudio_dir/src/pulsecore/cpu.c",
+    "$pulseaudio_dir/src/pulsecore/cpu-arm.c",
+    "$pulseaudio_dir/src/pulsecore/database-simple.c",
+    "$pulseaudio_dir/src/pulsecore/database.c",
+
+    #"$pulseaudio_dir/src/pulsecore/cpu-orc.c",
+    #"$pulseaudio_dir/src/pulsecore/cpu-x86.c",
+    "$pulseaudio_dir/src/pulsecore/device-port.c",
+    "$pulseaudio_dir/src/pulsecore/ffmpeg/resample2.c",
+    "$pulseaudio_dir/src/pulsecore/filter/biquad.c",
+    "$pulseaudio_dir/src/pulsecore/filter/crossover.c",
+    "$pulseaudio_dir/src/pulsecore/filter/lfe-filter.c",
+    "$pulseaudio_dir/src/pulsecore/hook-list.c",
+    "$pulseaudio_dir/src/pulsecore/ltdl-helper.c",
+    "$pulseaudio_dir/src/pulsecore/message-handler.c",
+    "$pulseaudio_dir/src/pulsecore/mix.c",
+    "$pulseaudio_dir/src/pulsecore/modargs.c",
+    "$pulseaudio_dir/src/pulsecore/modinfo.c",
+    "$pulseaudio_dir/src/pulsecore/module.c",
+    "$pulseaudio_dir/src/pulsecore/msgobject.c",
+    "$pulseaudio_dir/src/pulsecore/namereg.c",
+    "$pulseaudio_dir/src/pulsecore/object.c",
+    "$pulseaudio_dir/src/pulsecore/play-memblockq.c",
+    "$pulseaudio_dir/src/pulsecore/play-memchunk.c",
+    "$pulseaudio_dir/src/pulsecore/remap.c",
+    "$pulseaudio_dir/src/pulsecore/resampler.c",
+    "$pulseaudio_dir/src/pulsecore/resampler/ffmpeg.c",
+    "$pulseaudio_dir/src/pulsecore/resampler/peaks.c",
+    "$pulseaudio_dir/src/pulsecore/resampler/trivial.c",
+    "$pulseaudio_dir/src/pulsecore/rtpoll.c",
+    "$pulseaudio_dir/src/pulsecore/sconv-s16be.c",
+    "$pulseaudio_dir/src/pulsecore/sconv-s16le.c",
+    "$pulseaudio_dir/src/pulsecore/sconv.c",
+    "$pulseaudio_dir/src/pulsecore/shared.c",
+    "$pulseaudio_dir/src/pulsecore/sink-input.c",
+    "$pulseaudio_dir/src/pulsecore/sink.c",
+    "$pulseaudio_dir/src/pulsecore/sioman.c",
+    "$pulseaudio_dir/src/pulsecore/sound-file-stream.c",
+    "$pulseaudio_dir/src/pulsecore/sound-file.c",
+    "$pulseaudio_dir/src/pulsecore/source-output.c",
+    "$pulseaudio_dir/src/pulsecore/source.c",
+    "$pulseaudio_dir/src/pulsecore/start-child.c",
+    "$pulseaudio_dir/src/pulsecore/stream-util.c",
+    "$pulseaudio_dir/src/pulsecore/svolume_arm.c",
+    "$pulseaudio_dir/src/pulsecore/svolume_c.c",
+    "$pulseaudio_dir/src/pulsecore/svolume_mmx.c",
+    "$pulseaudio_dir/src/pulsecore/svolume_sse.c",
+    "$pulseaudio_dir/src/pulsecore/thread-mq.c",
+  ]
+
+  configs = [ ":pulsecore_config" ]
+}
+
+ohos_shared_library("pulsecore") {
+  deps = [
+    ":pulsecore_sources",
+    "$libsndfile_build_path:sndfile",
+    "$pulseaudio_build_path/src:pulsecommon",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+config("modules_internal_lib_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$pulseaudio_build_path/include",
+    "$pulseaudio_dir/include",
+    "$pulseaudio_dir/src",
+    "$pulseaudio_dir",
+    "$pulseaudio_build_path/src",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-Wno-unused-function",
+    "-DHAVE_CONFIG_H",
+    "-D_GNU_SOURCE",
+    "-D__INCLUDED_FROM_PULSE_AUDIO",
+  ]
+}
+
+ohos_shared_library("cli") {
+  sources = [ "$pulseaudio_dir/src/pulsecore/cli.c" ]
+
+  configs = [ ":modules_internal_lib_config" ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_shared_library("protocol-cli") {
+  sources = [ "$pulseaudio_dir/src/pulsecore/protocol-cli.c" ]
+
+  configs = [ ":modules_internal_lib_config" ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulsecore:cli",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_shared_library("protocol-native") {
+  sources = [ "$pulseaudio_dir/src/pulsecore/protocol-native.c" ]
+
+  configs = [ ":modules_internal_lib_config" ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}

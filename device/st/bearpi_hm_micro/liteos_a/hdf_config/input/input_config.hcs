@@ -1,0 +1,91 @@
+root {
+    input_config {
+        touchConfig {
+            touch0 {
+                boardConfig {
+                    match_attr = "touch_device1";
+                    inputAttr {
+                        /* 0:touch 1:key 2:keyboard 3:mouse 4:button 5:crown 6:encoder */
+                        inputType = 0;
+                        solutionX = 480;
+                        solutionY = 960;
+                        devName = "main_touch";
+                    }
+                    busConfig {
+                        // 0:i2c 1:spi
+                        busType = 0;
+                        busNum = 2;
+                        clkGpio = 116;
+                        dataGpio = 117;
+                        i2cClkIomux = [0x50009020, 0x40000];
+                        i2cDataIomux = [0x50009020, 0x400000];
+                    }
+
+                    pinConfig {
+                        rstGpio = 71;
+                        intGpio = 104;
+                        rstRegCfg = [0x50008024, 0x0];
+                        intRegCfg = [0x50007020, 0x0];
+                    }
+
+                    powerConfig {
+                        /* 0:unused 1:ldo 2:gpio 3:pmic */
+                        vccType = 1;
+                        vccNum = 20;    // gpio20
+                        vccValue = 1800;
+                        vciType = 1;
+                        vciNum = 12;    // ldo12
+                        vciValue = 3300;
+                    }
+
+                    featureConfig {
+                        capacitanceTest = 0;
+                        gestureMode = 0;
+                        gloverMOde = 0;
+                        coverMode = 0;
+                        chargerMode = 0;
+                        knuckleMode = 0;
+                    }
+                }
+
+                chipConfig {
+                    template touchChip {
+                        match_attr = "";
+                        chipName = "gt911";
+                        vendorName = "zsj";
+                        chipInfo = "AAAA11222";  // 4-ProjectName, 2-TP IC, 3-TP Module
+                        /* 0:i2c 1:spi*/
+                        busType = 0;
+                        deviceAddr = 0xBA;
+                        /* 0:None 1:Rising 2:Failing 4:High-level 8:Low-level */
+                        irqFlag = 2;
+                        maxSpeed = 400;
+                        chipVersion = 0; //parse Coord TypeA
+                        powerSequence {
+                            /* [type, status, dir , delay]
+                                <type> 0:none 1:vcc-1.8v 2:vci-3.3v 3:reset 4:int
+                                <status> 0:off or low  1:on or high  2:no ops
+                                <dir> 0:input  1:output  2:no ops
+                                <delay> meanings delay xms, 20: delay 20ms
+                             */
+                            powerOnSeq = [4, 0, 1, 0,
+                                         3, 0, 1, 10,
+                                         3, 1, 2, 60,
+                                         4, 2, 0, 0];
+                            suspendSeq = [3, 0, 2, 10];
+                            resumeSeq = [3, 1, 2, 10];
+                            powerOffSeq = [3, 0, 2, 10,
+                                           1, 0, 2, 20];
+                        }
+                    }
+
+                    chip0 :: touchChip {
+                        match_attr = "zsj_gt911_5p5";
+                        chipInfo = "ZIDN45100";  // 4-ProjectName, 2-TP IC, 3-TP Module
+                        chipVersion = 0; //parse point by TypeA
+                    }
+                }
+            }
+        }
+    }
+}

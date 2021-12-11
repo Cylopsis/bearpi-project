@@ -1,0 +1,28 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+displaymgr_native_part_name = "display_manager_native"
+
+displaymgr_root_path = "//base/powermgr/display_manager"
+
+displaymgr_service_path = "${displaymgr_root_path}/service"
+
+displaymgr_interfaces_path = "${displaymgr_root_path}/interfaces"
+
+displaymgr_native_innerkits_path = "${displaymgr_interfaces_path}/innerkits"
+
+displaymgr_kits_path = "${displaymgr_interfaces_path}/kits"
+
+displaymgr_utils_path = "${displaymgr_root_path}/utils"

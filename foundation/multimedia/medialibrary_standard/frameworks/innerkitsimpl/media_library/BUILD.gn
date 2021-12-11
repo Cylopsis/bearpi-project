@@ -1,0 +1,84 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+group("media_library_packages") {
+  deps = [
+    ":media_library",
+  ]
+}
+
+config("media_library_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "./",
+    "./include",
+    "//foundation/multimedia/medialibrary_standard/interfaces/innerkits/native/include",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits/include",
+    "//utils/native/base/include",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+  ]
+}
+
+ohos_source_set("media_library_source") {
+  sources = [
+    "src/album_asset.cpp",
+    "src/audio_asset.cpp",
+    "src/image_asset.cpp",
+    "src/media_asset.cpp",
+    "src/media_file_utils.cpp",
+    "src/media_library.cpp",
+    "src/media_library_utils.cpp",
+    "src/video_asset.cpp",
+  ]
+
+  configs = [ ":media_library_config" ]
+}
+
+ohos_shared_library("media_library") {
+  install_enable = true
+
+  deps = [
+    ":media_library_source",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//utils/native/base:utils",
+  ]
+
+  part_name = "multimedia_media_library_standard"
+  subsystem_name = "multimedia"
+}
+
+ohos_source_set("media_library_test_source") {
+  sources = [ "//foundation/multimedia/medialibrary_standard/interfaces/innerkits/native/test/media_library_test.cpp" ]
+
+  configs = [ ":media_library_config" ]
+}
+
+ohos_executable("media_library_test") {
+  install_enable = true
+
+  deps = [
+    ":media_library",
+    ":media_library_test_source",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+  ]
+
+  part_name = "multimedia_media_library_standard"
+  subsystem_name = "multimedia"
+}

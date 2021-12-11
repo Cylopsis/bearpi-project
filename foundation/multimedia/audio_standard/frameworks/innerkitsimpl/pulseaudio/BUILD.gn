@@ -1,0 +1,50 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_build_path = "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+libsndfile_build_path = "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/libsnd"
+
+group("pulseaudio_packages") {
+  deps = [
+    # ":gen_config_header",
+    "$libsndfile_build_path:sndfile",
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+    "$pulseaudio_build_path/src:pa_daemon_config",
+    "$pulseaudio_build_path/src:pa_default_config",
+    "$pulseaudio_build_path/src:pa_client_config",
+    "$pulseaudio_build_path/src/pulse:pulse-simple",
+    "$pulseaudio_build_path/src/pulse:pulse-mainloop-glib",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+    "$pulseaudio_build_path/src/pulsecore:protocol-native",
+    "$pulseaudio_build_path/src/pulsecore:cli",
+    "$pulseaudio_build_path/src/pulsecore:protocol-cli",
+    "$pulseaudio_build_path/src/daemon:pulseaudio",
+    "$pulseaudio_build_path/src/utils:pacmd",
+    "$pulseaudio_build_path/src/utils:pacat",
+    "$pulseaudio_build_path/src/utils:pactl",
+    "$pulseaudio_build_path/src/modules:modules",
+    "$pulseaudio_build_path/src/modules/hdi:module-hdi-sink",
+    "$pulseaudio_build_path/src/modules/hdi:module-hdi-source",
+  ]
+}
+
+action("gen_config_header") {
+  script = "$pulseaudio_build_path/ohos_paconfig.sh"
+
+  args = [ rebase_path("//third_party/pulseaudio", root_build_dir), rebase_path( "${target_gen_dir}/", root_build_dir),]
+
+  outputs = [ "${target_gen_dir}/config.h", ]
+}

@@ -1,0 +1,57 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+SUBSYSTEM_DIR = "//foundation/multimedia/image_standard"
+
+ohos_ndk_library("libpixelmap") {
+  ndk_description_file = "./libimage_pixelmap.json"
+  min_compact_version = "1"
+  output_name = "image_pixelmap"
+}
+
+ohos_ndk_headers("image_header") {
+  dest_dir = "$ndk_headers_out_dir/multimedia/image_standard"
+  sources = [ "./include/image_pixel_map.h" ]
+}
+
+ohos_shared_library("libimage_pixelmap_ndk") {
+  sources = [ "src/image_pixel_map.cpp" ]
+  output_name = "image_pixelmap"
+
+  include_dirs = [
+    "include",
+    "//utils/native/base/include",
+    "//utils/jni/jnikit/include",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "$SUBSYSTEM_DIR/interfaces/innerkits/include",
+    "$SUBSYSTEM_DIR/frameworks/jni/pixelmap/include",
+  ]
+
+  deps = [
+#    "$SUBSYSTEM_DIR/frameworks/jni/pixelmap:pixelmap_jni",
+    "$SUBSYSTEM_DIR/interfaces/kits/native:libpixelmap",
+    "//utils/native/base:utils",
+  ]
+
+  version_script =
+      get_label_info(":libpixelmap", "target_gen_dir") + "/" +
+      get_label_info(":libpixelmap", "name") + version_script_suffix
+  subsystem_name = "multimedia"
+  part_name = "multimedia_image"
+}
+
+group("multimedia_target") {
+  deps = [ ":libimage_pixelmap_ndk" ]
+}

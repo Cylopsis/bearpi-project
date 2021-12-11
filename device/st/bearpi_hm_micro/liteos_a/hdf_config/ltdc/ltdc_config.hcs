@@ -1,0 +1,31 @@
+root {
+    platform {
+        ltdc_config {
+            match_attr = "st_stm32mp157_ltdc";
+            template ltdc_device {
+                vsync = 0;
+                vbp = 23;
+                vfp = 22;
+                vact = 480;
+                hsync = 1;
+                hbp = 46;
+                hfp = 210;
+                hact = 800;
+                reg_pbase = 0x5A001000;
+                reg_size = 0x400;
+            }
+            device_0 :: ltdc_device {
+                vsync = 1;
+                vbp = 23;
+                vfp = 22;
+                vact = 480;
+                hsync = 1;
+                hbp = 46;
+                hfp = 210;
+                hact = 800;
+                reg_pbase = 0x5A001000;
+                reg_size = 0x400;
+            }
+        }
+    }
+}

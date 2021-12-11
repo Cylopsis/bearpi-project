@@ -1,0 +1,16 @@
+{
+    "subsystem": "telephony",
+    "parts": {
+        "call_manager": {
+            "module_list": [
+                "//base/telephony/call_manager/:tel_call_manager",
+                "//base/telephony/call_manager/sa_profile:call_manager_sa_profile",
+                "//base/telephony/call_manager/interfaces/kits:call"
+            ],
+            "test_list": [
+                "//base/telephony/call_manager/test/unittest:unittest"
+            ]
+        }
+    }
+}
+

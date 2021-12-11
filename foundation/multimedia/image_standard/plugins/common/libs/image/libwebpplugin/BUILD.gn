@@ -1,0 +1,94 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+import("//foundation/multimedia/image_standard/ide/image_decode_config.gni")
+
+ohos_shared_library("webpplugin") {
+  sources = [
+    "//foundation/multimedia/image_standard/plugins/common/libs/image/libwebpplugin/src/plugin_export.cpp",
+    "//foundation/multimedia/image_standard/plugins/common/libs/image/libwebpplugin/src/webp_decoder.cpp",
+  ]
+
+  include_dirs = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "//foundation/multimedia/utils/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include/image",
+    "//foundation/multimedia/image_standard/plugins/manager/include/pluginbase",
+    "//foundation/multimedia/image_standard/plugins/common/libs/image/libwebpplugin/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//third_party/flutter/skia/third_party/externals/libwebp/src",
+    "//third_party/flutter/skia/include/core",
+    "//third_party/flutter/skia/include/encode",
+    "//third_party/flutter/skia",
+    "//third_party/flutter/skia/src/ports/skia_ohos",
+    "//third_party/flutter/skia/src/ports",
+    "//third_party/flutter/skia/src/images",
+    "//third_party/expat/lib",
+    "//third_party/flutter/skia/include/private",
+    "//third_party/flutter/skia/third_party/externals/freetype/include/freetype",
+  ]
+  if (use_mingw_win) {
+    defines = image_decode_windows_defines
+    include_dirs +=
+        [ "//foundation/multimedia/image_standard/mock/native/include" ]
+
+    deps = [
+      "${asdk_dir}/static_library/${target_os}_${target_cpu}:libwebp-image_static",
+      "//foundation/multimedia/image_standard/mock/native:log_mock_static",
+    ]
+  } else {
+    defines = [ "DUAL_ADAPTER" ]
+    DUAL_ADAPTER = true
+    include_dirs += [ "//utils/native/base/include" ]
+
+    deps = [
+      "//foundation/multimedia/image_standard/plugins/manager:pluginmanager",
+      "//third_party/flutter:ace_fontconfig.json",
+      "//third_party/flutter:ace_fontmgr_ohos",
+      "//third_party/flutter:ace_fontmgr_standard",
+      "//third_party/flutter:ace_jpeg",
+      "//third_party/flutter:ace_jsoncpp",
+      "//third_party/flutter:ace_libfreetype2",
+      "//third_party/flutter:ace_libjpeg",
+      "//third_party/flutter:ace_libpng",
+      "//third_party/flutter:ace_libwebp",
+      "//third_party/flutter:ace_png",
+      "//third_party/flutter:ace_skcms",
+      "//third_party/flutter:ace_skia_core",
+      "//third_party/flutter:ace_skia_ohos",
+      "//third_party/flutter:ace_skia_opts",
+      "//third_party/flutter:ace_typeface_freetype",
+      "//third_party/flutter:ace_webp",
+      "//utils/native/base:utils",
+      "//utils/native/base:utils",
+    ]
+
+    if (DUAL_ADAPTER) {
+    }
+
+    external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+  }
+
+  part_name = "multimedia_image_standard"
+
+  subsystem_name = "multimedia"
+}
+
+ohos_prebuilt_etc("webppluginmetadata") {
+  source = "webpplugin.pluginmeta"
+  relative_install_dir = "multimediaplugin/image"
+  subsystem_name = "multimedia"
+  part_name = "multimedia_image_standard"
+}

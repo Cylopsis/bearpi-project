@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<audioPolicyConfiguration version="1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <modules>
+        <module name="HiSpark">
+            <BuiltInDevices>
+                <item>Speaker</item>
+                <item>Built-In Mic</item>
+            </BuiltInDevices>
+            <AudioPorts>
+                <AudioPort name="libmodule-hdi-sink.z.so" role="sink" channels="2" rate="44100" buffer_size="8192"/>
+                <AudioPort name="libmodule-pipe-sink.z.so" role="sink" file="/data/data/.pulse_dir/pipe_sink.pcm"/>
+                <AudioPort name="libmodule-pipe-source.z.so" role="source" file="/data/data/.pulse_dir/pipe_source.pcm"/>
+                <AudioPort name="libmodule-hdi-source.z.so" role="source" channels="2" rate="44100"/>
+            </AudioPorts>
+
+            <DefaultOutputDevice>Speaker</DefaultOutputDevice>
+            <DefaultInputDevice>Built-In Mic</DefaultInputDevice>
+
+            <AudioPortPins>
+                <AudioPortPin name="Speaker" type="PIN_OUT_SPEAKER" role="sink"/>
+                <AudioPortPin name="Wired Headset" type="PIN_OUT_WIRED_HEADSET" role="sink"/>
+                <AudioPortPin name="HDMI" type="PIN_OUT_HDMI" role="sink"/>
+                <AudioPortPin name="Line Out" type="PIN_OUT_LINEOUT" role="sink"/>
+                <AudioPortPin name="Built-In Mic" type="PIN_IN_BUILTIN_MIC" role="source"/>
+                <AudioPortPin name="Wired Headset Mic" type="PIN_IN_WIRED_HEADSET" role="source"/>
+                <AudioPortPin name="Line In" type="PIN_IN_LINEIN" role="source"/>
+            </AudioPortPins>
+
+        </module>
+
+    </modules>
+
+</audioPolicyConfiguration>

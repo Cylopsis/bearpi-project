@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2021 Huawei Device Co., Ltd.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<configuration ver="2.0">
+    <target name="test_imagecodec_java_maple">
+        <preparer>
+            <option name="push" value="images/test.png -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.gif -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_exif.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_hw.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.webp -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="txts/colors.txt -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.bmp -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.9.png -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_large.webp -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/moving_test.gif -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.dng -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.arw -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.cr2 -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.nrw -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.pef -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.raf -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.rw2 -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.wbmp -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/hasNoExif.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="multimedia/multimedia_image/libimage_ndk_test_jni.z.so -> /system/lib64" src="out"/>
+            <option name="push" value="multimedia/multimedia_image/libimage_ndk_test_jni.z.so -> /system/lib" src="out"/>
+        </preparer>
+    </target>
+    <target name="imagesourcetest">
+        <preparer>
+            <option name="push" value="images/test.png -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.gif -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/moving_test.gif -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_hw.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_exif.jpg -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_large.webp -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.bmp -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.9.png -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.dng -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.arw -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.cr2 -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.nrw -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.pef -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.raf -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.rw2 -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.wbmp -> /sdcard/multimedia/image" src="res"/>
+        </preparer>
+    </target>
+    <target name="test_imagesystemadapter_java_maple">
+        <preparer>
+            <option name="push" value="images/test.png -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test.gif -> /sdcard/multimedia/image" src="res"/>
+            <option name="push" value="images/test_large.webp -> /sdcard/multimedia/image" src="res"/>
+        </preparer>
+    </target>
+    <target name="pixlmapndktest">
+        <preparer>
+            <option name="push" value="multimedia/multimedia_image/libimage_ndk_test_jni.z.so -> /system/lib64" src="out"/>
+            <option name="push" value="multimedia/multimedia_image/libimage_ndk_test_jni.z.so -> /system/lib" src="out"/>
+        </preparer>
+    </target>
+    <target name="image_performance_test_java_maple">
+        <preparer>
+            <option name="push" value="images/test.png -> /data/test" src="res"/>
+            <option name="push" value="images/test.jpg -> /data/test" src="res"/>
+            <option name="push" value="images/test.gif -> /data/test" src="res"/>
+            <option name="push" value="images/test_exif.jpg -> /data/test" src="res"/>
+            <option name="push" value="images/test.webp -> /data/test" src="res"/>
+            <option name="push" value="txts/colors.txt -> /data/test" src="res"/>
+            <option name="push" value="images/test.bmp -> /data/test" src="res"/>
+            <option name="push" value="images/test.9.png -> /data/test" src="res"/>
+            <option name="push" value="images/test_large.webp -> /data/test" src="res"/>
+            <option name="push" value="images/moving_test.gif -> /data/test" src="res"/>
+            <option name="push" value="images/test.dng -> /data/test" src="res"/>
+            <option name="push" value="images/test.arw -> /data/test" src="res"/>
+            <option name="push" value="images/test.cr2 -> /data/test" src="res"/>
+            <option name="push" value="images/test.nrw -> /data/test" src="res"/>
+            <option name="push" value="images/test.pef -> /data/test" src="res"/>
+            <option name="push" value="images/test.raf -> /data/test" src="res"/>
+            <option name="push" value="images/test.rw2 -> /data/test" src="res"/>
+            <option name="push" value="images/test.wbmp -> /data/test" src="res"/>
+            <option name="push" value="perftest/ImagePerformanceTest_baseline.xml -> /data/test/" src="res"/>
+        </preparer>
+    </target>
+</configuration>

@@ -1,0 +1,67 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//foundation/aafwk/standard/aafwk.gni")
+
+abilityms_files = [
+  "${services_path}/abilitymgr/src/ability_connect_manager.cpp",
+  "${services_path}/abilitymgr/src/ability_connect_callback_stub.cpp",
+  "${services_path}/abilitymgr/src/ability_event_handler.cpp",
+  "${services_path}/abilitymgr/src/ability_manager_service.cpp",
+  "${services_path}/abilitymgr/src/ability_manager_stub.cpp",
+  "${services_path}/abilitymgr/src/ability_manager_proxy.cpp",
+  "${services_path}/abilitymgr/src/ability_record.cpp",
+  "${services_path}/abilitymgr/src/ability_scheduler_stub.cpp",
+  "${services_path}/abilitymgr/src/ability_scheduler_proxy.cpp",
+  "${services_path}/abilitymgr/src/ability_stack_manager.cpp",
+  "${services_path}/abilitymgr/src/ability_token_stub.cpp",
+  "${services_path}/abilitymgr/src/app_scheduler.cpp",
+  "${services_path}/abilitymgr/src/connection_record.cpp",
+  "${services_path}/abilitymgr/src/data_ability_caller_recipient.cpp",
+  "${services_path}/abilitymgr/src/data_ability_manager.cpp",
+  "${services_path}/abilitymgr/src/data_ability_record.cpp",
+  "${services_path}/abilitymgr/src/lifecycle_deal.cpp",
+  "${services_path}/abilitymgr/src/mission_record.cpp",
+  "${services_path}/abilitymgr/src/mission_stack.cpp",
+  "${services_path}/abilitymgr/src/power_storage.cpp",
+  "${services_path}/abilitymgr/src/lifecycle_state_info.cpp",
+  "${services_path}/abilitymgr/src/stack_info.cpp",
+  "${services_path}/abilitymgr/src/mission_stack_info.cpp",
+  "${services_path}/abilitymgr/src/mission_record_info.cpp",
+  "${services_path}/abilitymgr/src/ability_record_info.cpp",
+  "${services_path}/abilitymgr/src/ability_mission_info.cpp",
+  "${services_path}/abilitymgr/src/mission_description_info.cpp",
+  "${services_path}/abilitymgr/src/image_info.cpp",
+  "${services_path}/abilitymgr/src/mission_snapshot_info.cpp",
+  "${services_path}/abilitymgr/src/kernal_system_app_manager.cpp",
+  "${services_path}/abilitymgr/src/caller_info.cpp",
+  "${services_path}/abilitymgr/src/sender_info.cpp",
+  "${services_path}/abilitymgr/src/wants_info.cpp",
+  "${services_path}/abilitymgr/src/want_sender_info.cpp",
+  "${services_path}/abilitymgr/src/pending_want_record.cpp",
+  "${services_path}/abilitymgr/src/want_receiver_proxy.cpp",
+  "${services_path}/abilitymgr/src/want_receiver_stub.cpp",
+  "${services_path}/abilitymgr/src/want_sender_proxy.cpp",
+  "${services_path}/abilitymgr/src/want_sender_stub.cpp",
+  "${services_path}/abilitymgr/src/pending_want_key.cpp",
+  "${services_path}/abilitymgr/src/pending_want_manager.cpp",
+  "${services_path}/abilitymgr/src/pending_want_common_event.cpp",
+  "${services_path}/abilitymgr/src/lock_mission_container.cpp",
+  "${services_path}/abilitymgr/src/ability_start_setting.cpp",
+  "${services_path}/abilitymgr/src/mission_option.cpp",
+  "${services_path}/abilitymgr/src/stack_setting.cpp",
+  "${services_path}/abilitymgr/src/aafwk_dummy_configuration.cpp",
+  "${services_path}/abilitymgr/src/configuration_holder.cpp",
+  "${services_path}/abilitymgr/src/resume_mission_container.cpp",
+  "${services_path}/abilitymgr/src/ams_configuration_parameter.cpp",
+]

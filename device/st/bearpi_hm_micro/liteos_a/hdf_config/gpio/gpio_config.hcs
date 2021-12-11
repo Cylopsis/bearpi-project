@@ -1,0 +1,15 @@
+root {
+    platform {
+        gpio_config {
+            controller_0x50002000 {
+                match_attr = "st_stm32mp157_gpio";
+                groupNum = 11;
+                bitNum = 16;
+                gpioRegBase = 0x50002000;
+                gpioRegStep = 0x1000;
+                irqRegBase = 0x5000D000;
+                irqRegStep = 0x400;
+            }
+        }
+    }
+}

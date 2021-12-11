@@ -1,0 +1,18 @@
+{
+    "subsystem": "telephony",
+    "parts": {
+        "cellular_call": {
+            "module_list": [
+                "//base/telephony/cellular_call:tel_cellular_call",
+                "//base/telephony/cellular_call/sa_profile:cellular_call_sa_profile"
+            ],
+            "test_list": [
+                "//base/telephony/cellular_call/test:unittest"
+            ]
+        }
+    }
+}
+
+
+
+

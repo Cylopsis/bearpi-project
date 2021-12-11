@@ -1,0 +1,92 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_dir = "//third_party/pulseaudio"
+pulseaudio_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+
+config("hdi_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$pulseaudio_dir/include",
+    "$pulseaudio_dir/src",
+    "$pulseaudio_dir",
+    "$pulseaudio_build_path/src",
+    "$pulseaudio_build_path/include",
+    "//drivers/peripheral/audio/interfaces/include",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/common/include",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audiocapturer/include",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audiorenderer/include",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-DHAVE_CONFIG_H",
+    "-D_GNU_SOURCE",
+    "-D__INCLUDED_FROM_PULSE_AUDIO",
+  ]
+}
+
+ohos_shared_library("module-hdi-sink") {
+  sources = [
+    "$pulseaudio_build_path/src/modules/hdi/hdi_sink.c",
+    "$pulseaudio_build_path/src/modules/hdi/module_hdi_sink.c",
+  ]
+
+  configs = [ ":hdi_config" ]
+
+  cflags = [ "-DPA_MODULE_NAME=libmodule_hdi_sink_z_so" ]
+
+  ldflags = [
+    "-Wl",
+    "--no-undefined",
+  ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audiorenderer:audio_renderer_sink",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_shared_library("module-hdi-source") {
+  sources = [
+    "hdi_source.c",
+    "module_hdi_source.c",
+  ]
+
+  configs = [ ":hdi_config" ]
+
+  cflags = [ "-DPA_MODULE_NAME=libmodule_hdi_source_z_so" ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+    "$pulseaudio_build_path/src/pulsecore:pulsecore",
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/audiocapturer:audio_capturer_source",
+    "//third_party/bounds_checking_function:libsec_static",
+  ]
+
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}

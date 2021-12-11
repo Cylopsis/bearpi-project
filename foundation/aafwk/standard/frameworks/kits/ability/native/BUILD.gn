@@ -1,0 +1,228 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+SUBSYSTEM_DIR = "//foundation/aafwk/standard/frameworks/kits/ability/native"
+SUBSYSTEM_APPEXEXFWK_DIR = "//foundation/appexecfwk/standard"
+INNERKITS_PATH = "//foundation/aafwk/standard/interfaces/innerkits"
+
+config("ability_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    "${INNERKITS_PATH}/base/include",
+    "//utils/native/base/include",
+    "${SUBSYSTEM_DIR}/include",
+    "${SUBSYSTEM_APPEXEXFWK_DIR}/kits/appkit/native/app/include",
+    "${SUBSYSTEM_APPEXEXFWK_DIR}/interfaces/innerkits/appexecfwk_core/include/appmgr",
+    "${INNERKITS_PATH}/want/include/ohos/aafwk/content",
+    "${INNERKITS_PATH}/ability_manager/include",
+    "//foundation/aafwk/standard/services/abilitymgr/include",
+    "//foundation/appexecfwk/standard/common/log/include",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core/include/bundlemgr",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_base/include/",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core/include/formmgr",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/include",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/fmskit/native/include",
+    "//foundation/distributedschedule/dmsfwk/services/dtbschedmgr/include",
+    "//base/global/resmgr_standard/interfaces/innerkits/include",
+    "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/featureAbility",
+    "//foundation/ace/napi/interfaces/kits",
+    "//third_party/node/src",
+    "//foundation/communication/ipc/interfaces/innerkits/ipc_core/include",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native/include/continuation/remote_register_service",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native/include/continuation/distributed",
+    "//foundation/aafwk/standard/interfaces/innerkits/ability_manager/include/continuation",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native/include/continuation/kits",
+    "//base/security/permission/interfaces/innerkits/permission_standard/permissionsdk/main/cpp/include",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/task_dispatcher/include/dispatcher",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/task_dispatcher/include/task",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/task_dispatcher/include/threading",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/include/task",
+    "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/inner/napi_common",
+  ]
+
+  cflags = []
+  if (target_cpu == "arm") {
+    cflags += [ "-DBINDER_IPC_32BIT" ]
+  }
+  defines = [
+    "APP_LOG_TAG = \"Ability\"",
+    "LOG_DOMAIN = 0xD002200",
+  ]
+}
+
+config("ability_public_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    "${INNERKITS_PATH}/base/include",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/include",
+    "${SUBSYSTEM_DIR}/include",
+    "//third_party/libuv/include",
+    "//foundation/aafwk/standard/interfaces/innerkits/base/include/ohos/aafwk/base",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native/include/continuation/remote_register_service",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native/include/continuation/distributed",
+    "//foundation/aafwk/standard/interfaces/innerkits/ability_manager/include/continuation",
+    "//base/global/resmgr_standard/interfaces/innerkits/include",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native/include/continuation/kits",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/fmskit/native/include",
+  ]
+}
+
+ohos_shared_library("abilitykit_native") {
+  include_dirs = [
+    "//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/native_rdb",
+    "//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/common",
+    "//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/native_dataability",
+  ]
+  cflags = [
+    #"-DMMI_COMPILE"
+  ]
+
+  sources = [
+    "${SUBSYSTEM_APPEXEXFWK_DIR}/interfaces/innerkits/appexecfwk_core/src/appmgr/process_info.cpp",
+    "${SUBSYSTEM_DIR}/src/ability.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_context.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_handler.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_impl.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_impl_factory.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_keyevent.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_lifecycle.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_lifecycle_executor.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_loader.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_local_record.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_post_event_timeout.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_process.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_thread.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_touchevent.cpp",
+    "${SUBSYSTEM_DIR}/src/ability_window.cpp",
+    "${SUBSYSTEM_DIR}/src/data_ability_helper.cpp",
+    "${SUBSYSTEM_DIR}/src/data_ability_impl.cpp",
+    "${SUBSYSTEM_DIR}/src/data_ability_operation.cpp",
+    "${SUBSYSTEM_DIR}/src/data_ability_operation_builder.cpp",
+    "${SUBSYSTEM_DIR}/src/data_ability_result.cpp",
+    "${SUBSYSTEM_DIR}/src/data_uri_utils.cpp",
+
+    #"${SUBSYSTEM_DIR}/src/dummy_data_ability_predicates.cpp",
+    #"${SUBSYSTEM_DIR}/src/dummy_result_set.cpp",
+    #"${SUBSYSTEM_DIR}/src/dummy_values_bucket.cpp",
+    "${SUBSYSTEM_DIR}/src/form_js_event_handler.cpp",
+    "${SUBSYSTEM_DIR}/src/form_provider_client.cpp",
+    "${SUBSYSTEM_DIR}/src/mission_information.cpp",
+    "${SUBSYSTEM_DIR}/src/page_ability_impl.cpp",
+    "${SUBSYSTEM_DIR}/src/service_ability_impl.cpp",
+    "//foundation/aafwk/standard/services/abilitymgr/src/ability_start_setting.cpp",
+
+    # "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/featureAbility/feature_ability.cpp",
+    # "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/featureAbility/napi_context.cpp",
+    # "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/featureAbility/napi_data_ability_helper.cpp",
+    # "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/inner/napi_common/napi_common_ability.cpp",
+    # "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/inner/napi_common/napi_common_util.cpp",
+    # "//foundation/aafwk/standard/interfaces/kits/napi/aafwk/inner/napi_common/napi_common_want.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/ability_distributed_connect_callback_stub.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/ability_distributed_connection.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/continuation_handler.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/continuation_manager.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/continuation_scheduler.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/continuation_scheduler_stub.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/distributed_client.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_primary.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_primary_proxy.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_primary_stub.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_recipient.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_replica.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_replica_proxy.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/distributed/reverse_continuation_scheduler_replica_stub.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/connect_callback_proxy.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/connect_callback_stub.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/continuation_connector.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/continuation_device_callback_proxy.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/continuation_register_manager.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/continuation_register_manager_proxy.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/remote_register_service_proxy.cpp",
+    "${SUBSYSTEM_DIR}/src/continuation/remote_register_service/remote_register_service_stub.cpp",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/src/application_context.cpp",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/src/context_container.cpp",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/src/context_deal.cpp",
+    "//foundation/appexecfwk/standard/kits/appkit/native/app/src/sys_mgr_client.cpp",
+    "//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/common/js_utils.cpp",
+
+    #"//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/native_rdb/napi_rdb_predicates.cpp",
+    "//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/native_dataability/napi_data_ability_predicates.cpp",
+    "//foundation/distributeddatamgr/appdatamgr/frameworks/jskitsimpl/native_rdb/napi_result_set.cpp",
+  ]
+  configs = [ ":ability_config" ]
+  public_configs = [ ":ability_public_config" ]
+
+  deps = [
+    "${INNERKITS_PATH}/base:base",
+    "${INNERKITS_PATH}/want:want",
+    "//base/security/permission/interfaces/innerkits/permission_standard/permissionsdk:libpermissionsdk_standard",
+    "//foundation/aafwk/standard/interfaces/innerkits/ability_manager:ability_manager",
+    "//foundation/aafwk/standard/interfaces/innerkits/dataobs_manager:dataobs_manager",
+    "//foundation/ace/napi:ace_napi",
+    "//foundation/appexecfwk/standard/common:libappexecfwk_common",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_base:appexecfwk_base",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core:appexecfwk_core",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/task_dispatcher:appkit_dispatcher_td",
+    "//foundation/distributedschedule/dmsfwk/interfaces/innerkits/uri:zuri",
+    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [
+    "appexecfwk_standard:fmskit_native",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "native_appdatamgr:native_appdatafwk",
+    "native_appdatamgr:native_dataability",
+    "native_appdatamgr:native_rdb",
+
+    #"multimodalinput_base:libmmi-util",
+    #"multimodalinput_base:libmmi-client",
+    #"multimodalinput_base:mmi_event",
+  ]
+
+  public_deps = [
+    "//base/global/resmgr_standard/frameworks/resmgr:global_resmgr",
+    "//foundation/distributedschedule/dmsfwk/services/dtbschedmgr:distributedschedsvr",
+    "//foundation/graphic/standard:libwmclient",
+  ]
+
+  subsystem_name = "aafwk"
+  part_name = "aafwk_standard"
+}
+
+ohos_shared_library("dummy_classes") {
+  sources = [
+    "${SUBSYSTEM_DIR}/src/dummy_data_ability_predicates_discard.cpp",
+    "${SUBSYSTEM_DIR}/src/dummy_result_set_discard.cpp",
+    "${SUBSYSTEM_DIR}/src/dummy_values_bucket_discard.cpp",
+  ]
+
+  configs = [ ":ability_config" ]
+  public_configs = [ ":ability_public_config" ]
+
+  deps = [
+    "//foundation/appexecfwk/standard/common:libappexecfwk_common",
+    "//utils/native/base:utils",
+  ]
+
+  external_deps = [
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+  ]
+
+  subsystem_name = "aafwk"
+  part_name = "aafwk_standard"
+}

@@ -1,0 +1,42 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/test.gni")
+
+module_output_path = "audio_standard/audio_policy"
+
+group("moduletest") {
+    testonly = true
+
+    deps = [
+        ":audio_policy_module_test",
+    ]
+}
+
+ohos_moduletest("audio_policy_module_test") {
+  module_out_path = module_output_path
+  include_dirs = [
+    "./1.0/include",
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiomanager/include",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits/include",
+  ]
+
+  sources = [
+    "1.0/src/audio_policy_test.cpp",
+  ]
+
+  deps = [
+    "//foundation/multimedia/audio_standard/interfaces/innerkits/native/audiomanager:audio_client",
+     "//utils/native/base:utils",
+  ]
+}

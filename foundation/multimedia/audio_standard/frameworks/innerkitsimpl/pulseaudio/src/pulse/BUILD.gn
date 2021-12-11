@@ -1,0 +1,113 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+pulseaudio_dir = "//third_party/pulseaudio"
+pulseaudio_build_path =
+    "//foundation/multimedia/audio_standard/frameworks/innerkitsimpl/pulseaudio"
+
+config("pulse_config") {
+  visibility = [ ":*" ]
+
+  include_dirs = [
+    "$pulseaudio_dir/include",
+    "$pulseaudio_dir/src/pulse",
+    "$pulseaudio_dir/src",
+    "$pulseaudio_dir",
+    "$pulseaudio_build_path/src",
+    "$pulseaudio_build_path/include",
+    "//third_party/glib/glib",
+    "//third_party/glib",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Werror",
+    "-Wno-implicit-function-declaration",
+    "-Wno-sign-compare",
+    "-Wno-unused-function",
+    "-DHAVE_CONFIG_H",
+    "-D_GNU_SOURCE",
+  ]
+}
+
+ohos_source_set("pulse_sources") {
+  sources = [
+    "$pulseaudio_dir/src/pulse/channelmap.c",
+    "$pulseaudio_dir/src/pulse/context.c",
+    "$pulseaudio_dir/src/pulse/direction.c",
+    "$pulseaudio_dir/src/pulse/error.c",
+    "$pulseaudio_dir/src/pulse/ext-device-manager.c",
+    "$pulseaudio_dir/src/pulse/ext-device-restore.c",
+    "$pulseaudio_dir/src/pulse/ext-stream-restore.c",
+    "$pulseaudio_dir/src/pulse/format.c",
+    "$pulseaudio_dir/src/pulse/internal.h",
+    "$pulseaudio_dir/src/pulse/introspect.c",
+    "$pulseaudio_dir/src/pulse/mainloop-api.c",
+    "$pulseaudio_dir/src/pulse/mainloop-signal.c",
+    "$pulseaudio_dir/src/pulse/mainloop.c",
+    "$pulseaudio_dir/src/pulse/ohos_pa_volume.c",
+    "$pulseaudio_dir/src/pulse/operation.c",
+    "$pulseaudio_dir/src/pulse/proplist.c",
+    "$pulseaudio_dir/src/pulse/rtclock.c",
+    "$pulseaudio_dir/src/pulse/sample.c",
+    "$pulseaudio_dir/src/pulse/scache.c",
+    "$pulseaudio_dir/src/pulse/stream.c",
+    "$pulseaudio_dir/src/pulse/subscribe.c",
+    "$pulseaudio_dir/src/pulse/thread-mainloop.c",
+    "$pulseaudio_dir/src/pulse/timeval.c",
+    "$pulseaudio_dir/src/pulse/utf8.c",
+    "$pulseaudio_dir/src/pulse/util.c",
+    "$pulseaudio_dir/src/pulse/xmalloc.c",
+  ]
+
+  configs = [ ":pulse_config" ]
+}
+
+ohos_shared_library("pulse") {
+  deps = [
+    ":pulse_sources",
+    "$pulseaudio_build_path/src:pulsecommon",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_shared_library("pulse-simple") {
+  sources = [ "$pulseaudio_dir/src/pulse/simple.c" ]
+
+  configs = [ ":pulse_config" ]
+
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "$pulseaudio_build_path/src/pulse:pulse",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}
+
+ohos_shared_library("pulse-mainloop-glib") {
+  sources = [ "$pulseaudio_dir/src/pulse/ohos_glib-mainloop.c" ]
+
+  configs = [ ":pulse_config" ]
+  deps = [
+    "$pulseaudio_build_path/src:pulsecommon",
+    "//third_party/glib:glib",
+  ]
+
+  subsystem_name = "multimedia"
+  part_name = "multimedia_audio_standard"
+}

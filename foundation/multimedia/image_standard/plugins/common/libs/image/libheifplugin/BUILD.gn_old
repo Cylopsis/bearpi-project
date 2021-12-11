@@ -1,0 +1,62 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+ohos_shared_library("heifplugin") {
+  defines = [ "DUAL_ADAPTER" ]
+  DUAL_ADAPTER = true
+
+  sources = [
+#    "//foundation/multimedia/image_standard/plugins/common/libs/image/libheifplugin/src/heif_decoder.cpp",
+#    "//foundation/multimedia/image_standard/plugins/common/libs/image/libheifplugin/src/heif_decoder_wrapper.cpp",
+    "//foundation/multimedia/image_standard/plugins/common/libs/image/libheifplugin/src/plugin_export.cpp",
+  ]
+
+  include_dirs = [
+    "//utils/native/base/include",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "//foundation/multimedia/utils/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include/image",
+    "//foundation/multimedia/image_standard/plugins/manager/include/pluginbase",
+    "//foundation/multimedia/image_standard/plugins/common/libs/image/libheifplugin/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//foundation/multimedia/image_standard/adapter/frameworks/heifcodec/include",
+    "//third_party/flutter/skia/third_party/libjpeg-turbo",
+  ]
+
+  deps = [
+    "//foundation/multimedia/image_standard/plugins/manager:pluginmanager",
+    "//utils/native/base:utils",
+  ]
+
+  if (DUAL_ADAPTER) {
+    deps += [
+#      "//foundation/multimedia/image_standard/adapter/frameworks/heifcodec:heifadapter",
+    ]
+  }
+
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+
+  part_name = "multimedia_image"
+
+  subsystem_name = "multimedia"
+}
+
+ohos_prebuilt_etc("heifpluginmetadata") {
+  source = "heifplugin.pluginmeta"
+  relative_install_dir = "multimediaplugin/image"
+  subsystem_name = "multimedia"
+  part_name = "multimedia_image"
+}

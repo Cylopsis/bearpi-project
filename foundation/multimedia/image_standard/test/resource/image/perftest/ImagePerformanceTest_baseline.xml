@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2021 Huawei Device Co., Ltd.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<configuration datetime="" url="http://127.0.0.1/dummy">
+    <item name="testImageSource_create_001" baseline="800" lastvalue="800" floatrange="0.05"/>
+    <item name="testImageSource_createPixelmap_001" baseline="1400" lastvalue="1400" floatrange="0.05"/>
+    <item name="testImageSource_create_002" baseline="50" lastvalue="50" floatrange="0.05"/>
+    <item name="testImageSource_create_003" baseline="300" lastvalue="300" floatrange="0.05"/>
+    <item name="testImageSource_setMemoryUsagePreference_001" baseline="8" lastvalue="8" floatrange="0.05"/>
+    <item name="testImageSource_createPixelmap_002" baseline="2400" lastvalue="2400" floatrange="0.05"/>
+    <item name="testImageSource_createPixelmap_003" baseline="4360000" lastvalue="4360000" floatrange="0.05"/>
+    <item name="testImageSource_setOnDecodeEventListener_001" baseline="25" lastvalue="25" floatrange="0.05"/>
+    <item name="testPropertyFilter_applyToSource_001" baseline="2100" lastvalue="2100" floatrange="0.05"/>
+    <item name="testPropertyFilter_setPropertyDouble_001" baseline="5" lastvalue="5" floatrange="0.05"/>
+    <item name="testPropertyFilter_setPropertyInt_001" baseline="4" lastvalue="4" floatrange="0.05"/>
+    <item name="testPropertyFilter_setPropertyString_001" baseline="3" lastvalue="3" floatrange="0.05"/>
+    <item name="testPropertyFilter_rollbackProperty_001" baseline="28" lastvalue="28" floatrange="0.05"/>
+    <item name="testPropertyFilter_restore_001" baseline="2" lastvalue="2" floatrange="0.05"/>
+    <item name="testPixelMap_createFromAlpha_001" baseline="55" lastvalue="55" floatrange="0.05"/>
+    <item name="testPixelMap_isReleased_001" baseline="2" lastvalue="2" floatrange="0.05"/>
+    <item name="testImageInfo_toString_001" baseline="35" lastvalue="35" floatrange="0.05"/>
+    <item name="testDecodeEvent_getDecodeEvent_001" baseline="2" lastvalue="2" floatrange="0.05"/>
+</configuration>
+

@@ -1,0 +1,1 @@
+source "../../device/st/drivers/Kconfig"

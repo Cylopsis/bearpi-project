@@ -1,0 +1,175 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/test.gni")
+
+module_output_path = "multimedia_image/image_standard"
+
+ohos_unittest("imagepixelmaptest") {
+  module_out_path = module_output_path
+
+  include_dirs = [
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//foundation/multimedia/utils/include",
+    "//third_party/googletest/googletest/include",
+    "//utils/native/base/include",
+    "//foundation/multimedia/image_standard/adapter/frameworks/bitmapconverter/native/include",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits/include",
+  ]
+  sources = [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_pixel_map_test.cpp" ]
+
+  deps = [
+    #    "//foundation/multimedia/image_standard/adapter/frameworks/bitmapconverter/native:bitmapconverter",
+    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//third_party/googletest:gmock_main",
+    "//third_party/googletest:gtest_main",
+    "//utils/native/base:utils",
+  ]
+
+  # external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+}
+
+#ohos_unittest("imagepixelmapparceltest") {
+#  module_out_path = module_output_path
+
+#  include_dirs = [
+#    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+#    "//foundation/multimedia/utils/include",
+#    "//third_party/googletest/googletest/include",
+#    "//utils/native/base/include",
+#    "//base/hiviewdfx/hilog/interfaces/native/innerkits/include",
+#    "//foundation/communication/ipc/interfaces/innerkits/ipc_core/include",
+#    "//foundation/multimedia/image_standard/mock/native/include",
+#  ]
+#  sources = [ "./unittest/image_pixel_map_parcel_test.cpp" ]
+
+#  deps = [
+#    "//third_party/googletest:gmock_main",
+#    "//third_party/googletest:gtest_main",
+#    "//utils/native/base:utils",
+#    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+#    "//foundation/multimedia/image_standard:image_framework",
+#    "//foundation/multimedia/image_standard/mock/native:utils_mock_static",
+#    "//foundation/multimedia/image_standard/mock/native:log_mock_static",
+#  ]
+# external_deps = [
+#   "bytrace_standard:bytrace_core",
+#   "hiviewdfx_hilog_native:libhilog",
+#   "ipc:ipc_core",
+#   "multimedia_image:libimage",
+# ]
+#}
+
+ohos_unittest("imagesourcetest") {
+  DUAL_ADAPTER = true
+  module_out_path = module_output_path
+
+  include_dirs = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/converter/include",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//foundation/multimedia/utils/include",
+    "//third_party/googletest/googletest/include",
+    "//utils/native/base/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+  ]
+  sources = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_gif_test.cpp",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_jpeg_test.cpp",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_png_test.cpp",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_util.cpp",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_webp_test.cpp",
+  ]
+  if (DUAL_ADAPTER) {
+    sources += [
+      "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_bmp_test.cpp",
+      "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_raw_test.cpp",
+      "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_source_wbmp_test.cpp",
+    ]
+  }
+
+  deps = [
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils:image_utils",
+    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//third_party/googletest:gmock_main",
+    "//third_party/googletest:gtest_main",
+    "//utils/native/base:utils",
+  ]
+
+  # external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+  resource_config_file =
+      "//foundation/multimedia/image_standard/test/resource/image/ohos_test.xml"
+}
+
+ohos_unittest("colorconvertertest") {
+  module_out_path = module_output_path
+
+  include_dirs = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/converter/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//foundation/multimedia/utils/include",
+    "//third_party/googletest/googletest/include",
+    "//utils/native/base/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+  ]
+  sources = [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/color_converter_test.cpp" ]
+
+  deps = [
+    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//third_party/googletest:gmock_main",
+    "//third_party/googletest:gtest_main",
+    "//utils/native/base:utils",
+  ]
+
+  #  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+}
+
+ohos_unittest("transformtest") {
+  module_out_path = module_output_path
+
+  include_dirs = [
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/utils/include",
+    "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/converter/include",
+    "//foundation/multimedia/image_standard/interfaces/innerkits/include",
+    "//foundation/multimedia/utils/include",
+    "//third_party/googletest/googletest/include",
+    "//utils/native/base/include",
+    "//foundation/multimedia/image_standard/plugins/manager/include",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits/include",
+  ]
+  sources = [ "//foundation/multimedia/image_standard/frameworks/innerkitsimpl/test/unittest/image_transform_test.cpp" ]
+
+  deps = [
+    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//third_party/googletest:gmock_main",
+    "//third_party/googletest:gtest_main",
+    "//utils/native/base:utils",
+  ]
+
+  #  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+}
+
+################################################
+group("unittest") {
+  testonly = true
+  deps = [
+    ":colorconvertertest",
+
+    #    ":imagepixelmapparceltest",
+    ":imagepixelmaptest",
+    ":imagesourcetest",
+    ":transformtest",
+  ]
+}
+################################################

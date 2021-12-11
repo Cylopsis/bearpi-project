@@ -1,0 +1,66 @@
+# Copyright (c) 2020 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import("//build/lite/config/component/lite_component.gni")
+
+shared_library("camera_lite") {
+  sources = [
+    "camera_ability.cpp",
+    "camera_info_impl.cpp",
+    "camera_config.cpp",
+    "camera_impl.cpp",
+    "camera_kit.cpp",
+    "camera_manager.cpp",
+    "event_handler.cpp",
+    "frame_config.cpp",
+    "camera_client.cpp",
+    "camera_device_client.cpp",
+    "camera_service_client.cpp",
+  ]
+  include_dirs = [
+    "//foundation/multimedia/camera_lite/services/include",
+    "//utils/native/lite/include",
+    "//foundation/distributedschedule/samgr_lite/interfaces/kits/registry",
+    "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
+    "//foundation/distributedschedule/samgr_lite/interfaces/kits/communication/broadcast",
+    "//foundation/communication/ipc_lite/interfaces/kits",
+    "//base/security/permission/interfaces/kits/permission_lite",
+  ]
+  public_configs = [ ":camera_client_external_library_config" ]
+
+  ldflags = [
+    "-lstdc++",
+    "-lpthread",
+    "-lcodec",
+    "-lhdi_videodisplayer",
+    "-L$ohos_root_path/$root_out_dir",
+  ]
+  cflags = [ "-fPIC" ]
+  cflags += [ "-Wall" ]
+  cflags_cc = cflags
+  deps = [
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+    "//base/security/permission/services/permission_lite/pms_client:pms_client",
+    "//device/hisilicon/hardware:hardware_media_sdk",
+    "//device/hisilicon/modules/middleware:middleware_source_sdk",
+    "//foundation/distributedschedule/samgr_lite/samgr:samgr",
+    "//third_party/bounds_checking_function:libsec_shared",
+  ]
+  public_deps = [
+    "//foundation/graphic/surface:lite_surface",
+    "//foundation/multimedia/media_lite/frameworks/recorder_lite:recorder_lite",
+    "//foundation/multimedia/utils/lite:media_common",
+  ]
+}
+
+config("camera_client_external_library_config") {
+  include_dirs = [ "//foundation/multimedia/camera_lite/interfaces/kits" ]
+  include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
+}

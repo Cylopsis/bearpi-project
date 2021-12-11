@@ -1,0 +1,39 @@
+{
+  "subsystem": "multimedia",
+  "parts": {
+    "multimedia_image_standard": {
+      "variants": [
+        "phone",
+        "ivi",
+        "wearable"
+      ],
+      "module_list": [
+        "//foundation/multimedia/image_standard:image_framework",
+        "//foundation/multimedia/image_standard:plugins"
+      ],
+      "inner_kits": [
+        {
+          "header": {
+            "header_files": [
+              "pixel_map.h",
+              "image_packer.h",
+              "image_source.h",
+              "image_type.h",
+              "peer_listener.h",
+              "incremental_pixel_map.h",
+              "pixel_map_manager.h",
+              "decode_listener.h",
+              "pixel_map_parcel.h"
+            ],
+            "header_base": "//foundation/multimedia/image_standard/interfaces/innerkits/include"
+          },
+          "name": "//foundation/multimedia/image_standard/interfaces/innerkits:image"
+        }
+        
+      ],
+      "system_capabilities":[
+        "SystemCapability.Multimedia.Image"
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+root {
+    platform {
+        template iwdg_controller {
+            id = 0;
+            match_attr = "";
+            regBase = 0x5C003000;
+            regStep = 0x400;
+        }
+        controller_0x5C003000 :: iwdg_controller {
+            match_attr = "st_stm32mp1_iwdg_0";
+        }
+        controller_0x5A002000 :: iwdg_controller {
+            id = 1;
+            regBase = 0x5A002000;
+            match_attr = "st_stm32mp1_iwdg_1";
+        }
+    }
+}

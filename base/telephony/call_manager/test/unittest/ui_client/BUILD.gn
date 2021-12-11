@@ -1,0 +1,57 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+ohos_executable("tel_call_manager_ui_test") {
+  install_enable = true
+  sources = [
+    "//base/telephony/core_service/interfaces/innerkits/call_manager/proxy/call_manager_service_proxy.cpp",
+    "call_manager_ipc_client.cpp",
+    "ui_client_test.cpp",
+  ]
+
+  include_dirs = [
+    "//base/telephony/call_manager/utils/include",
+    "//base/telephony/core_service/interfaces/innerkits/call_manager/common",
+    "//base/telephony/core_service/interfaces/innerkits/call_manager/proxy",
+    "//base/telephony/core_service/interfaces/innerkits/cellular_call/common",
+  ]
+
+  deps = [
+    "//base/telephony/core_service/common:libtelephony_common",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native:abilitykit_native",
+  ]
+
+  external_deps = [
+    "aafwk_standard:want",
+    "appexecfwk_standard:libeventhandler",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_L2:samgr_proxy",
+  ]
+
+  defines = [
+    "TELEPHONY_LOG_TAG = \"CallManagerTest\"",
+    "LOG_DOMAIN = 0xD002B01",
+  ]
+
+  if (is_standard_system) {
+    external_deps += [ "hiviewdfx_hilog_native:libhilog" ]
+  } else {
+    external_deps += [ "hilog:libhilog" ]
+  }
+
+  part_name = "call_manager"
+  subsystem_name = "telephony"
+}

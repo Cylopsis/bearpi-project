@@ -1,0 +1,61 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+SOURCE_DIR = "//base/telephony/state_registry"
+CORE_DIR = "//base/telephony/core_service"
+
+ohos_shared_library("tel_state_registry") {
+  part_name = "state_registry"
+  subsystem_name = "telephony"
+
+  sources = [
+    "$CORE_DIR/network_search/src/network_state.cpp",
+    "$CORE_DIR/network_search/src/signal_information.cpp",
+    "$SOURCE_DIR/interfaces/kits/src/telephony_observer_proxy.cpp",
+    "$SOURCE_DIR/service/src/telephony_state_registry_record.cpp",
+    "$SOURCE_DIR/service/src/telephony_state_registry_service.cpp",
+    "$SOURCE_DIR/service/src/telephony_state_registry_stub.cpp",
+  ]
+
+  include_dirs = [
+    "$SOURCE_DIR/include",
+    "$SOURCE_DIR/service/include",
+    "$CORE_DIR/interfaces/innerkits/state_registry/proxy",
+    "$CORE_DIR/interfaces/innerkits/state_registry/common",
+    "$CORE_DIR/interfaces/innerkits/common",
+    "$SOURCE_DIR/interfaces/kits/include",
+  ]
+
+  deps = [ "$CORE_DIR/common:libtelephony_common" ]
+
+  external_deps = [
+    "aafwk_standard:want",
+    "appexecfwk_standard:libeventhandler",
+    "ces_standard:cesfwk_innerkits",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_L2:samgr_proxy",
+  ]
+
+  defines = [
+    "TELEPHONY_LOG_TAG = \"STATE_REGISTRY\"",
+    "LOG_DOMAIN = 0",
+  ]
+
+  if (is_standard_system) {
+    external_deps += [ "hiviewdfx_hilog_native:libhilog" ]
+  } else {
+    external_deps += [ "hilog:libhilog" ]
+  }
+}
