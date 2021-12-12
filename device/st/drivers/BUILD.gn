@@ -17,9 +17,7 @@ group("drivers") {
   deps = [
     "uart",
     "iwdg",
-    "mmc",
     "i2c",
-    "ltdc",
     "gpio",
     "stm32mp1xx_hal",
     "wifi/driver/hi3881",
