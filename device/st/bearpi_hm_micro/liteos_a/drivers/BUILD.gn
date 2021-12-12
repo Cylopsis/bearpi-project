@@ -18,5 +18,5 @@ group("drivers") {
 }
 
 config("public") {
-  # configs = [ "../../../drivers:public" ]
+  configs = [ "../../../drivers:public" ]
 }

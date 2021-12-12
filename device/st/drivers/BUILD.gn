@@ -24,3 +24,13 @@ group("drivers") {
     "wifi/driver:hdf_vendor_wifi",
   ]
 }
+
+config("public") {
+  lib_dirs = [ "//device/st/drivers/libs/ohos/llvm/stm32mp157" ]
+  ldflags = [ "-Wl,--push-state,--whole-archive" ]
+  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_LTDC)) {
+    ldflags += [ "-lltdc" ]
+  }
+  if (defined(LOSCFG_DRIVERS_MMC)) {
+    ldflags += [ "-lmmc" ]
+}
