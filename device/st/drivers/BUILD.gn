@@ -33,4 +33,5 @@ config("public") {
   }
   if (defined(LOSCFG_DRIVERS_MMC)) {
     ldflags += [ "-lmmc" ]
+  }
 }
