@@ -104,6 +104,7 @@
                 break;
             }
             /* 读取LED灯IO口的状态值 */
+            OsalMDelay(10);
             GpioRead(g_Stm32Mp1ILed.gpioNum, &valRead);            
             /* 把IO口的状态值写入reply, 可被带至用户程序 */
             if (!HdfSbufWriteInt32(reply, valRead))                
@@ -229,9 +230,7 @@
     deps = [
         "uart",
         "iwdg",
-        "mmc",
         "i2c",
-        "ltdc",
         "gpio",
         ##start##
         "led",
@@ -287,7 +286,7 @@
         ```
         root {
             LedDriverConfig {
-                led_gpio_num = 16;
+                led_gpio_num = 13;
                 match_attr = "st_stm32mp157_led";   //该字段的值必须和device_info.hcs中的deviceMatchAttr值一致
             }
         }

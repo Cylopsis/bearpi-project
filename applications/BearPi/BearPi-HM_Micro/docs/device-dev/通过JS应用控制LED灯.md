@@ -28,7 +28,7 @@
         JSI::SetModuleAPI(exports, "getInfo", AppModule::GetInfo);
         JSI::SetModuleAPI(exports, "terminate", AppModule::Terminate);
     ##start##
-        JSI::SetModuleAPI(exports, "toggleLed", AppModule::ToggleLed);
+        JSI::SetModuleAPI(exports, "ledcontrol", AppModule::ToggleLed);
     ##end##
     #ifdef FEATURE_SCREEN_ON_VISIBLE
         JSI::SetModuleAPI(exports, "screenOnVisible", AppModule::ScreenOnVisible);

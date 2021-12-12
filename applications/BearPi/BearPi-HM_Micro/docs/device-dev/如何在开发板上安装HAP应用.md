@@ -8,7 +8,7 @@
 
 ## 二、安装HAP应用
 
-1. 将applications/BearPi/BearPi-HM_Micro/tools/hap_tools/hap_example路径下的bm、LED.hap拷贝到SD卡中
+1. 将applications/BearPi/BearPi-HM_Micro/tools/hap_tools/hap_example路径下的bm、LED_1.0.0.hap拷贝到SD卡中
 
 2. 将SD卡插入到开发板中，并按开发板的RESET按键重启开发板
 
@@ -31,4 +31,4 @@
     ./bm install -p LED_1.0.0.hap
     ```
 
-注: LED.hap为安装包名称，安装其他应用需要修改为对应的安装包名称。
+注: LED_1.0.0.hap为安装包名称，安装其他应用需要修改为对应的安装包名称。
