@@ -55,7 +55,7 @@
         ldflags = []
     }
 
-    lite_component("my_first_app") {
+    lite_component("my_app") {
         features = [
             ":hello_world_lib",
         ]
@@ -63,7 +63,7 @@
     ```
 
     -   首先导入 gni 组件，将源码hello_world.c编译成hello_world_lib库文件
-    -   然后将hello_world_lib打包成 lite_component，命名为my_first_app组件。
+    -   然后将hello_world_lib打包成 lite_component，命名为my_app组件。
 
     -   输出的可执行文件名称由output_name定义为hello_world
 
@@ -83,7 +83,7 @@
             "applications/BearPi/BearPi-HM_Micro/samples/my_first_app"
             ],
             "targets": [
-            "//applications/BearPi/BearPi-HM_Micro/samples/my_first_app:hello_world"
+            "//applications/BearPi/BearPi-HM_Micro/samples/my_first_app:my_app"
             ],
             "rom": "",
             "ram": "",

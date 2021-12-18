@@ -54,7 +54,7 @@
     #include "hdf_io_service_if.h"
 
     #define LED_WRITE_READ 1
-    #define LED_SERVICE "led_service"
+    #define LED_SERVICE "hdf_led"
     ##end##
 
     namespace OHOS {
