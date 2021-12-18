@@ -50,6 +50,7 @@
     #include "hdf_log.h"         
     #include "device_resource_if.h"
     #include "osal_io.h"
+    #include "osal.h"
     #include "osal_mem.h"
     #include "gpio_if.h"
 

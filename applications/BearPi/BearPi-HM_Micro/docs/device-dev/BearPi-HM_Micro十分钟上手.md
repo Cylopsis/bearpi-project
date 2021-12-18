@@ -11,7 +11,7 @@
 - 下载并安装JRE
     - 下载地址（百度云）：https://pan.baidu.com/s/1yuMn4YulfP6j50mQA8faoA 提取码：1234
 
-- 下载并安装STM32CubeProgrammer
+- 下载并安装STM32CubeProgrammer(需要2.4.0+版本)
     - 下载地址（百度云）：https://pan.baidu.com/s/1XfFFFs7UdE9TPdN0FdA6ag 提取码：1234
 
 - 下载并安装虚拟机VMware Workstation
@@ -172,7 +172,7 @@
 
 3. 在MobaXterm中输入：
     ```
-    hb build -b debug --tee -f
+    hb build -t notest --tee -f
     ```
     然后回车，等待直到屏幕出现：`build success`字样，说明编译成功。
 
