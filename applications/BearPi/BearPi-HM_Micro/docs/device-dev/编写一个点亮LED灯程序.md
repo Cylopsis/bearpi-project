@@ -35,7 +35,7 @@
 
 2.  确定目录结构。
 
-    在device\st\drivers路径下新建led文件，BIN并创建驱动文件led.c和编译构建文件BUILD.gn
+    在device\st\drivers路径下新建led文件，并创建驱动文件led.c和编译构建文件BUILD.gn
     。
     ```
     .
