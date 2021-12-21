@@ -5,17 +5,23 @@
     - 无具体要求，家用即可，Windows系统
 
 ## 二、开始下载
-- 下载官方提供镜像
-    - 下载地址（百度云）：https://pan.baidu.com/s/1W0cgtXC5T2bv0lAya7eizA  提取码：1234
-
+- 下载官方提供镜像(任选一种方式下载)
+    - Ubuntu20.04（大小8G）下载地址（百度云）：https://pan.baidu.com/s/1W0cgtXC5T2bv0lAya7eizA  提取码：1234
+    - Ubuntu18.04（大小4.8G）下载地址（百度云）：https://pan.baidu.com/s/1YIdqlRWRGq_heAfrgQ7EPQ  提取码：1234
+    - Ubuntu20.04（大小8G）下载地址（奶牛快传-不限速）：https://cowtransfer.com/s/29fa4105048241  提取码：0hqt8m
+    - Ubuntu18.04（大小4.8G）下载地址（奶牛快传-不限速）：https://cowtransfer.com/s/26eaf0a9646242  提取码：vvq9vy
+    
+    **注:** 若已有BearPi-HM Nano开发板的编译环境可以参考[将Nano编译环境升级至Micro编译环境](./Nano编译环境升级至Micro编译环境.md)
 - 下载并安装JRE
     - 下载地址（百度云）：https://pan.baidu.com/s/1yuMn4YulfP6j50mQA8faoA 提取码：1234
+    - 下载地址（奶牛快传-不限速）：https://cowtransfer.com/s/403696bd43a74c  提取码：u1fn96
 
 - 下载并安装STM32CubeProgrammer(需要2.4.0+版本)
     - 下载地址（百度云）：https://pan.baidu.com/s/1XfFFFs7UdE9TPdN0FdA6ag 提取码：1234
+    - 下载地址（奶牛快传-不限速）：https://cowtransfer.com/s/403696bd43a74c  提取码：u1fn96
 
 - 下载并安装虚拟机VMware Workstation
-    - 下载地址：https://www.vmware.com/products/workstation-player/workstation-player-evaluation.html
+    - 下载地址：https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html
 
 - 下载并安装MobaXterm工具
     - 下载地址：https://en.softonic.com/download/moba/windows/post-download
