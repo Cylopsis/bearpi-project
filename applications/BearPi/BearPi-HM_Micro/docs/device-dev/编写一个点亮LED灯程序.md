@@ -1,8 +1,27 @@
 # 编写点亮LED灯程序
 
-在本示例将演示如何在开发板上运行一个控制LED灯的程序，达到能关闭灯、开启灯以及翻转灯的状态。
+在本示例将演示如何在开发板上运行一个控制LED灯的程序，达到能关闭灯、开启灯以及翻转灯的状态。希望通过本教程的学习，开发者能掌握如何开发一个设备驱动，以及如何在应用层调用驱动。
 
-**注:** 在学习本教程之前，请确保已经熟练掌握[如何编写一个hello_world应用](./编写一个hello_world程序.md)
+**注:** 在学习本教程之前，请确保已经熟练掌握[如何编写一个hello_world应用](./编写一个hello_world程序.md)，以下教程篇幅较长，请耐心仔细阅读。
+
+## 任务介绍
+点亮LED主要包含以下任务：
+
+1. LED驱动代码开发
+
+    驱动开发主要包含以下工作
+    
+    - 编写驱动代码
+    - 编写驱动编译文件
+    - 编写驱动配置文件
+
+2. 点亮LED业务代码开发
+
+    业务代码开发主要包含以下工作
+    - 编写业务代码
+    -    编写业务代码编译文件
+
+    ![](figures/点亮LED导图.png)
 
 
 
@@ -282,7 +301,7 @@
         ```
     -   驱动私有配置信息
 
-        如果驱动有私有配置，则可以添加一个驱动的配置文件，用来填写一些驱动的默认配置信息，HDF框架在加载驱动的时候，会将对应的配置信息获取并保存在HdfDeviceObject 中的property里面，通过Bind和Init传递给驱动，驱动的配置信息示例如下：
+        如果驱动有私有配置，则可以添加一个驱动的配置文件，用来填写一些驱动的默认配置信息，HDF框架在加载驱动的时候，会将对应的配置信息获取并保存在HdfDeviceObject 中的property里面，通过Bind和Init传递给驱动，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\led_config.hcs中添加LED私有配置描述。
 
         ```
         root {
@@ -293,12 +312,19 @@
         }
         ```
 
+
+
         配置信息定义之后，需要将该配置文件添加到板级配置入口文件device\st\bearpi_hm_micro\liteos_a\hdf_config\hdf.hcs，示例如下：
 
         ```
         #include "device_info/device_info.hcs"
         #include "led/led_config.hcs"
         ```
+    - 小结
+        1. device_info.hcs文件中的moduleName必须要和驱动文件中的moduleName字段匹配，这样驱动才会加载起来
+        2. device_info.hcs文件中的deviceMatchAttr的字段必须和私有配置文件中led_config.hcs的match_attr的字段匹配，这样私有配置才能生效
+
+        ![](figures/驱动配置.png)
 
 ## 二、点亮LED灯业务代码<a name="section9360141181414"></a>
 
