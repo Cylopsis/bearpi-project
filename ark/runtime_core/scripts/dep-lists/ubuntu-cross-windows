@@ -1,2 +1,0 @@
-# Panda dependencies list for cross-compiling from Ubuntu to Windows (all hardware targets)
-g++-mingw-w64-x86-64
