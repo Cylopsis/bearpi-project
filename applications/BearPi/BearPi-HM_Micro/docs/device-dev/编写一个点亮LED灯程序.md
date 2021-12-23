@@ -86,12 +86,11 @@
         uint32_t gpioNum;
     };
     static struct Stm32Mp1ILed g_Stm32Mp1ILed;
-
+    uint8_t status = 0;
     // Dispatch是用来处理用户态发下来的消息
     int32_t LedDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct HdfSBuf *data, struct HdfSBuf *reply)
     {
         uint8_t contrl;
-        uint16_t valRead;
         HDF_LOGE("Led driver dispatch");
         if (client == NULL || client->device == NULL)
         {
@@ -110,24 +109,31 @@
             /* 开灯 */
             case LED_ON:                                            
                 GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_LOW);
+                status = 1;
                 break;
             /* 关灯 */
             case LED_OFF:                                           
                 GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_HIGH);
+                status = 0;
                 break;
             /* 状态翻转 */
-            case LED_TOGGLE:                                        
-                GpioRead(g_Stm32Mp1ILed.gpioNum, &valRead);
-                GpioWrite(g_Stm32Mp1ILed.gpioNum, (valRead == GPIO_VAL_LOW) ? GPIO_VAL_HIGH : GPIO_VAL_LOW);
+            case LED_TOGGLE:
+                if(status == 0)
+                {
+                    GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_LOW);
+                    status = 1;
+                }
+                else
+                {
+                    GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_HIGH);
+                    status = 0;
+                }                                        
                 break;
             default:
                 break;
             }
-            /* 读取LED灯IO口的状态值 */
-            OsalMDelay(10);
-            GpioRead(g_Stm32Mp1ILed.gpioNum, &valRead);            
-            /* 把IO口的状态值写入reply, 可被带至用户程序 */
-            if (!HdfSbufWriteInt32(reply, valRead))                
+            /* 把LED的状态值写入reply, 可被带至用户程序 */
+            if (!HdfSbufWriteInt32(reply, status))                
             {
                 HDF_LOGE("replay is fail");
                 return HDF_FAILURE;
@@ -270,7 +276,7 @@
 
     -   驱动设备描述
 
-        HDF框架加载驱动所需要的信息来源于HDF框架定义的驱动设备描述，因此基于HDF框架开发的驱动必须要在HDF框架定义的device_info.hcs配置文件中添加对应的设备描述，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\device_info.hcs中添加LED设备描述。 "##start##"和"##end##"之间为新增配置（"##start##"和"##end##"仅用来标识位置，添加完配置后删除这两行）
+        HDF框架加载驱动所需要的信息来源于HDF框架定义的驱动设备描述，因此基于HDF框架开发的驱动必须要在HDF框架定义的device_info.hcs配置文件中添加对应的设备描述，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\device_info\device_info.hcs中添加LED设备描述。 "##start##"和"##end##"之间为新增配置（"##start##"和"##end##"仅用来标识位置，添加完配置后删除这两行）
         ```
         platform :: host {
         hostName = "platform_host";
