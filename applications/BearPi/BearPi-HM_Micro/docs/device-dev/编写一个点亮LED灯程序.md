@@ -86,12 +86,11 @@
         uint32_t gpioNum;
     };
     static struct Stm32Mp1ILed g_Stm32Mp1ILed;
-
+    uint8_t status = 0;
     // Dispatch是用来处理用户态发下来的消息
     int32_t LedDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct HdfSBuf *data, struct HdfSBuf *reply)
     {
         uint8_t contrl;
-        uint16_t valRead;
         HDF_LOGE("Led driver dispatch");
         if (client == NULL || client->device == NULL)
         {
@@ -110,24 +109,31 @@
             /* 开灯 */
             case LED_ON:                                            
                 GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_LOW);
+                status = 1;
                 break;
             /* 关灯 */
             case LED_OFF:                                           
                 GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_HIGH);
+                status = 0;
                 break;
             /* 状态翻转 */
-            case LED_TOGGLE:                                        
-                GpioRead(g_Stm32Mp1ILed.gpioNum, &valRead);
-                GpioWrite(g_Stm32Mp1ILed.gpioNum, (valRead == GPIO_VAL_LOW) ? GPIO_VAL_HIGH : GPIO_VAL_LOW);
+            case LED_TOGGLE:
+                if(status == 0)
+                {
+                    GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_LOW);
+                    status = 1;
+                }
+                else
+                {
+                    GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_HIGH);
+                    status = 0;
+                }                                        
                 break;
             default:
                 break;
             }
-            /* 读取LED灯IO口的状态值 */
-            OsalMDelay(10);
-            GpioRead(g_Stm32Mp1ILed.gpioNum, &valRead);            
-            /* 把IO口的状态值写入reply, 可被带至用户程序 */
-            if (!HdfSbufWriteInt32(reply, valRead))                
+            /* 把LED的状态值写入reply, 可被带至用户程序 */
+            if (!HdfSbufWriteInt32(reply, status))                
             {
                 HDF_LOGE("replay is fail");
                 return HDF_FAILURE;
