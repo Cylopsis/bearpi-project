@@ -276,7 +276,7 @@
 
     -   驱动设备描述
 
-        HDF框架加载驱动所需要的信息来源于HDF框架定义的驱动设备描述，因此基于HDF框架开发的驱动必须要在HDF框架定义的device_info.hcs配置文件中添加对应的设备描述，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\device_info.hcs中添加LED设备描述。 "##start##"和"##end##"之间为新增配置（"##start##"和"##end##"仅用来标识位置，添加完配置后删除这两行）
+        HDF框架加载驱动所需要的信息来源于HDF框架定义的驱动设备描述，因此基于HDF框架开发的驱动必须要在HDF框架定义的device_info.hcs配置文件中添加对应的设备描述，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\device_info\device_info.hcs中添加LED设备描述。 "##start##"和"##end##"之间为新增配置（"##start##"和"##end##"仅用来标识位置，添加完配置后删除这两行）
         ```
         platform :: host {
         hostName = "platform_host";
@@ -307,7 +307,7 @@
         ```
     -   驱动私有配置信息
 
-        如果驱动有私有配置，则可以添加一个驱动的配置文件，用来填写一些驱动的默认配置信息，HDF框架在加载驱动的时候，会将对应的配置信息获取并保存在HdfDeviceObject 中的property里面，通过Bind和Init传递给驱动，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\led_config.hcs中添加LED私有配置描述。
+        如果驱动有私有配置，则可以添加一个驱动的配置文件，用来填写一些驱动的默认配置信息，HDF框架在加载驱动的时候，会将对应的配置信息获取并保存在HdfDeviceObject 中的property里面，通过Bind和Init传递给驱动，所以我们需要在device\st\bearpi_hm_micro\liteos_a\hdf_config\led\led_config.hcs中添加LED私有配置描述。
 
         ```
         root {
