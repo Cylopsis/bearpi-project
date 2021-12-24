@@ -14,3 +14,7 @@
 group("bearpi_hm_micro") {
     deps = [ "init_configs" ]
 }
+copy("hap_tools") {
+  sources = [ "//applications/BearPi/BearPi-HM_Micro/tools/hap_tools" ]
+  outputs = [ "$root_out_dir/vendor/hap_tools" ]
+}
