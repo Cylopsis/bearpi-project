@@ -1,4 +1,4 @@
-
+applications\BearPi\BearPi-HM_Micro\docs\board\PPT
 ### `温馨提示：当前为首发体验官尝鲜版本，正式版本将于12月26号开始陆续上传`
 ---
 # 小熊派-鸿蒙·叔(BearPi-HM Micro)
@@ -8,8 +8,8 @@
 | 1    | 开发板硬件资料 | [applications/BearPi/BearPi-HM_Micro/docs/board](/applications/BearPi/BearPi-HM_Micro/docs/board) |
 | 2    | 快速上手教程 |  [applications/BearPi/BearPi-HM_Micro/docs/device-dev/](/applications/BearPi/BearPi-HM_Micro/docs/device-dev/BearPi-HM_Micro十分钟上手.md) |
 | 3    | 案例代码列表 |  [applications/BearPi/BearPi-HM_Micro/sample/](/applications/BearPi/BearPi-HM_Micro/samples/README.md) |
-| 4    | 视频学习地址 |  TODO |
-| 5    | 视频课程PPT |  TODO |
+| 4    | 视频学习地址 |  [B站](https://www.bilibili.com/video/BV12Y411H7ry) |
+| 5    | 视频课程PPT |   [applications/BearPi/BearPi-HM_Micro/docs/board/PPT](/applications/BearPi/BearPi-HM_Micro/docs/board/PPT)|
 | 6    | 常见问题 | [ISSUES](https://gitee.com/bearpi/bearpi-hm_micro_small/issues) |
 
 ### 注：如果您是北向应用开发者请移步[北向仓库](https://gitee.com/bearpi/bearpi-hm_micro_app/blob/master/README.md)学习
@@ -26,7 +26,7 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
 1、视频教程（B站）
 
 
-* 开发环境搭建(简单)—十分钟快速上手(待上传)
+* [开发环境搭建(简单)—十分钟快速上手](https://www.bilibili.com/video/BV12Y411H7ry?p=2)
 
 2、文档（Gitee）
 * [VMware 镜像版本：十分钟上手体验](applications/BearPi/BearPi-HM_Micro/docs/device-dev/BearPi-HM_Micro十分钟上手.md)
@@ -35,6 +35,14 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
 ## 三、设备开发手把手教程系列
 
 1、视频系列（B站） 对应PPT地址
+* [P1. 初识BearPi-HM Micro开发板](https://www.bilibili.com/video/BV12Y411H7ry?p=1)
+* [P2. 开发环境搭建(复杂)——编译环境搭建](https://www.bilibili.com/video/BV12Y411H7ry?p=3)
+* [P3. 开发环境搭建(复杂)——源码获取及编译](https://www.bilibili.com/video/BV12Y411H7ry?p=4)
+* [P4. BearPi-HM Micro开发板源码烧录](https://www.bilibili.com/video/BV12Y411H7ry?p=5)
+* [P5. OpenHarmony 快速入门：HelloWorld](https://www.bilibili.com/video/BV12Y411H7ry?p=6)
+* [P6. OpenHarmony 快速入门：点亮LED](https://www.bilibili.com/video/BV12Y411H7ry?p=7)
+* [P7. OpenHarmony 快速入门：安装HAP](https://www.bilibili.com/video/BV12Y411H7ry?p=8)
+* [P8. OpenHarmony 快速入门：JS点亮LED](https://www.bilibili.com/video/BV12Y411H7ry?p=9)
 
 2、文档系列（Gitee）
 - [1. 初识BearPi-HM Micro开发板](applications/BearPi/BearPi-HM_Micro/docs/device-dev/初识BearPi-HM_Micro开发板.md)
