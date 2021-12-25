@@ -1,5 +1,4 @@
-applications\BearPi\BearPi-HM_Micro\docs\board\PPT
-### `温馨提示：当前为首发体验官尝鲜版本，正式版本将于12月26号开始陆续上传`
+
 ---
 # 小熊派-鸿蒙·叔(BearPi-HM Micro)
 ### 资料导航
