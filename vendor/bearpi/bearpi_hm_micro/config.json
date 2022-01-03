@@ -1,6 +1,6 @@
 {
   "product_name": "bearpi_hm_micro",
-  "ohos_version": "OpenHarmony 2.0",
+  "ohos_version": "OpenHarmony 3.0",
   "device_company": "st",
   "board": "bearpi_hm_micro",
   "kernel_type": "liteos_a",
