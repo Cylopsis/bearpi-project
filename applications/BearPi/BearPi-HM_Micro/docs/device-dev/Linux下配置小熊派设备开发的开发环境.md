@@ -109,7 +109,7 @@ source ~/.bashrc
 
    + 找到Stm32CubeProgrammer安装目录，安装时可以选择，在用户目录下
 
-     ![Stm32CubeProgrammer目录](applications/BearPi/BearPi-HM_Micro/docs/device-dev/figures/Stm32CubeProgrammer目录.gif)
+     ![Stm32CubeProgrammer目录](figures/Stm32CubeProgrammer目录.gif)
 
    ~~~bash
    # 进入Drivers/rules文件夹
@@ -191,10 +191,9 @@ cp out/bearpi_hm_micro/bearpi_hm_micro/userfs_vfat.img applications/BearPi/BearP
 ~~~
 
 ### 11.烧写固件
+![烧写固件](figures/%E7%83%A7%E5%86%99%E5%9B%BA%E4%BB%B6.gif)
 
-![烧写固件](applications/BearPi/BearPi-HM_Micro/docs/device-dev/figures/烧写固件.gif)
-
-1. 将开发板的拨码开关上拨到“000”烧录模式，并按一下开发板的RESET按键![reset](applications/BearPi/BearPi-HM_Micro/docs/device-dev/figures/reset.png)
+1. 将开发板的拨码开关上拨到“000”烧录模式，并按一下开发板的RESET按键![reset](figures/reset.png)
 
 2. 点击STM32CubeProgrammer工具的“+”按钮，
    然后选择烧录配置的tsv文件。
