@@ -55,8 +55,8 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
 - [9. 通过JS应用控制LED灯](applications/BearPi/BearPi-HM_Micro/docs/device-dev/通过JS应用控制LED灯.md)
 - [10. 如何在开发板上安装HAP应用](applications/BearPi/BearPi-HM_Micro/docs/device-dev/如何在开发板上安装HAP应用.md)
 
-3、开发者贡献
-- [1. 纯Linux搭建小熊派-鸿蒙·叔(BearPi-HM Micro)设备开发的开发环境(@nebula-yong)](applications/BearPi/BearPi-HM_Micro/docs/device-dev/Linux下配置小熊派设备开发的开发环境.md)
+3、开发者贡献（以下教程为开发者贡献）
+- [1. 纯Linux搭建小熊派-鸿蒙·叔(BearPi-HM Micro)设备开发的开发环境](applications/BearPi/BearPi-HM_Micro/docs/device-dev/Linux下配置小熊派设备开发的开发环境.md)@nebula-yong
 
 ## 四、开发板图片预览[（淘宝链接）](https://item.taobao.com/item.htm?id=662078665554)
 
