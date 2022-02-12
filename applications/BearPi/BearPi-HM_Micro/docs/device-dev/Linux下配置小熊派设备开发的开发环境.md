@@ -138,13 +138,14 @@ source ~/.bashrc
    uname -r
    ~~~
 
-4. 到这个网站寻找对应的代码
+4. 到[这个网站](https://elixir.bootlin.com/linux/v5.10.83/source/drivers/usb/serial/ch341.c)寻找对应的代码
 
 5. 打开ch34x.c，替换掉里面的代码
 
 6. ~~~bash
    # 在当前目录打开命令行
    make
+   make load
    # 复制ch34x.ko文件
    sudo cp ch34x.ko /lib/modules/$(uname -r)/kernel/drivers/usb/serial 
    ~~~
