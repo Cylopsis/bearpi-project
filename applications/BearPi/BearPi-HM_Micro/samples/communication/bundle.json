@@ -1,0 +1,59 @@
+{
+    "name": "@ohos/applications_camera_sample_communication",
+    "version": "",
+    "description": "供开发者参考的代码示例。",
+    "homePage": "https://gitee.com/openharmony",
+    "license": "Apache V2",
+    "repository": "https://gitee.com/openharmony/applications_camera_sample_communication/tree/OpenHarmony-v3.0-LTS",
+    "domain": "os",
+    "language": "",
+    "publishAs": "code-segment",
+    "private": false,
+    "scripts": {},
+    "tags": [
+        "applications"
+    ],
+    "keywords": [
+        "applications",
+        "camera",
+        "sample",
+        "communication"
+    ],
+    "envs": [],
+    "dirs": [],
+    "author": {
+        "name": "",
+        "email": "",
+        "url": ""
+    },
+    "contributors": [
+        {
+            "name": "",
+            "email": "",
+            "url": ""
+        }
+    ],
+    "segment": {
+        "destPath": "applications/sample/camera/communication"
+    },
+    "component": {
+        "name": "samples",
+        "subsystem": "sample",
+        "syscap": [],
+        "features": [],
+        "adapted_system_type": [
+            "standard"
+        ],
+        "rom": "",
+        "ram": "",
+        "deps": {
+            "components": [],
+            "third_party": []
+        },
+        "build": {
+            "sub_component": [],
+            "inner_kits": [],
+            "test": []
+        }
+    }
+}
