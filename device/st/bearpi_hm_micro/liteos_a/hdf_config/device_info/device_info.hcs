@@ -76,6 +76,14 @@
                     serviceName = "HDF_PLATFORM_MMC_1";
                     deviceMatchAttr = "st_stm32mp1_sdmmc_sd";
                 }
+                device2 :: deviceNode {
+                    policy = 1;
+                    priority = 30;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_SDMMC";
+                    serviceName = "HDF_PLATFORM_MMC_3";
+                    deviceMatchAttr = "st_stm32mp1_sdmmc_sdio";
+                }
             }
             device_ltdc:: device {
                 device0 :: deviceNode {
@@ -105,6 +113,7 @@
                     deviceMatchAttr = "st_stm32mp157_i2c";
                 }
             }
+
         }
         input :: host {
             hostName = "input_host";
@@ -141,6 +150,29 @@
                     moduleName = "HDF_TOUCH_GT911";
                     serviceName = "hdf_touch_gt911_service";
                     deviceMatchAttr = "zsj_gt911_5p5";
+                }
+            }
+        }        
+        network :: host {
+            hostName = "network_host";
+            device_wifi :: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "HDF_WIFI";
+                    deviceMatchAttr = "hdf_wlan_driver";
+                    serviceName = "hdfwifi";
+                }
+            }
+            device_wlan_chips :: device {
+                device0 :: deviceNode {
+                    policy = 0;
+                    preload = 1;
+                    moduleName = "HDF_WLAN_CHIPS";
+                    deviceMatchAttr = "hdf_wlan_chips_hi3881";
+                    serviceName = "hisi";
                 }
             }
         }        

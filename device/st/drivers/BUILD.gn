@@ -20,8 +20,6 @@ group("drivers") {
     "i2c",
     "gpio",
     "stm32mp1xx_hal",
-    "wifi/driver/hi3881",
-    "wifi/driver:hdf_vendor_wifi",
   ]
 }
 
@@ -33,5 +31,11 @@ config("public") {
   }
   if (defined(LOSCFG_DRIVERS_MMC)) {
     ldflags += [ "-lmmc" ]
+  }
+    if (defined(LOSCFG_DRIVERS_HDF_WIFI)) {
+    ldflags += [ "-lhdf_vendor_wifi" ]
+  }
+  if (defined(LOSCFG_DRIVERS_HDF_WIFI) && defined(LOSCFG_DRIVERS_HI3881)) {
+    ldflags += [ "-lhi3881" ]
   }
 }

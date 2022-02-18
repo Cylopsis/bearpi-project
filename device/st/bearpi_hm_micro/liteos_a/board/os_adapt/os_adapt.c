@@ -58,9 +58,12 @@
 #endif
 
 #include "los_task.h"
-
 #include "los_bootargs.h"
 #include "los_rootfs.h"
+
+#include "lwip/tcpip.h"
+#include "lwip/netif.h"
+#include "lwip/netifapi.h"
 
 UINT32 OsRandomStackGuard(VOID)
 {
@@ -151,6 +154,15 @@ UINT32 os_feed_dog_task_create(VOID)
 }
 #endif
 
+void net_init(void)
+{
+extern void tcpip_init(tcpip_init_done_fn initfunc, void *arg);
+    dprintf("\ntcpip_init start\n");
+    tcpip_init(NULL, NULL);
+    dprintf("\ntcpip_init end\n");
+    PRINTK("Ethernet start.");
+}
+
 void SystemInit(void)
 {
 #ifdef LOSCFG_DRIVERS_MEM
@@ -169,7 +181,7 @@ void SystemInit(void)
     }
     dprintf("DeviceManagerStart end ...\n");
 #endif
-
+    net_init();
     sleep(1);
 
 #ifdef LOSCFG_PLATFORM_ROOTFS

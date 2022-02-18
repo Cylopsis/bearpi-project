@@ -6,13 +6,13 @@ root {
                 voltDef = 0;         // 3.3V
 
                 freqMin = 50000;
-                freqMax = 100000000;
+                freqMax = 50000000;
                 freqDef = 400000;
 
                 maxBlkNum = 2048;
                 maxBlkSize = 512;
 
-                ocrDef = 0x300000;
+                ocrDef = 0x380000;
 
                 hostId = 0;
                 devType = 0;

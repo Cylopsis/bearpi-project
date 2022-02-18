@@ -49,7 +49,9 @@ MMU内存映射表
 #define DDR_MEM_SIZE            0x11000000
 #endif
 
-#define SYS_MEM_SIZE_DEFAULT    0x2000000
+#define SYS_MEM_BASE            DDR_MEM_ADDR
+#define SYS_MEM_SIZE_DEFAULT    0x07f00000
+#define SYS_MEM_END             (SYS_MEM_BASE + SYS_MEM_SIZE_DEFAULT)
 
 /* Peripheral register address base and size */
 #define PERIPH_PMM_BASE         0x40000000
@@ -113,7 +115,7 @@ MMU内存映射表
 
 /* FB */
 #define FB_VIRT_BASE                (GIC_VIRT_BASE + GIC_VIRT_SIZE)         /* 虚拟地址放在GIC_VIRT后面 */
-#define FB_SIZE                     (0x200000 * 8)                          /* 2M * 2 */
+#define FB_SIZE                     (0x200000 * 2)                          /* 2M * 2 */
 #define FB_PHY_BASE                 (DDR_RAMFS_ADDR + DDR_RAMFS_SIZE)       /* 物理地址放在DDR_RAMFS后面 */
 
 #define BIT(n)                    (1U << (n))
