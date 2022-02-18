@@ -76,9 +76,9 @@ private:
     constexpr static int INPUT_TEXT_WIDTH = 398;
     constexpr static int INPUT_TEXT_HEIGHT = 38;
     constexpr static int INPUT_FONT_SIZE = 28;
-    constexpr static int INPUT_ENTER_X = 824;
+    constexpr static int INPUT_ENTER_X = 650;
     constexpr static int INPUT_ENTER_Y = 6;
-    constexpr static int INPUT_ENTER_WIDTH = 58;
+    constexpr static int INPUT_ENTER_WIDTH = 70;
     constexpr static int INPUT_ENTER_HEIGHT = 42;
     constexpr static int INPUT_ENTER_RADIUS = 32;
 
@@ -89,7 +89,7 @@ private:
 
     constexpr static int BUTTON_NUM = 3;
 
-    constexpr static int BUTTON_INTERVAL_X = 172;
+    constexpr static int BUTTON_INTERVAL_X = 140;   
     constexpr static int BUTTON_INTERVAL_Y = 66;
     constexpr static int BUTTON_WIDTH = 132;
     constexpr static int BUTTON_HEIGHT = 54;

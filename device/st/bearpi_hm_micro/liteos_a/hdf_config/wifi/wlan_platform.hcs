@@ -72,8 +72,8 @@ root {
                 powers {
                     power0 {
                         powerSeqDelay = 0;
-                        powerType = 1; /* AlwaysON(0);GPIO(1) */
-                        gpioId = 17;
+                        powerType = 0; /* AlwaysON(0);GPIO(1) */
+                        gpioId = 45;
                         activeLevel=1; /* High(1); Low(0) */
                     }
                     power1 {
@@ -85,7 +85,7 @@ root {
                 }
                 reset {
                     resetType = 1; /* NotManaged(0);GPIO(1) */
-                    gpioId = 28;
+                    gpioId = 45;
                     activeLevel = 0; /* High(1); Low(0) */
                     resetHoldTime = 16; /*In ms*/
                 }
