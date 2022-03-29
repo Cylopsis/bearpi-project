@@ -240,7 +240,7 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     sp->dev.cfg.period = sp->htim.Init.Period;    //0.1us
     sp->dev.cfg.polarity = sp->sConfig.OCPolarity;    
     sp->dev.cfg.status = PWM_ENABLE_STATUS;
-    sp->dev.cfg.number = 10000; //continuously
+    sp->dev.cfg.number = 0; //continuously
 
     sp->dev.busy = false;
 

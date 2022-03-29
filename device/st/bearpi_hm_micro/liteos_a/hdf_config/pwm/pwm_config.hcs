@@ -3,8 +3,8 @@ root {
         pwm_config {
             //1mhz
             template pwm_device {
-                Period = 1000;	//1000us
-                Pulse = 500; 	//500us
+                Period = 263;	//26.3us
+                Pulse = 131; 	//13us
                 Polarity = 0;   //high
                 IdleState = 0;  //reset
                 channel = 0;    //channel_1 PA5
