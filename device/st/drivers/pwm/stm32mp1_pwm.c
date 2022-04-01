@@ -1,21 +1,25 @@
-/*
- * @Author: your name
- * @Date: 2022-03-17 15:52:29
- * @LastEditTime: 2022-03-22 09:54:19
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \buff\pwm\led.c
- */
+#include "hdf_device_desc.h"
+#include "hdf_log.h"
+#include "device_resource_if.h"
+#include "osal_io.h"
+#include "osal.h"
+#include "osal_mem.h"
+#include "osal_spinlock.h"
+#include "plat_log.h"
 
-#include "stm32mp1_pwm.h" 
+#include "stm32mp1xx_hal.h"
+#include "stm32mp1xx_hal_tim.h"
+#include "pwm_core.h"
+#include "pwm_if.h"
 
 
 #define GPIOA_PHYADDR 0x50002000
 #define GPIOA_SIZE 0x400
 #define HDF_LOG_TAG pwm_driver
+#define TIM_CLK_HZ 10000000U
 
 static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config);
-//私有pwm结构体
+//private struct
 struct StmPwm {
     TIM_HandleTypeDef htim;
     struct PwmDev dev;
@@ -61,7 +65,7 @@ static inline void StmPwmOutputNumberSquareWaves(uint32_t num)
     HAL_TIM_PWM_Start(&sp->htim, sp->channel);
 }
 
-//设置pwm
+
 static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
 {
 
@@ -90,7 +94,7 @@ static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
             __func__, config->duty, config->period);
         return HDF_ERR_INVALID_PARAM;
     }
-    //暂停pwm，更新配置
+    
     StmPwmDisable();
 
     if (pwm->cfg.polarity != config->polarity) {
@@ -98,8 +102,7 @@ static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
     }
     StmPwmSetPeriod( config->period);
     StmPwmSetDuty( config->duty);
-    //继续输出
-
+    
     if (config->number == 0) {
         StmPwmAlwaysOutput();
     } else {
@@ -109,17 +112,16 @@ static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
 }
 
 
-//初始化gpio口
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
 {
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    dprintf("%s enter\r\n",__func__);
+    HDF_LOGE("%s enter\r\n",__func__);
     GPIO_InitTypeDef GPIO_InitStruct;
 
-    //gpioa addr
     unsigned char *gpioa= (unsigned char *)OsalIoRemap(GPIOA_PHYADDR, GPIOA_SIZE);
-    /**TIM2 GPIO Configuration    
-    PA5     ------> TIM2_CH1 
+    /**
+     * TIM2 GPIO Configuration    
+     * PA5     ------> TIM2_CH1 
     */
     GPIO_InitStruct.Pin = GPIO_PIN_5;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -129,7 +131,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
     HAL_GPIO_Init((GPIO_TypeDef *)gpioa, &GPIO_InitStruct);
   
 }
-// Dispatch是对外提供的服务，用来处理用户态发下来的消息，同时返回数据
+
 int32_t PwmDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct HdfSBuf *data, struct HdfSBuf *reply)
 {
     
@@ -140,17 +142,17 @@ int32_t PwmDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct 
 //驱动对外提供的服务能力，将相关的服务接口绑定到HDF框架
 int32_t HdfPwmDriverBind(struct HdfDeviceObject *deviceObject)
 {
-    dprintf("%s enter\r\n",__func__);
+    HDF_LOGD("%s enter\r\n",__func__);
     if (deviceObject == NULL)
     {
         HDF_LOGE("pwm driver bind failed!");
         return HDF_ERR_INVALID_OBJECT;
     }
-	//定义对外提供的服务函数
+
     static struct IDeviceIoService pwmDriver = {
         .Dispatch = PwmDriverDispatch,
     };
-	//将服务绑定到驱动
+
     deviceObject->service = (struct IDeviceIoService *)(&pwmDriver);
     HDF_LOGD("pwm driver bind success");
     return HDF_SUCCESS;
@@ -159,8 +161,7 @@ int32_t HdfPwmDriverBind(struct HdfDeviceObject *deviceObject)
 //读取配置文件   pa5 tim2 channel 1
 int readHcs(struct HdfDeviceObject *obj)
 {
-    dprintf("%s enter\r\n",__func__);
-
+    HDF_LOGD("%s enter\r\n",__func__);
 
     struct DeviceResourceIface *iface = NULL;
 
@@ -201,17 +202,15 @@ int readHcs(struct HdfDeviceObject *obj)
         HDF_LOGE("%s: read num fail", __func__);
         return HDF_FAILURE;
     }
-    dprintf("Period =%d,Pulse=%d,physics_register=%x,register_size=%x,channel=%d,Polarity=%d,IdleState=%d,num=%d", sp->htim.Init.Period, sp->sConfig.Pulse, sp->physics_register, sp->register_size, sp->channel, sp->sConfig.OCPolarity, sp->sConfig.OCIdleState,sp->dev.num);
+    HDF_LOGD("Period =%d,Pulse=%d,physics_register=%x,register_size=%x,channel=%d,Polarity=%d,IdleState=%d,num=%d", sp->htim.Init.Period, sp->sConfig.Pulse, sp->physics_register, sp->register_size, sp->channel, sp->sConfig.OCPolarity, sp->sConfig.OCIdleState,sp->dev.num);
 
     return 0;
 }
 
 
-
-// 驱动自身业务初始的接口（设置IO口为输出） HDF框架在加载驱动的时候，会将私有配置信息保存在HdfDeviceObject 中的property里面
 int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
 {
-    dprintf("%s enter\r\n",__func__);
+    HDF_LOGD("%s enter\r\n",__func__);
 
     RCC_ClkInitTypeDef    clkconfig;
     uint32_t              pFLatency;
@@ -219,16 +218,13 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
 
     sp = (struct StmPwm *)OsalMemCalloc(sizeof(*sp));
 
-    //读取配置文件
     readHcs(device);
 
-    //获取时钟频率
     HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);   
     __HAL_RCC_TIM2_CLK_ENABLE();
     uwTimclock = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_TIMG1);
-    dprintf(" uwTimclock = %d\r\n",uwTimclock);
 
-    sp->htim.Init.Prescaler = (uint32_t) ((uwTimclock / 10000000U) - 1U);    //10MHZ 改进下pwm的精度
+    sp->htim.Init.Prescaler = (uint32_t) ((uwTimclock / TIM_CLK_HZ) - 1U);
     sp->htim.Init.CounterMode = TIM_COUNTERMODE_UP;
     sp->htim.Init.ClockDivision = 0U;
     sp->htim.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
@@ -236,15 +232,14 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     sp->sConfig.OCFastMode = TIM_OCFAST_DISABLE;
 
     sp->dev.method = &g_pwmOps;
-    sp->dev.cfg.duty = sp->sConfig.Pulse;  //0.1us
-    sp->dev.cfg.period = sp->htim.Init.Period;    //0.1us
+    sp->dev.cfg.duty = sp->sConfig.Pulse;  
+    sp->dev.cfg.period = sp->htim.Init.Period;    
     sp->dev.cfg.polarity = sp->sConfig.OCPolarity;    
     sp->dev.cfg.status = PWM_ENABLE_STATUS;
-    sp->dev.cfg.number = 0; //continuously
+    sp->dev.cfg.number = 0; //continuously ouput
 
     sp->dev.busy = false;
 
-    //添加到核心层
     if (PwmDeviceAdd(device, &(sp->dev)) != HDF_SUCCESS) {
         
         return HDF_FAILURE;
@@ -252,29 +247,26 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
 
     sp->htim.Instance = (TIM_TypeDef *)OsalIoRemap(sp->physics_register, sp->register_size);
     if (sp->htim.Instance == NULL) {
-        dprintf("error OsalIoRemap for htim \r\n");
-        return -1;
+        HDF_LOGE("error OsalIoRemap for htim \r\n");
+        return 1;
     }
     
     if (HAL_TIM_PWM_Init(&sp->htim) == HAL_OK)
     {
-        dprintf("pwm init ok config channel \r\n");
 
         HAL_TIM_PWM_ConfigChannel(&sp->htim, &sp->sConfig, sp->channel);
 
-        HAL_TIM_MspPostInit(&sp->htim);//初始化gpio
+        HAL_TIM_MspPostInit(&sp->htim);
         
         HAL_TIM_PWM_Start(&sp->htim,sp->channel);
     }else{
-        return -1;
+        return HDF_FAILURE;
     }
     
     
     return HDF_SUCCESS;
 }
 
-
-// 驱动资源释放的接口
 void HdfPwnDriverRelease(struct HdfDeviceObject *deviceObject)
 {
     if (deviceObject == NULL)
@@ -286,14 +278,14 @@ void HdfPwnDriverRelease(struct HdfDeviceObject *deviceObject)
     return;
 }
 
-// 定义驱动入口的对象，必须为HdfDriverEntry（在hdf_device_desc.h中定义）类型的全局变量
+
 struct HdfDriverEntry g_pwmDriverEntry = {
     .moduleVersion = 1,
-    .moduleName = "HDF_PLATFORM_PWM",	//必须与device_info.hcs中的字段一样，用于与驱动设备资源匹配
+    .moduleName = "HDF_PLATFORM_PWM",	
     .Bind = HdfPwmDriverBind,
     .Init = HdfPwmDriverInit,
     .Release = HdfPwnDriverRelease,
 };
 
-// 调用HDF_INIT将驱动入口注册到HDF框架中
+
 HDF_INIT(g_pwmDriverEntry);

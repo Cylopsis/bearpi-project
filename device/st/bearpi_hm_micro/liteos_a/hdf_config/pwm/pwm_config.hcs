@@ -1,7 +1,7 @@
 root {
     platform {
         pwm_config {
-            //1mhz
+            //10mhz
             template pwm_device {
                 Period = 263;	//26.3us
                 Pulse = 131; 	//13us
