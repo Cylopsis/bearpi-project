@@ -8,7 +8,7 @@
 #include "ltdc/ltdc_config.hcs"
 #include "wifi/wlan_platform.hcs"
 #include "wifi/wlan_chip_hi3881.hcs"
-
+#include "pwm/pwm_config.hcs"
 root {
     module = "st,stm32mp157";
 }

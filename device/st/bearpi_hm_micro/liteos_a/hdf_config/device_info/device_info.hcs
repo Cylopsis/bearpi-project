@@ -19,6 +19,16 @@
         platform :: host {
             hostName = "platform_host";
             priority = 50;
+            device_pwm :: device {
+                device0 :: deviceNode {
+                    policy = 1;
+                    priority = 12;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_PWM";
+                    serviceName = "HDF_PLATFORM_PWM_2";
+                    deviceMatchAttr = "st_stm32mp157_pwm_2"; 
+                }
+            }
             device_gpio :: device {
                 device0 :: deviceNode {
                     policy = 0;

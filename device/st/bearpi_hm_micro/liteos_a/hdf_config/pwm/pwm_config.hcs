@@ -1,0 +1,25 @@
+root {
+    platform {
+        pwm_config {
+            //10mhz
+            template pwm_device {
+                Period = 263;	//26.3us
+                Pulse = 131; 	//13us
+                Polarity = 0;   //high
+                IdleState = 0;  //reset
+                channel = 0;    //channel_1 PA5
+                match_attr = "";
+                num = 0;
+                physics_register = 0X40000000;
+                register_size = 0X70;
+            }
+
+            device_0X40000000 :: pwm_device {
+                match_attr = "st_stm32mp157_pwm_2";
+                num = 2;
+                physics_register = 0X40000000;
+            }
+        }
+    }
+}
+
