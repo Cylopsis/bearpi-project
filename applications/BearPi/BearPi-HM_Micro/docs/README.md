@@ -4,11 +4,11 @@
 ### 资料导航
 | No | 类别 | 路径  |
 | :----: | ---- |  ------------------------------------------------------------ |
-| 1    | 开发板硬件资料 | [applications/BearPi/BearPi-HM_Micro/docs/board](/applications/BearPi/BearPi-HM_Micro/docs/board) |
-| 2    | 快速上手教程 |  [applications/BearPi/BearPi-HM_Micro/docs/device-dev/](/applications/BearPi/BearPi-HM_Micro/docs/device-dev/BearPi-HM_Micro十分钟上手.md) |
-| 3    | 案例代码列表 |  [applications/BearPi/BearPi-HM_Micro/sample/](/applications/BearPi/BearPi-HM_Micro/samples/README.md) |
+| 1    | 开发板硬件资料 | [applications/BearPi/BearPi-HM_Micro/docs/board](board) |
+| 2    | 快速上手教程 |  [device-dev/](/device-dev/BearPi-HM_Micro十分钟上手.md) |
+| 3    | 案例代码列表 |  [applications/BearPi/BearPi-HM_Micro/sample/](../samples/README.md) |
 | 4    | 视频学习地址 |  [B站](https://www.bilibili.com/video/BV12Y411H7ry) |
-| 5    | 视频课程PPT |   [applications/BearPi/BearPi-HM_Micro/docs/board/PPT](/applications/BearPi/BearPi-HM_Micro/docs/board/PPT)|
+| 5    | 视频课程PPT |   [applications/BearPi/BearPi-HM_Micro/docs/board/PPT](board/PPT)|
 | 6    | 常见问题 | [ISSUES](https://gitee.com/bearpi/bearpi-hm_micro_small/issues) |
 
 ### 注：如果您是北向应用开发者请移步[北向仓库](https://gitee.com/bearpi/bearpi-hm_micro_app/blob/master/README.md)学习
@@ -28,7 +28,7 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
 * [开发环境搭建(简单)—十分钟快速上手](https://www.bilibili.com/video/BV12Y411H7ry?p=2)
 
 2、文档（Gitee）
-* [VMware 镜像版本：十分钟上手体验](applications/BearPi/BearPi-HM_Micro/docs/device-dev/BearPi-HM_Micro十分钟上手.md)
+* [VMware 镜像版本：十分钟上手体验](device-dev/BearPi-HM_Micro十分钟上手.md)
 
 
 ## 三、设备开发手把手教程系列
@@ -44,17 +44,17 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
 * [P8. OpenHarmony 快速入门：JS点亮LED](https://www.bilibili.com/video/BV12Y411H7ry?p=9)
 
 2、文档系列（Gitee）
-- [1. 初识BearPi-HM Micro开发板](applications/BearPi/BearPi-HM_Micro/docs/device-dev/初识BearPi-HM_Micro开发板.md)
-- [2. 开发环境搭建](applications/BearPi/BearPi-HM_Micro/docs/device-dev/开发环境搭建.md)
-- [3. 源码获取](applications/BearPi/BearPi-HM_Micro/docs/device-dev/源码获取.md)
-- [4. 如何编译系统](applications/BearPi/BearPi-HM_Micro/docs/device-dev/如何编译系统.md)
-- [5. 如何烧录固件并启动](applications/BearPi/BearPi-HM_Micro/docs/device-dev/如何烧录固件并启动.md)
-- [6. 编写一个hello_world程序](applications/BearPi/BearPi-HM_Micro/docs/device-dev/编写一个hello_world程序.md)
-- [7. 如何运行一个可执行程序](applications/BearPi/BearPi-HM_Micro/docs/device-dev/如何运行一个可执行程序.md)
-- [8. 编写一个点亮LED灯程序](applications/BearPi/BearPi-HM_Micro/docs/device-dev/编写一个点亮LED灯程序.md)
-- [9. 通过JS应用控制LED灯](applications/BearPi/BearPi-HM_Micro/docs/device-dev/通过JS应用控制LED灯.md)
-- [10. 如何在开发板上安装HAP应用](applications/BearPi/BearPi-HM_Micro/docs/device-dev/如何在开发板上安装HAP应用.md)
-
+- [1. 初识BearPi-HM Micro开发板](device-dev/初识BearPi-HM_Micro开发板.md)
+- [2. 开发环境搭建](device-dev/开发环境搭建.md)
+- [3. 源码获取](device-dev/源码获取.md)
+- [4. 如何编译系统](device-dev/如何编译系统.md)
+- [5. 如何烧录固件并启动](device-dev/如何烧录固件并启动.md)
+- [6. 编写一个hello_world程序](device-dev/编写一个hello_world程序.md)
+- [7. 如何运行一个可执行程序](device-dev/如何运行一个可执行程序.md)
+- [8. 编写一个点亮LED灯程序](device-dev/编写一个点亮LED灯程序.md)
+- [9. 通过JS应用控制LED灯](device-dev/通过JS应用控制LED灯.md)
+- [10. 如何在开发板上安装HAP应用](device-dev/如何在开发板上安装HAP应用.md)
+- [11. 开发板Wi-Fi功能使用指导](device-dev/开发板Wi-Fi功能使用指导.md)
 
 ## 四、开发板图片预览[（淘宝链接）](https://item.taobao.com/item.htm?id=662078665554)
 
