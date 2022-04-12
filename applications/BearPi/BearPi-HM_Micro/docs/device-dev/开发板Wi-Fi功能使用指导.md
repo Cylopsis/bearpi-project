@@ -10,7 +10,7 @@
 1. 系统启动后会需要等一段时间才会加载wifi，若看到以下片段日志，说明wifi已经加载好后，然后再用setting应用去联网。
 ![](figures/wifi加载成功.png)
 
-**注: 官方给setting应用联网后退出wifi会断开，而且有概率会导致系统跑崩。**
+**注: 官方给的setting应用联网后退出wifi会断开，而且有概率会导致系统跑崩。**
 ### 2、使用可执行文件连接Wi-Fi
 
 1.修改samples/communication/wpa_supplicant/config/wpa_supplicant.conf中的ssid和psk信息。
