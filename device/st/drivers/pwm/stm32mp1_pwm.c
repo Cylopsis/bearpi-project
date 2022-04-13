@@ -18,15 +18,25 @@
 #define HDF_LOG_TAG pwm_driver
 #define TIM_CLK_HZ 10000000U
 
+#define PWM_DEFAULT_OCIDLESTATE 0
+#define PWM_DEFAULT_PERIOD 1000
+#define PWM_DEFAULT_DUTY 500
+#define PWM_DEFAULT_OCPOLARITY 0
+
 static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config);
-//private struct
-struct StmPwm {
+
+// private struct
+struct StmPwm
+{
     TIM_HandleTypeDef htim;
     struct PwmDev dev;
     TIM_OC_InitTypeDef sConfig;
-    uint32_t physics_register;
-    uint32_t register_size;
+    uint32_t tim_addr;
+    uint32_t gpio_port_addr;
     uint32_t channel;
+    uint32_t iomux[2];
+    uint32_t tim_clk_hz;
+    uint32_t num;
 };
 struct StmPwm *sp;
 
@@ -111,7 +121,49 @@ static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
     return HDF_SUCCESS;
 }
 
+#if 0
 
+void HAL_TIM_MspPostInit(uint32_t *iomux, uint32_t num)
+{
+    GPIO_InitTypeDef GPIO_InitStruct;
+
+    GPIO_TypeDef *port = (GPIO_TypeDef *)OsalIoRemap(sp->gpio_port_addr, 0x400);
+    GPIO_InitStruct.Pin = 1 << iomux[1];
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+
+    switch (num)
+    {
+    case 1:
+    case 2:
+    case 16:
+    case 17:
+        GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
+        break;
+    case 3:
+    case 4:
+    case 5:
+    case 12:
+        GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+        break;
+    case 8:
+        GPIO_InitStruct.Alternate = GPIO_AF3_TIM8;
+        break;
+    case 15:
+        GPIO_InitStruct.Alternate = GPIO_AF4_TIM15;
+        break;
+    case 13:
+    case 14:
+        GPIO_InitStruct.Alternate = GPIO_AF9_TIM13;
+        break;
+    default:
+        break;
+    }
+
+    HAL_GPIO_Init(port, &GPIO_InitStruct);
+}
+#endif
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
 {
     __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -158,53 +210,60 @@ int32_t HdfPwmDriverBind(struct HdfDeviceObject *deviceObject)
     return HDF_SUCCESS;
 }
 
-//读取配置文件   pa5 tim2 channel 1
 int readHcs(struct HdfDeviceObject *obj)
 {
-    HDF_LOGD("%s enter\r\n",__func__);
-
     struct DeviceResourceIface *iface = NULL;
 
     iface = DeviceResourceGetIfaceInstance(HDF_CONFIG_SOURCE);
-    if (iface == NULL || iface->GetUint32 == NULL) {
+    if (iface == NULL || iface->GetUint32 == NULL)
+    {
         HDF_LOGE("%s: face is invalid", __func__);
+        dprintf("%s: face is invalid", __func__);
         return HDF_FAILURE;
     }
-    if (iface->GetUint32(obj->property, "Period", &sp->htim.Init.Period, 0) != HDF_SUCCESS) {
+    if (iface->GetUint32Array(obj->property, "pwmIomux", sp->iomux, 2, 0) != HDF_SUCCESS)
+    {
+        HDF_LOGE("%s: read iomux fail", __func__);
+        dprintf("%s: read iomux fail", __func__);
+        return HDF_FAILURE;
+    }
+    dprintf(" read iomux %d,%d", sp->iomux[0], sp->iomux[1]);
+    if (iface->GetUint32(obj->property, "channel", &sp->channel, 0) != HDF_SUCCESS)
+    {
+        HDF_LOGE("%s: read channel fail", __func__);
+        dprintf("%s: read channel fail\r\n", __func__);
+        return HDF_FAILURE;
+    }
+    dprintf("read channel %d\r\n", sp->channel);
+    if (iface->GetUint32(obj->property, "tim_clk_hz", &sp->tim_clk_hz, 0) != HDF_SUCCESS)
+    {
+        HDF_LOGE("%s: read tim_clk_hz fail", __func__);
+        dprintf("%s: read tim_clk_hz fail", __func__);
+        return HDF_FAILURE;
+    }
+    dprintf("read tim clk = %d\r\n", sp->tim_clk_hz);
+    if (iface->GetUint32(obj->property, "num", &sp->num, 0) != HDF_SUCCESS)
+    {
         HDF_LOGE("%s: read num fail", __func__);
+        dprintf("%s: read num fail", __func__);
         return HDF_FAILURE;
     }
-    if (iface->GetUint32(obj->property, "Pulse", &sp->sConfig.Pulse, 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
+    dprintf(" read num %d\r\n", sp->num);
+    if (iface->GetUint32(obj->property, "tim_addr", &sp->tim_addr, 0) != HDF_SUCCESS)
+    {
+        HDF_LOGE("%s: read tim_addr fail", __func__);
+        dprintf("%s: read tim_addr fail\r\n", __func__);
         return HDF_FAILURE;
     }
-    if (iface->GetUint32(obj->property, "physics_register", &sp->physics_register, 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
+    dprintf("read tim_adrr %x\r\n", sp->tim_addr);
+    if (iface->GetUint32(obj->property, "gpio_port_addr", &sp->gpio_port_addr, 0) != HDF_SUCCESS)
+    {
+        HDF_LOGE("%s: read gpio_port_addr fail", __func__);
+        dprintf("%s: read gpio_port_addr fail\r\n", __func__);
         return HDF_FAILURE;
     }
-    if (iface->GetUint32(obj->property, "register_size", &sp->register_size, 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
-        return HDF_FAILURE;
-    }
-    if (iface->GetUint32(obj->property, "channel", &sp->channel, 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
-        return HDF_FAILURE;
-    }
-    if (iface->GetUint32(obj->property, "Polarity", &sp->sConfig.OCPolarity , 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
-        return HDF_FAILURE;
-    }
-    if (iface->GetUint32(obj->property, "IdleState", &sp->sConfig.OCIdleState , 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
-        return HDF_FAILURE;
-    }
-    if (iface->GetUint32(obj->property, "IdleState", &sp->dev.num , 0) != HDF_SUCCESS) {
-        HDF_LOGE("%s: read num fail", __func__);
-        return HDF_FAILURE;
-    }
-    HDF_LOGD("Period =%d,Pulse=%d,physics_register=%x,register_size=%x,channel=%d,Polarity=%d,IdleState=%d,num=%d", sp->htim.Init.Period, sp->sConfig.Pulse, sp->physics_register, sp->register_size, sp->channel, sp->sConfig.OCPolarity, sp->sConfig.OCIdleState,sp->dev.num);
-
-    return 0;
+    dprintf("read gpio_port_addr %x\r\n", sp->gpio_port_addr);
+    return HDF_SUCCESS;
 }
 
 
@@ -224,7 +283,13 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     __HAL_RCC_TIM2_CLK_ENABLE();
     uwTimclock = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_TIMG1);
 
-    sp->htim.Init.Prescaler = (uint32_t) ((uwTimclock / TIM_CLK_HZ) - 1U);
+    
+    sp->sConfig.OCIdleState = PWM_DEFAULT_OCIDLESTATE;
+    sp->sConfig.OCPolarity = PWM_DEFAULT_OCPOLARITY;
+    sp->htim.Init.Period = PWM_DEFAULT_PERIOD;
+    sp->sConfig.Pulse = PWM_DEFAULT_DUTY;
+
+    sp->htim.Init.Prescaler = (uint32_t) ((uwTimclock / (sp->tim_clk_hz)) - 1U);
     sp->htim.Init.CounterMode = TIM_COUNTERMODE_UP;
     sp->htim.Init.ClockDivision = 0U;
     sp->htim.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
@@ -237,6 +302,7 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     sp->dev.cfg.polarity = sp->sConfig.OCPolarity;    
     sp->dev.cfg.status = PWM_ENABLE_STATUS;
     sp->dev.cfg.number = 0; //continuously ouput
+    sp->dev.num = sp->num;
 
     sp->dev.busy = false;
 
@@ -245,7 +311,7 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
         return HDF_FAILURE;
     }
 
-    sp->htim.Instance = (TIM_TypeDef *)OsalIoRemap(sp->physics_register, sp->register_size);
+    sp->htim.Instance = (TIM_TypeDef *)OsalIoRemap(sp->tim_addr, 0x70);
     if (sp->htim.Instance == NULL) {
         HDF_LOGE("error OsalIoRemap for htim \r\n");
         return 1;
@@ -255,7 +321,7 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     {
 
         HAL_TIM_PWM_ConfigChannel(&sp->htim, &sp->sConfig, sp->channel);
-
+        //HAL_TIM_MspPostInit(sp->iomux, sp->num);
         HAL_TIM_MspPostInit(&sp->htim);
         
         HAL_TIM_PWM_Start(&sp->htim,sp->channel);
