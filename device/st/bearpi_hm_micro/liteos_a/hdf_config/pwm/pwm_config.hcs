@@ -8,7 +8,7 @@ root {
                 */
                 pwmIomux = [0,0];  
                 channel = 0;    //channel_1 
-                tim_clk_hz = 10000000;
+                tim_clk_hz = 10000000;  //10KHZ
                 match_attr = "";
                 num = 0;
                 tim_addr = 0x40000000;
@@ -16,7 +16,7 @@ root {
             }
 
             device_0X40000000 :: pwm_device {
-                pwmIomux = [0,4];  //PA5
+                pwmIomux = [0,5];  //PA5
                 match_attr = "st_stm32mp157_pwm_2";
                 num = 2;
                 tim_addr = 0X40000000;
