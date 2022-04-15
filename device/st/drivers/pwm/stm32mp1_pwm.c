@@ -24,48 +24,47 @@
 // private struct
 struct StmPwm
 {
-    TIM_HandleTypeDef htim;
     struct PwmDev dev;
+    TIM_HandleTypeDef htim;
     TIM_OC_InitTypeDef sConfig;
     uint32_t tim_addr;
     uint32_t gpio_port_addr;
     uint32_t channel;
-    uint32_t iomux[2];
+    uint32_t pin_number;
     uint32_t tim_clk_hz;
     GPIO_TypeDef *gpio_port;
 };
-struct StmPwm *sp = NULL;
 
 
 
-static inline void StmPwmDisable()
+static inline void StmPwmDisable(struct StmPwm *sp)
 {
     HAL_TIM_PWM_Stop(&sp->htim, sp->channel);
 }
 
-static inline void StmPwmSetPeriod(uint32_t period)
+static inline void StmPwmSetPeriod(struct StmPwm *sp,uint32_t period)
 {
     sp->htim.Init.Period = period;
     TIM_Base_SetConfig(sp->htim.Instance, &sp->htim.Init);
 }
-static inline void StmPwmSetDuty(uint32_t duty)
+static inline void StmPwmSetDuty(struct StmPwm *sp,uint32_t duty)
 {
     sp->sConfig.Pulse = duty;
     HAL_TIM_PWM_ConfigChannel(&sp->htim, &sp->sConfig, sp->channel);
 }
-static inline void StmPwmSetPolarity(uint32_t polarity)
+static inline void StmPwmSetPolarity(struct StmPwm *sp,uint32_t polarity)
 {
     sp->sConfig.OCPolarity = polarity;
     HAL_TIM_PWM_ConfigChannel(&sp->htim, &sp->sConfig, sp->channel);    
 }
-static inline void StmPwmAlwaysOutput()
+static inline void StmPwmAlwaysOutput(struct StmPwm *sp)
 {
     HAL_TIM_PWM_Start(&sp->htim, sp->channel);
 }
 
-static inline void StmPwmOutputNumberSquareWaves(uint32_t num)
+static inline void StmPwmOutputNumberSquareWaves(struct StmPwm *sp,uint32_t num)
 {
-
+    //todo using repetition counter register to implement it 
     HAL_TIM_PWM_Start(&sp->htim, sp->channel);
 }
 
@@ -83,7 +82,7 @@ static int32_t HdfPwmClose(struct PwmDev *pwm)
 
 static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
 {
-
+    struct StmPwm *sp = (struct StmPwm *) pwm;
     if (pwm->cfg.polarity != config->polarity ) {
         HDF_LOGE("%s: not support set pwm polarity", __func__);
         return HDF_ERR_NOT_SUPPORT;
@@ -91,7 +90,7 @@ static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
 
     if (config->status == PWM_DISABLE_STATUS) {
 
-        StmPwmDisable();
+        StmPwmDisable(sp);
         return HDF_SUCCESS;
     }
 
@@ -110,34 +109,34 @@ static int32_t StmPwmSetConfig(struct PwmDev *pwm, struct PwmConfig *config)
         return HDF_ERR_INVALID_PARAM;
     }
     
-    StmPwmDisable();
+    StmPwmDisable(sp);
 
     if (pwm->cfg.polarity != config->polarity) {
-        StmPwmSetPolarity( config->polarity);
+        StmPwmSetPolarity(sp, config->polarity);
     }
-    StmPwmSetPeriod( config->period);
-    StmPwmSetDuty( config->duty);
+    StmPwmSetPeriod(sp, config->period);
+    StmPwmSetDuty(sp, config->duty);
     
     if (config->number == 0) {
-        StmPwmAlwaysOutput();
+        StmPwmAlwaysOutput(sp);
     } else {
-        StmPwmOutputNumberSquareWaves( config->number);
+        StmPwmOutputNumberSquareWaves(sp, config->number);
     }
     return HDF_SUCCESS;
 }
 
 
-void HAL_TIM_MspPostInit(uint32_t *iomux, uint32_t num)
+void HAL_TIM_MspPostInit(struct StmPwm *sp)
 {
     GPIO_InitTypeDef GPIO_InitStruct;
 
     sp->gpio_port = (GPIO_TypeDef *)OsalIoRemap(sp->gpio_port_addr, GPIOA_SIZE);
-    GPIO_InitStruct.Pin = 1 << iomux[1];    //1<<4=16
+    GPIO_InitStruct.Pin = 1 << sp->pin_number;    
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
-    switch (num)
+    switch (sp->dev.num)
     {
     case 1:
     case 2:
@@ -170,7 +169,10 @@ void HAL_TIM_MspPostInit(uint32_t *iomux, uint32_t num)
 
 int32_t PwmDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct HdfSBuf *data, struct HdfSBuf *reply)
 {
-    
+    (void) client;
+    (void) cmdCode;
+    (void) data;
+    (void) reply;
     return HDF_SUCCESS;
 }
 
@@ -287,7 +289,7 @@ static void Mp1xxPwmRccConfig(uint32_t num)
     }
 }
 
-static int Stm32PwmReadConfig(struct HdfDeviceObject *obj)
+static int Stm32PwmReadConfig(struct StmPwm *sp,struct HdfDeviceObject *obj)
 {
     struct DeviceResourceIface *iface = NULL;
 
@@ -297,42 +299,42 @@ static int Stm32PwmReadConfig(struct HdfDeviceObject *obj)
         HDF_LOGE("%s: face is invalid", __func__);
         return HDF_FAILURE;
     }
-    if (iface->GetUint32Array(obj->property, "pwmIomux", sp->iomux, 2, 0) != HDF_SUCCESS)
+    if (iface->GetUint32(obj->property, "pin_number", &sp->pin_number, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read iomux fail", __func__);
         return HDF_FAILURE;
     }
-    HDF_LOGD(" read iomux %d,%d", sp->iomux[0], sp->iomux[1]);
+    
     if (iface->GetUint32(obj->property, "channel", &sp->channel, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read channel fail", __func__);
         return HDF_FAILURE;
     }
-    HDF_LOGD("read channel %d\r\n", sp->channel);
+    
     if (iface->GetUint32(obj->property, "tim_clk_hz", &sp->tim_clk_hz, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read tim_clk_hz fail", __func__);
         return HDF_FAILURE;
     }
-    HDF_LOGD("read tim clk = %d\r\n", sp->tim_clk_hz);
+    
     if (iface->GetUint32(obj->property, "num", &sp->dev.num, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read num fail", __func__);
         return HDF_FAILURE;
     }
-    HDF_LOGD(" read num %d\r\n",sp->dev.num);
+    
     if (iface->GetUint32(obj->property, "tim_addr", &sp->tim_addr, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read tim_addr fail", __func__);
         return HDF_FAILURE;
     }
-    HDF_LOGD("read tim_adrr %x\r\n", sp->tim_addr);
+    
     if (iface->GetUint32(obj->property, "gpio_port_addr", &sp->gpio_port_addr, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read gpio_port_addr fail", __func__);
         return HDF_FAILURE;
     }
-    HDF_LOGD("read gpio_port_addr %x\r\n", sp->gpio_port_addr);
+    HDF_LOGD("%s pin_number = %d,channel = %d,tim_clk_hz = %d,dev_num = %d,tim_addr = %d,gpio_port_addr = %d",__func__, sp->pin_number,sp->channel,sp->tim_clk_hz,sp->dev.num,sp->tim_addr,sp->gpio_port_addr);
     return HDF_SUCCESS;
 }
 
@@ -359,7 +361,7 @@ static int Stm32PwmHalInit(struct StmPwm *sp,uint32_t uwTimclock)
     if (HAL_TIM_PWM_Init(&sp->htim) == HAL_OK)
     {
         HAL_TIM_PWM_ConfigChannel(&sp->htim, &sp->sConfig, sp->channel);
-        HAL_TIM_MspPostInit(sp->iomux, sp->dev.num);
+        HAL_TIM_MspPostInit(sp);
         HAL_TIM_PWM_Start(&sp->htim,sp->channel);
         return HDF_SUCCESS;
     }else{
@@ -381,13 +383,19 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     RCC_ClkInitTypeDef    clkconfig;
     uint32_t              pFLatency;
     uint32_t              uwTimclock;
+    struct StmPwm *sp = NULL;
 
+    if(device == NULL)
+    {
+        HDF_LOGE("%s:device is null",__func__);
+        return HDF_ERR_INVALID_OBJECT;
+    }
     sp = (struct StmPwm *)OsalMemCalloc(sizeof(*sp));
     if(sp == NULL)
     {
         return HDF_FAILURE;
     }
-    Stm32PwmReadConfig(device);
+    Stm32PwmReadConfig(sp,device);
     //config rcc clock
     Mp1xxPwmRccConfig(sp->dev.num);
     //get tim clk
@@ -418,13 +426,15 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     return Stm32PwmHalInit(sp,uwTimclock);
 }
 
-void HdfPwnDriverRelease(struct HdfDeviceObject *deviceObject)
+void HdfPwnDriverRelease(struct HdfDeviceObject *device)
 {
-    if (deviceObject == NULL)
+    if (device == NULL)
     {
         HDF_LOGE("pwm driver release failed!");
         return;
     }
+    struct StmPwm *sp = (struct StmPwm *)device->service;
+    
     //release the tim
     HAL_TIM_PWM_DeInit(&sp->htim);
     
@@ -433,11 +443,11 @@ void HdfPwnDriverRelease(struct HdfDeviceObject *deviceObject)
     }
     
     //release the gpio
-    HAL_GPIO_DeInit(sp->gpio_port, (1<<sp->iomux[1]));
+    HAL_GPIO_DeInit(sp->gpio_port, (1<<sp->pin_number));
     if(sp->gpio_port){
         OsalIoUnmap(sp->gpio_port);
     }
-    PwmDeviceRemove(deviceObject, &(sp->dev));
+    PwmDeviceRemove(device, &(sp->dev));
     //release the sp
     if(sp)
     {
