@@ -1,23 +1,24 @@
 root {
     platform {
         pwm_config {
-            //10mhz
             template pwm_device {
-                Period = 263;	//26.3us
-                Pulse = 131; 	//13us
-                Polarity = 0;   //high
-                IdleState = 0;  //reset
-                channel = 0;    //channel_1 PA5
-                match_attr = "";
+                tim_addr = 0x40000000;
+                tim_clk_hz = 10000000;  //10KHZ
+                channel = 0;    //channel_1 
                 num = 0;
-                physics_register = 0X40000000;
-                register_size = 0X70;
+                gpio_port_addr = 0x0;
+                pin_number = 0;  
+                match_attr = "";
             }
 
             device_0X40000000 :: pwm_device {
-                match_attr = "st_stm32mp157_pwm_2";
+                tim_addr = 0x40000000;
+                tim_clk_hz = 10000000;  //10KHZ
+                channel = 0;    //channel_1 
                 num = 2;
-                physics_register = 0X40000000;
+                gpio_port_addr = 0x50002000;
+                pin_number = 5;    //PA5
+                match_attr = "st_stm32mp157_pwm_2";            
             }
         }
     }
