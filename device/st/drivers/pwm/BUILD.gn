@@ -1,0 +1,11 @@
+import("//drivers/adapter/khdf/liteos/hdf.gni")
+module_switch = defined(LOSCFG_DRIVERS_HDF_PLATFORM_PWM)
+hdf_driver("hdf_pwm") {
+    sources = [
+    "stm32mp1_pwm.c",
+    ]
+    include_dirs = [
+     "." ,
+     "//device/st/drivers/stm32mp1xx_hal/STM32MP1xx_HAL_Driver/Inc",
+  ]
+}

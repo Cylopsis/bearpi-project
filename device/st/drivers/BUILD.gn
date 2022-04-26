@@ -15,6 +15,7 @@ import("//drivers/adapter/khdf/liteos/hdf.gni")
 
 group("drivers") {
   deps = [
+    "pwm",
     "uart",
     "iwdg",
     "i2c",
