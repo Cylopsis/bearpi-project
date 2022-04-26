@@ -1,13 +1,21 @@
-/*
- * @Descripttion: 
- * @version: 
- * @Author: congsir
- * @Date: 2021-12-18 02:55:55
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-05 05:34:55
+
+/* 
+ * Copyright (c) 2022 Nanjing Xiaoxiongpai Intelligent Technology CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-#ifndef BEARPI_E53_H
-#define BEARPI_E53_H
+
+#ifndef __E53_IA1_H__
+#define __E53_IA1_H__
 
 #include "hdf_types.h"
 #include "i2c_if.h"
@@ -18,8 +26,6 @@
 #define    SHT30_ADDR_READ      (0x44<<1)+1        //10001011
 
 #define CRC8_POLYNOMIAL 0x31
-
-extern uint16_t LED_Toggle_time;
 
 typedef enum
 {
@@ -94,7 +100,5 @@ typedef struct {
     uint16_t led_status;
     uint16_t motor_status;
 } E53Sensor;
-
-
 
 #endif
