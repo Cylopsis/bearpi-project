@@ -113,6 +113,17 @@
                     deviceMatchAttr = "st_stm32mp157_i2c";
                 }
             }
+            device_e53 :: device {
+            device0 :: deviceNode {
+                policy = 2;
+                priority = 160;
+                preload = 1;
+                permission = 0777;
+                moduleName = "HDF_E53_IA1";
+                serviceName = "hdf_e53_ia1";
+                deviceMatchAttr = "stm32mp157_e53_ia1";
+                }
+            }
 
         }
         input :: host {
