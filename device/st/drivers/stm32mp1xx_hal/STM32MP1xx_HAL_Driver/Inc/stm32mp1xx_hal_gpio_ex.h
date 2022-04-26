@@ -95,6 +95,7 @@
 /**
  * @brief   AF 4 selection
  */
+#define GPIO_AF4               ((uint8_t)0x04)
 #define GPIO_AF4_I2C1          ((uint8_t)0x04)  /* I2C1 Alternate Function mapping */
 #define GPIO_AF4_I2C2          ((uint8_t)0x04)  /* I2C2 Alternate Function mapping */
 #define GPIO_AF4_I2C3          ((uint8_t)0x04)  /* I2C3 Alternate Function mapping */
@@ -110,6 +111,7 @@
 /**
  * @brief   AF 5 selection
  */
+#define GPIO_AF5               ((uint8_t)0x05)
 #define GPIO_AF5_SPI1          ((uint8_t)0x05)  /* SPI1 Alternate Function mapping   */
 #define GPIO_AF5_SPI2          ((uint8_t)0x05)  /* SPI2 Alternate Function mapping   */
 #define GPIO_AF5_SPI3          ((uint8_t)0x05)  /* SPI3 Alternate Function mapping   */

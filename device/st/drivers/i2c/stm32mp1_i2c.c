@@ -95,7 +95,11 @@ static void Stm32mp1I2cCntlrInit(struct Stm32mp1I2cCntlr *stm32mp1)
     GPIO_Init.Mode = GPIO_MODE_AF_OD;                          // 模式
     GPIO_Init.Pull = GPIO_PULLUP;                   // 上拉
     GPIO_Init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;    // 频率
-    GPIO_Init.Alternate = GPIO_AF4_I2C2;
+    if (stm32mp1->bus == 1) {
+        GPIO_Init.Alternate = GPIO_AF5;
+    } else {
+        GPIO_Init.Alternate = GPIO_AF4;
+    }
     GPIO_Init.Pin = 1<<stm32mp1->i2cClkIomux[1];
     HAL_GPIO_Init(GPIORemp(stm32mp1->i2cClkIomux[0]), &GPIO_Init);
     GPIO_Init.Pin = 1<<stm32mp1->i2cDataIomux[1];
@@ -284,45 +288,45 @@ static int32_t Stm32mp1I2cReadDrs(struct Stm32mp1I2cCntlr *stm32mp1, const struc
 
 static void Stm32mp1I2cRccConfig(uint32_t bus)
 {
-    RCC_PeriphCLKInitTypeDef I2C2_clock_source_config;
+    RCC_PeriphCLKInitTypeDef I2C_clock_source_config;
 
     switch (bus)
     {
     case 1:
         __HAL_RCC_I2C1_CLK_ENABLE();
-        I2C2_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
-        I2C2_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C12;
-        HAL_RCCEx_PeriphCLKConfig(&I2C2_clock_source_config);
+        I2C_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
+        I2C_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C12;
+        HAL_RCCEx_PeriphCLKConfig(&I2C_clock_source_config);
         break;
     case 2:
         __HAL_RCC_I2C2_CLK_ENABLE();
-        I2C2_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
-        I2C2_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C12;
-        HAL_RCCEx_PeriphCLKConfig(&I2C2_clock_source_config);
+        I2C_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
+        I2C_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C12;
+        HAL_RCCEx_PeriphCLKConfig(&I2C_clock_source_config);
         break;
     case 3:
         __HAL_RCC_I2C3_CLK_ENABLE();
-        I2C2_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
-        I2C2_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C35;
-        HAL_RCCEx_PeriphCLKConfig(&I2C2_clock_source_config);
+        I2C_clock_source_config.I2c35ClockSelection = RCC_I2C35CLKSOURCE_HSI;
+        I2C_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C35;
+        HAL_RCCEx_PeriphCLKConfig(&I2C_clock_source_config);
         break;
     case 4:
         __HAL_RCC_I2C4_CLK_ENABLE();
-        I2C2_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
-        I2C2_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C46;
-        HAL_RCCEx_PeriphCLKConfig(&I2C2_clock_source_config);
+        I2C_clock_source_config.I2c46ClockSelection = RCC_I2C46CLKSOURCE_HSI;
+        I2C_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C46;
+        HAL_RCCEx_PeriphCLKConfig(&I2C_clock_source_config);
         break;
     case 5:
         __HAL_RCC_I2C5_CLK_ENABLE();
-        I2C2_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
-        I2C2_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C35;
-        HAL_RCCEx_PeriphCLKConfig(&I2C2_clock_source_config);
+        I2C_clock_source_config.I2c35ClockSelection = RCC_I2C35CLKSOURCE_HSI;
+        I2C_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C35;
+        HAL_RCCEx_PeriphCLKConfig(&I2C_clock_source_config);
         break;
     case 6:
         __HAL_RCC_I2C6_CLK_ENABLE();
-        I2C2_clock_source_config.I2c12ClockSelection = RCC_I2C12CLKSOURCE_HSI;
-        I2C2_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C46;
-        HAL_RCCEx_PeriphCLKConfig(&I2C2_clock_source_config);
+        I2C_clock_source_config.I2c46ClockSelection = RCC_I2C46CLKSOURCE_HSI;
+        I2C_clock_source_config.PeriphClockSelection = RCC_PERIPHCLK_I2C46;
+        HAL_RCCEx_PeriphCLKConfig(&I2C_clock_source_config);
         break;
     default:
         break;
