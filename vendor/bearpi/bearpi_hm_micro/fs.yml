@@ -170,7 +170,7 @@
       file_dir: "bin/shell"
       file_mode: 500
   fs_make_cmd:
-    - ${root_path}/build/lite/make_rootfs/rootfsimg_liteos.sh ${fs_dir} vfat
+    - ${root_path}/build/lite/make_rootfs/rootfsimg_liteos.sh ${fs_dir} vfat 20971520
 -
   fs_dir_name: userfs
   fs_dirs:
@@ -188,7 +188,7 @@
     -
       target_dir: data/system/param
   fs_make_cmd:
-    - ${root_path}/build/lite/make_rootfs/rootfsimg_liteos.sh ${fs_dir} vfat 52428800
+    - ${root_path}/build/lite/make_rootfs/rootfsimg_liteos.sh ${fs_dir} vfat 104857600
   fs_attr:
     tee_enable:
       fs_dirs:

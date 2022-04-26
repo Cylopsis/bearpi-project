@@ -25,7 +25,7 @@ root {
                     <port> 0:GPIOA 1:GPIOB 3:GPIOC ......
                     <pin>  0:PIN0 1:PIN1 2:PIN2 ......
                 */                    
-                i2cClkIomux = [3, 12];   //PD12
+                i2cClkIomux = [5, 14];   //PF14
                 i2cDataIomux = [5, 15];  //PF15
             }
             controller_0x40013000 :: i2c_controller {

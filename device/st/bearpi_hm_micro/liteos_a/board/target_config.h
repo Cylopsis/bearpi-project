@@ -28,7 +28,7 @@ MMU内存映射表
 | 256MB | 256MB | 512MB | 512MB | 512MB | 128M  | 1M    | xxx   |
 */
 
-#define OS_SYS_CLOCK             (50000000)
+#define OS_SYS_CLOCK             (24000000)
 #define SYS_CTRL_REG_BASE        IO_DEVICE_ADDR(0x12020000)
 #define REG_SC_CTRL              0
 
