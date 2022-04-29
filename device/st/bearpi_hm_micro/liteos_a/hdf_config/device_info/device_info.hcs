@@ -123,6 +123,22 @@
                     deviceMatchAttr = "st_stm32mp157_i2c";
                 }
             }
+            device_adc :: device {
+                device0 :: deviceNode {
+                    policy = 0;
+                    priority = 50;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_ADC_MANAGER";
+                    serviceName = "HDF_PLATFORM_ADC_MANAGER";
+                }
+                device1 :: deviceNode {
+                    policy = 0;
+                    priority = 55;
+                    permission = 0644;
+                    moduleName = "stm32mp157_adc_driver";
+                    deviceMatchAttr = "st_stm32mp157_adc";
+                }
+            }
             device_e53 :: device {
             device0 :: deviceNode {
                 policy = 2;
