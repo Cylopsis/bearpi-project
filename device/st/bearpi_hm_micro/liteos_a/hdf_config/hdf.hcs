@@ -9,7 +9,6 @@
 #include "ltdc/ltdc_config.hcs"
 #include "wifi/wlan_platform.hcs"
 #include "wifi/wlan_chip_hi3881.hcs"
-#include "e53_ia1/e53_ia1_config.hcs"
 #include "pwm/pwm_config.hcs"
 
 root {

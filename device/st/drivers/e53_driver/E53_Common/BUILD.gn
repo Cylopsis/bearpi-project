@@ -13,32 +13,15 @@
 
 import("//drivers/adapter/khdf/liteos/hdf.gni")
 
-group("drivers") {
-  deps = [
-    "adc",
-    "pwm",
-    "uart",
-    "iwdg",
-    "i2c",
-    "gpio",
-    "e53_driver",
-    "stm32mp1xx_hal",
-  ]
+hdf_driver("hdf_E53_Common") {
+    sources = [
+        "src/BM_E53_ADC_DAC.c",
+        "src/BM_E53_IIC.c",
+        "src/BM_E53_GPIO.c",
+        "src/BM_E53_PWM.c",
+    ]
+    include_dirs = [
+        "inc/",
+    ]
 }
 
-config("public") {
-  lib_dirs = [ "//device/st/drivers/libs/ohos/llvm/stm32mp157" ]
-  ldflags = [ "-Wl,--push-state,--whole-archive" ]
-  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_LTDC)) {
-    ldflags += [ "-lltdc" ]
-  }
-  if (defined(LOSCFG_DRIVERS_MMC)) {
-    ldflags += [ "-lmmc" ]
-  }
-    if (defined(LOSCFG_DRIVERS_HDF_WIFI)) {
-    ldflags += [ "-lhdf_vendor_wifi" ]
-  }
-  if (defined(LOSCFG_DRIVERS_HDF_WIFI) && defined(LOSCFG_DRIVERS_HI3881)) {
-    ldflags += [ "-lhi3881" ]
-  }
-}

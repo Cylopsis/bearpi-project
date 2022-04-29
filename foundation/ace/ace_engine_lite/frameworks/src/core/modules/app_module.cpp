@@ -21,6 +21,15 @@
 #include "product_adapter.h"
 #endif
 
+#include "hdf_sbuf.h"
+#include "hdf_io_service_if.h"
+
+#define E53_IS1_SERVICE "hdf_e53_is1"
+#define E53_SF1_SERVICE "hdf_e53_sf1"
+#define E53_SC2_SERVICE "hdf_e53_sc2"
+#define E53_SC1_SERVICE "hdf_e53_sc1"
+#define E53_IA1_SERVICE "hdf_e53_ia1"
+
 namespace OHOS {
 namespace ACELite {
 const char * const AppModule::FILE_MANIFEST = "manifest.json";
@@ -44,6 +53,458 @@ struct AsyncParams : public MemoryHeap {
     JSIValue context;
 };
 #endif
+
+static int E53IS1Control(struct HdfIoService *serv, int32_t cmd, const char* buf, char **val)
+{
+    int ret = HDF_FAILURE;
+    struct HdfSBuf *data = HdfSBufObtainDefaultSize();
+    struct HdfSBuf *reply = HdfSBufObtainDefaultSize();
+
+    if (data == NULL || reply == NULL) {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to obtain sbuf data\n");
+        return ret;
+    }
+
+    if (!HdfSbufWriteString(data, buf))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to write sbuf\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+
+    ret = serv->dispatcher->Dispatch(&serv->object, cmd, data, reply);
+    if (ret != HDF_SUCCESS)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send service call\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+ 
+    *val = (char *)(HdfSbufReadString(reply));
+    if(val ==NULL){
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service call reply\n");
+        ret = HDF_ERR_INVALID_OBJECT;
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+
+    }
+
+    HILOG_ERROR(HILOG_MODULE_ACE,"Get reply is: %s\n", *val);
+
+    HdfSBufRecycle(data);
+    HdfSBufRecycle(reply);
+    return ret;
+}
+
+JSIValue AppModule::E53IS1Service(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    struct HdfIoService *serv = HdfIoServiceBind(E53_IS1_SERVICE);
+    if (serv == NULL)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service %s\n", E53_IS1_SERVICE);
+        return JSI::CreateUndefined();
+    }
+
+    if ((args == nullptr) || (argsNum == 0) || (JSI::ValueIsUndefined(args[0]))) {
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue success = JSI::GetNamedProperty(args[0], CB_SUCCESS);
+    JSIValue fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    JSIValue complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+
+    int32_t cmd = (int32_t)JSI::GetNumberProperty(args[0], "cmd");  
+    char *data = (char *)JSI::GetStringProperty(args[0], "data");
+    HILOG_ERROR(HILOG_MODULE_ACE, "cmd is: %d\n", cmd);
+    HILOG_ERROR(HILOG_MODULE_ACE,"data is: %s\n", data);
+    char *replyData;
+
+    if (E53IS1Control(serv, cmd, data, &replyData))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send event\n");
+        JSI::CallFunction(fail, thisVal, nullptr, 0);
+        JSI::CallFunction(complete, thisVal, nullptr, 0);
+        JSI::ReleaseValueList(success, fail, complete);
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue result = JSI::CreateObject();
+
+    JSI::SetStringProperty(result, "e53_is1", replyData);
+    JSIValue argv[ARGC_ONE] = {result};
+    JSI::CallFunction(success, thisVal, argv, ARGC_ONE);
+    JSI::CallFunction(complete, thisVal, nullptr, 0);
+    JSI::ReleaseValueList(success, fail, complete, result);
+
+    HdfIoServiceRecycle(serv);
+
+    return JSI::CreateUndefined();
+}
+
+static int E53SF1Control(struct HdfIoService *serv, int32_t cmd, const char* buf, char **val)
+{
+    int ret = HDF_FAILURE;
+    struct HdfSBuf *data = HdfSBufObtainDefaultSize();
+    struct HdfSBuf *reply = HdfSBufObtainDefaultSize();
+
+    if (data == NULL || reply == NULL) {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to obtain sbuf data\n");
+        return ret;
+    }
+
+    if (!HdfSbufWriteString(data, buf))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to write sbuf\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+
+    ret = serv->dispatcher->Dispatch(&serv->object, cmd, data, reply);
+    if (ret != HDF_SUCCESS)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send service call\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+ 
+    *val = (char *)(HdfSbufReadString(reply));
+    if(val ==NULL){
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service call reply\n");
+        ret = HDF_ERR_INVALID_OBJECT;
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+
+    }
+
+    HILOG_ERROR(HILOG_MODULE_ACE,"Get reply is: %s\n", *val);
+
+    HdfSBufRecycle(data);
+    HdfSBufRecycle(reply);
+    return ret;
+}
+
+JSIValue AppModule::E53SF1Service(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    struct HdfIoService *serv = HdfIoServiceBind(E53_SF1_SERVICE);
+    if (serv == NULL)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service %s\n", E53_SF1_SERVICE);
+        return JSI::CreateUndefined();
+    }
+
+    if ((args == nullptr) || (argsNum == 0) || (JSI::ValueIsUndefined(args[0]))) {
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue success = JSI::GetNamedProperty(args[0], CB_SUCCESS);
+    JSIValue fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    JSIValue complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+
+    int32_t cmd = (int32_t)JSI::GetNumberProperty(args[0], "cmd");  
+    char *data = (char *)JSI::GetStringProperty(args[0], "data");
+    HILOG_ERROR(HILOG_MODULE_ACE, "cmd is: %d\n", cmd);
+    HILOG_ERROR(HILOG_MODULE_ACE,"data is: %s\n", data);
+    char *replyData;
+
+    if (E53SF1Control(serv, cmd, data, &replyData))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send event\n");
+        JSI::CallFunction(fail, thisVal, nullptr, 0);
+        JSI::CallFunction(complete, thisVal, nullptr, 0);
+        JSI::ReleaseValueList(success, fail, complete);
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue result = JSI::CreateObject();
+
+    JSI::SetStringProperty(result, "e53_sf1", replyData);
+    JSIValue argv[ARGC_ONE] = {result};
+    JSI::CallFunction(success, thisVal, argv, ARGC_ONE);
+    JSI::CallFunction(complete, thisVal, nullptr, 0);
+    JSI::ReleaseValueList(success, fail, complete, result);
+
+    HdfIoServiceRecycle(serv);
+
+    return JSI::CreateUndefined();
+}
+
+static int E53SC2Control(struct HdfIoService *serv, int32_t cmd, const char* buf, char **val)
+{
+    int ret = HDF_FAILURE;
+    struct HdfSBuf *data = HdfSBufObtainDefaultSize();
+    struct HdfSBuf *reply = HdfSBufObtainDefaultSize();
+
+    if (data == NULL || reply == NULL) {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to obtain sbuf data\n");
+        return ret;
+    }
+
+    if (!HdfSbufWriteString(data, buf))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to write sbuf\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+
+    ret = serv->dispatcher->Dispatch(&serv->object, cmd, data, reply);
+    if (ret != HDF_SUCCESS)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send service call\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+ 
+    *val = (char *)(HdfSbufReadString(reply));
+    if(val ==NULL){
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service call reply\n");
+        ret = HDF_ERR_INVALID_OBJECT;
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+
+    }
+
+    HILOG_ERROR(HILOG_MODULE_ACE,"Get reply is: %s\n", *val);
+
+    HdfSBufRecycle(data);
+    HdfSBufRecycle(reply);
+    return ret;
+}
+
+JSIValue AppModule::E53SC2Service(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    struct HdfIoService *serv = HdfIoServiceBind(E53_SC2_SERVICE);
+    if (serv == NULL)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service %s\n", E53_SC2_SERVICE);
+        return JSI::CreateUndefined();
+    }
+
+    if ((args == nullptr) || (argsNum == 0) || (JSI::ValueIsUndefined(args[0]))) {
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue success = JSI::GetNamedProperty(args[0], CB_SUCCESS);
+    JSIValue fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    JSIValue complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+
+    int32_t cmd = (int32_t)JSI::GetNumberProperty(args[0], "cmd");  
+    char *data = (char *)JSI::GetStringProperty(args[0], "data");
+    HILOG_ERROR(HILOG_MODULE_ACE, "cmd is: %d\n", cmd);
+    HILOG_ERROR(HILOG_MODULE_ACE,"data is: %s\n", data);
+    char *replyData;
+
+    if (E53SC2Control(serv, cmd, data, &replyData))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send event\n");
+        JSI::CallFunction(fail, thisVal, nullptr, 0);
+        JSI::CallFunction(complete, thisVal, nullptr, 0);
+        JSI::ReleaseValueList(success, fail, complete);
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue result = JSI::CreateObject();
+
+    JSI::SetStringProperty(result, "e53_sc2", replyData);
+    JSIValue argv[ARGC_ONE] = {result};
+    JSI::CallFunction(success, thisVal, argv, ARGC_ONE);
+    JSI::CallFunction(complete, thisVal, nullptr, 0);
+    JSI::ReleaseValueList(success, fail, complete, result);
+
+    HdfIoServiceRecycle(serv);
+
+    return JSI::CreateUndefined();
+}
+
+
+static int E53SC1Control(struct HdfIoService *serv, int32_t cmd, const char* buf, char **val)
+{
+    int ret = HDF_FAILURE;
+    struct HdfSBuf *data = HdfSBufObtainDefaultSize();
+    struct HdfSBuf *reply = HdfSBufObtainDefaultSize();
+
+    if (data == NULL || reply == NULL) {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to obtain sbuf data\n");
+        return ret;
+    }
+
+    if (!HdfSbufWriteString(data, buf))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to write sbuf\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+
+    ret = serv->dispatcher->Dispatch(&serv->object, cmd, data, reply);
+    if (ret != HDF_SUCCESS)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send service call\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+ 
+    *val = (char *)(HdfSbufReadString(reply));
+    if(val ==NULL){
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service call reply\n");
+        ret = HDF_ERR_INVALID_OBJECT;
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+
+    }
+
+    HILOG_ERROR(HILOG_MODULE_ACE,"Get reply is: %s\n", *val);
+
+    HdfSBufRecycle(data);
+    HdfSBufRecycle(reply);
+    return ret;
+}
+
+JSIValue AppModule::E53SC1Service(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    struct HdfIoService *serv = HdfIoServiceBind(E53_SC1_SERVICE);
+    if (serv == NULL)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service %s\n", E53_SC1_SERVICE);
+        return JSI::CreateUndefined();
+    }
+
+    if ((args == nullptr) || (argsNum == 0) || (JSI::ValueIsUndefined(args[0]))) {
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue success = JSI::GetNamedProperty(args[0], CB_SUCCESS);
+    JSIValue fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    JSIValue complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+
+    int32_t cmd = (int32_t)JSI::GetNumberProperty(args[0], "cmd");  
+    char *data = (char *)JSI::GetStringProperty(args[0], "data");
+    HILOG_ERROR(HILOG_MODULE_ACE, "cmd is: %d\n", cmd);
+    HILOG_ERROR(HILOG_MODULE_ACE,"data is: %s\n", data);
+    char *replyData;
+
+    if (E53SC1Control(serv, cmd, data, &replyData))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send event\n");
+        JSI::CallFunction(fail, thisVal, nullptr, 0);
+        JSI::CallFunction(complete, thisVal, nullptr, 0);
+        JSI::ReleaseValueList(success, fail, complete);
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue result = JSI::CreateObject();
+
+    JSI::SetStringProperty(result, "e53_sc1", replyData);
+    JSIValue argv[ARGC_ONE] = {result};
+    JSI::CallFunction(success, thisVal, argv, ARGC_ONE);
+    JSI::CallFunction(complete, thisVal, nullptr, 0);
+    JSI::ReleaseValueList(success, fail, complete, result);
+
+    HdfIoServiceRecycle(serv);
+
+    return JSI::CreateUndefined();
+}
+
+
+static int E53IA1Control(struct HdfIoService *serv, int32_t cmd, const char* buf, char **val)
+{
+    int ret = HDF_FAILURE;
+    struct HdfSBuf *data = HdfSBufObtainDefaultSize();
+    struct HdfSBuf *reply = HdfSBufObtainDefaultSize();
+
+    if (data == NULL || reply == NULL) {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to obtain sbuf data\n");
+        return ret;
+    }
+
+    if (!HdfSbufWriteString(data, buf))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to write sbuf\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+
+    ret = serv->dispatcher->Dispatch(&serv->object, cmd, data, reply);
+    if (ret != HDF_SUCCESS)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send service call\n");
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+    }
+ 
+    *val = (char *)(HdfSbufReadString(reply));
+    if(val ==NULL){
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service call reply\n");
+        ret = HDF_ERR_INVALID_OBJECT;
+        HdfSBufRecycle(data);
+        HdfSBufRecycle(reply);
+        return ret;
+
+    }
+
+    HILOG_ERROR(HILOG_MODULE_ACE,"Get reply is: %s\n", *val);
+
+    HdfSBufRecycle(data);
+    HdfSBufRecycle(reply);
+    return ret;
+}
+
+JSIValue AppModule::E53IA1Service(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    struct HdfIoService *serv = HdfIoServiceBind(E53_IA1_SERVICE);
+    if (serv == NULL)
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to get service %s\n", E53_IA1_SERVICE);
+        return JSI::CreateUndefined();
+    }
+
+    if ((args == nullptr) || (argsNum == 0) || (JSI::ValueIsUndefined(args[0]))) {
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue success = JSI::GetNamedProperty(args[0], CB_SUCCESS);
+    JSIValue fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    JSIValue complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+
+    int32_t cmd = (int32_t)JSI::GetNumberProperty(args[0], "cmd");  
+    char *data = (char *)JSI::GetStringProperty(args[0], "data");
+    HILOG_ERROR(HILOG_MODULE_ACE, "cmd is: %d\n", cmd);
+    HILOG_ERROR(HILOG_MODULE_ACE,"data is: %s\n", data);
+    char *replyData;
+
+    if (E53IA1Control(serv, cmd, data, &replyData))
+    {
+        HILOG_ERROR(HILOG_MODULE_ACE,"fail to send event\n");
+        JSI::CallFunction(fail, thisVal, nullptr, 0);
+        JSI::CallFunction(complete, thisVal, nullptr, 0);
+        JSI::ReleaseValueList(success, fail, complete);
+        return JSI::CreateUndefined();
+    }
+
+    JSIValue result = JSI::CreateObject();
+
+    JSI::SetStringProperty(result, "e53_ia1", replyData);
+    JSIValue argv[ARGC_ONE] = {result};
+    JSI::CallFunction(success, thisVal, argv, ARGC_ONE);
+    JSI::CallFunction(complete, thisVal, nullptr, 0);
+    JSI::ReleaseValueList(success, fail, complete, result);
+
+    HdfIoServiceRecycle(serv);
+
+    return JSI::CreateUndefined();
+}
 
 JSIValue AppModule::GetInfo(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {

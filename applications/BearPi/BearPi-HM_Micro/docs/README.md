@@ -55,6 +55,7 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
 - [9. 通过JS应用控制LED灯](device-dev/通过JS应用控制LED灯.md)
 - [10. 如何在开发板上安装HAP应用](device-dev/如何在开发板上安装HAP应用.md)
 - [11. 开发板Wi-Fi功能使用指导](device-dev/开发板Wi-Fi功能使用指导.md)
+- [12. E53扩展板功能使用指导](device-dev/E53扩展板功能使用指导.md)
 
 ## 四、开发板图片预览[（淘宝链接）](https://item.taobao.com/item.htm?id=662078665554)
 

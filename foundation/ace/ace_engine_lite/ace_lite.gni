@@ -78,6 +78,12 @@ ace_lite_include_dirs += [
   "//base/global/i18n_lite/interfaces/kits/i18n/include",
 ]
 
+ace_lite_include_dirs += [
+    "//drivers/framework/ability/sbuf/include",
+    "//drivers/framework/include/core",
+    "//drivers/framework/include/utils",
+    "//drivers/adapter/uhdf/posix/include",
+]
 ace_lite_include_dirs_simulator = [
   "$GRAPHIC_LITE_PATH/interfaces/kits/config",
   "$GRAPHIC_LITE_PATH/interfaces/kits/ui/animator",
