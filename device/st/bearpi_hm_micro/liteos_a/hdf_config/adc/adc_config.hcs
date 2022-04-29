@@ -1,0 +1,48 @@
+root {
+    platform {
+        adc_config {
+            match_attr = "st_stm32mp157_adc";
+
+            template stm32mp1_adc_device {
+                dev_num = 1;
+                adc_enable = false;
+                reg_pbase = 0x48003000;
+                reg_size = 0x100;
+                sample_time = 0x0; // 1.5 ADC clock cycles
+                /*
+                    From left to right, indicate channels from low to high; 0:disable 1:enable 
+                */
+                channel_enable = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                data_width = 16;
+                /* [port,pin]
+                    <port> 0:GPIOA 1:GPIOB 2:GPIOC ...... 253:internal channel  254:ADC dedicated pin  255:unavailable
+                    <pin>  0:PIN0  1:PIN1  2:PIN2  ...... 253:internal channel  254:ADC dedicated pin  255:unavailable
+                */ 
+                pins = [254,254    ,254,254    ,5,11    ,0,6
+                       ,2,4        ,1,1        ,5,12    ,0,7
+                       ,2,5        ,1,0        ,2,0     ,2,1
+                       ,2,2        ,2,3        ,0,2     ,0,3
+                       ,0,0        ,0,1        ,0,4     ,0,5];
+            }
+
+            adc_1_0x48003000 :: stm32mp1_adc_device {
+                dev_num = 1;
+                adc_enable = true;
+                data_width = 8;
+            }
+
+            adc_2_0x48003100 :: stm32mp1_adc_device {
+                dev_num = 2;
+                reg_pbase = 0x48003100;
+                reg_size = 0x200;
+                channel_enable = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                pins = [254,254    ,254,254    ,5,13        ,0,6
+                       ,2,4        ,1,1        ,5,14        ,0,7
+                       ,2,5        ,1,0        ,2,0         ,2,1
+                       ,255,255    ,255,255    ,0,4         ,0,5
+                       ,253,253    ,253,253    ,253,253     ,253,253];
+                /**     Vbat        Tsen        Vref         VddCore */
+            }
+        }
+    }
+}
