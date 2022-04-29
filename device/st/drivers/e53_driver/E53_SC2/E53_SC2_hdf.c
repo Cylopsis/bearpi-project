@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "E53_SC2.h"
-#include "E53_SIS.h"
+#include "E53_Common.h"
 
 #include "hdf_device_desc.h" 
 #include "hdf_log.h"         
