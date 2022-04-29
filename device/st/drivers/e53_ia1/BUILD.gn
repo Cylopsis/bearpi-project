@@ -1,7 +1,0 @@
-import("//drivers/adapter/khdf/liteos/hdf.gni")
-
-hdf_driver("hdf_e53_ia1") {
-    sources = [
-    "e53_ia1.c",
-    ]
-}

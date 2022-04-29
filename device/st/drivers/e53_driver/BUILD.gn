@@ -11,34 +11,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import("//drivers/adapter/khdf/liteos/hdf.gni")
 
-group("drivers") {
-  deps = [
-    "adc",
-    "pwm",
-    "uart",
-    "iwdg",
-    "i2c",
-    "gpio",
-    "e53_driver",
-    "stm32mp1xx_hal",
-  ]
+hdf_driver("hdf_E53_adapter") {
+    sources = [
+        "E53_IA1/src/E53_IA1.c",
+        "E53_SC1/src/E53_SC1.c",
+        "E53_SC2/src/E53_SC2.c",
+        "E53_SF1/src/E53_SF1.c",
+        "E53_IS1/src/E53_IS1.c", 
+
+        "E53_IA1/E53_IA1_hdf.c",
+        "E53_SC1/E53_SC1_hdf.c",
+        "E53_SC2/E53_SC2_hdf.c",
+        "E53_SF1/E53_SF1_hdf.c",
+        "E53_IS1/E53_IS1_hdf.c",
+    ]
+
+    include_dirs = [
+        "adapter/inc/",
+        "E53_Common/inc/",
+        "E53_IA1/inc/",
+        "E53_SC1/inc",
+        "E53_SC2/inc",
+        "E53_SF1/inc",
+        "E53_IS1/inc",
+    ]
+
+    deps = [
+        "E53_Common:E53_Common",
+
+    ]
 }
 
-config("public") {
-  lib_dirs = [ "//device/st/drivers/libs/ohos/llvm/stm32mp157" ]
-  ldflags = [ "-Wl,--push-state,--whole-archive" ]
-  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_LTDC)) {
-    ldflags += [ "-lltdc" ]
-  }
-  if (defined(LOSCFG_DRIVERS_MMC)) {
-    ldflags += [ "-lmmc" ]
-  }
-    if (defined(LOSCFG_DRIVERS_HDF_WIFI)) {
-    ldflags += [ "-lhdf_vendor_wifi" ]
-  }
-  if (defined(LOSCFG_DRIVERS_HDF_WIFI) && defined(LOSCFG_DRIVERS_HI3881)) {
-    ldflags += [ "-lhi3881" ]
-  }
-}

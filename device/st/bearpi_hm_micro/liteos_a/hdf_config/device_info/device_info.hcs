@@ -147,15 +147,41 @@
                     deviceMatchAttr = "st_stm32mp157_adc";
                 }
             }
-            device_e53 :: device {
-            device0 :: deviceNode {
-                policy = 2;
-                priority = 160;
-                preload = 1;
-                permission = 0777;
-                moduleName = "HDF_E53_IA1";
-                serviceName = "hdf_e53_ia1";
-                deviceMatchAttr = "stm32mp157_e53_ia1";
+            device_e53 :: device {                  
+                device0 :: deviceNode {             
+                    policy = 2;                     
+                    priority = 100;                            
+                    permission = 0777;              
+                    moduleName = "HDF_E53_IA1";        
+                    serviceName = "hdf_e53_ia1";   
+                }
+                device1 :: deviceNode {             
+                    policy = 2;                     
+                    priority = 100;                            
+                    permission = 0777;              
+                    moduleName = "HDF_E53_SC2";        
+                    serviceName = "hdf_e53_sc2";   
+                }
+                device2 :: deviceNode {             
+                    policy = 2;                     
+                    priority = 100;                            
+                    permission = 0777;              
+                    moduleName = "HDF_E53_SC1";        
+                    serviceName = "hdf_e53_sc1";   
+                }
+                device3 :: deviceNode {             
+                    policy = 2;                     
+                    priority = 100;                            
+                    permission = 0777;              
+                    moduleName = "HDF_E53_SF1";        
+                    serviceName = "hdf_e53_sf1";   
+                }
+                device4 :: deviceNode {             
+                    policy = 2;                     
+                    priority = 100;                            
+                    permission = 0777;              
+                    moduleName = "HDF_E53_IS1";        
+                    serviceName = "hdf_e53_is1";   
                 }
             }
 

@@ -1,8 +1,0 @@
-root {
-    E53DriverConfig {
-        i2c_channel = 1;    //I2C_1
-        led_gpio_num = 16;  //PB1
-        motor_gpio_num = 6; //PA6
-        match_attr = "stm32mp157_e53_ia1";   //该字段的值必须和device_info.hcs中的deviceMatchAttr值一致
-    }
-}
