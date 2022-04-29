@@ -65,6 +65,7 @@ static inline void StmPwmAlwaysOutput(struct StmPwm *sp)
 static inline void StmPwmOutputNumberSquareWaves(struct StmPwm *sp,uint32_t num)
 {
     //todo using repetition counter register to implement it 
+	(void)num;
     HAL_TIM_PWM_Start(&sp->htim, sp->channel);
 }
 
@@ -310,7 +311,7 @@ static int Stm32PwmReadConfig(struct StmPwm *sp,struct HdfDeviceObject *obj)
         HDF_LOGE("%s: read channel fail", __func__);
         return HDF_FAILURE;
     }
-    
+    sp->channel = (sp->channel - 1) * 4;
     if (iface->GetUint32(obj->property, "tim_clk_hz", &sp->tim_clk_hz, 0) != HDF_SUCCESS)
     {
         HDF_LOGE("%s: read tim_clk_hz fail", __func__);
@@ -413,7 +414,7 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     sp->dev.cfg.duty = PWM_DEFAULT_DUTY;  
     sp->dev.cfg.period = PWM_DEFAULT_PERIOD;    
     sp->dev.cfg.polarity = PWM_DEFAULT_OCPOLARITY;    
-    sp->dev.cfg.status = PWM_ENABLE_STATUS;
+    sp->dev.cfg.status = PWM_DISABLE_STATUS;
     sp->dev.cfg.number = PWM_DEFAULT_OUTPUT_NUM; 
 
     sp->dev.busy = false;

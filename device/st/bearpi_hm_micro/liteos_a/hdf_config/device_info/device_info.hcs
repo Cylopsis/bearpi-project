@@ -28,6 +28,14 @@
                     serviceName = "HDF_PLATFORM_PWM_2";
                     deviceMatchAttr = "st_stm32mp157_pwm_2"; 
                 }
+                device1 :: deviceNode {
+                    policy = 1;
+                    priority = 12;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_PWM";
+                    serviceName = "HDF_PLATFORM_PWM_3";
+                    deviceMatchAttr = "st_stm32mp157_pwm_3"; 
+                }
             }
             device_gpio :: device {
                 device0 :: deviceNode {
@@ -121,6 +129,22 @@
                     moduleName = "HDF_PLATFORM_I2C";
                     serviceName = "HDF_PLATFORM_I2C";
                     deviceMatchAttr = "st_stm32mp157_i2c";
+                }
+            }
+            device_adc :: device {
+                device0 :: deviceNode {
+                    policy = 0;
+                    priority = 50;
+                    permission = 0644;
+                    moduleName = "HDF_PLATFORM_ADC_MANAGER";
+                    serviceName = "HDF_PLATFORM_ADC_MANAGER";
+                }
+                device1 :: deviceNode {
+                    policy = 0;
+                    priority = 55;
+                    permission = 0644;
+                    moduleName = "stm32mp157_adc_driver";
+                    deviceMatchAttr = "st_stm32mp157_adc";
                 }
             }
             device_e53 :: device {
