@@ -11,14 +11,23 @@ root {
                 match_attr = "";
             }
 
-            device_0X40000000 :: pwm_device {
+            device_pwm2 :: pwm_device {
                 tim_addr = 0x40000000;
                 tim_clk_hz = 10000000;  //10KHZ
-                channel = 0;    //channel_1 
+                channel = 1;    //channel_1 
                 num = 2;
-                gpio_port_addr = 0x50002000;
+                gpio_port_addr = 0x50002000;    //GPIOA
                 pin_number = 5;    //PA5
                 match_attr = "st_stm32mp157_pwm_2";            
+            }
+            device_pwm3 :: pwm_device {
+                tim_addr = 0x40001000;
+                tim_clk_hz = 10000000;  //10KHZ
+                channel = 1;    //channel_1 
+                num = 3;
+                gpio_port_addr = 0x50002000;    //GPIOA
+                pin_number = 6;    //PA6
+                match_attr = "st_stm32mp157_pwm_3";            
             }
         }
     }
