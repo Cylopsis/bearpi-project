@@ -1,0 +1,118 @@
+{
+    "product_name": "demo_cenctrl_server",
+    "ohos_version": "OpenHarmony 3.0",
+    "device_company": "st",
+    "board": "bearpi_hm_micro",
+    "kernel_type": "liteos_a",
+    "kernel_version": "",
+    "subsystems": [
+      {
+        "subsystem": "aafwk",
+        "components": [
+          { "component": "aafwk_lite", "features":[ "enable_ohos_appexecfwk_feature_ability = true" ] }
+        ]
+      },
+      {
+        "subsystem": "applications",
+        "components": [
+           { "component": "bearpi_sample_app", "features":[] },
+           { "component": "bearpi_screensaver_app", "features":[] },
+           { "component": "bearpi_sample_communication", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "distributed_schedule",
+        "components": [
+          { "component": "samgr_lite", "features":[] },
+          { "component": "safwk_lite", "features":[] },
+          { "component": "dmsfwk_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "security",
+        "components": [
+          { "component": "hichainsdk", "features":[] },
+          { "component": "permission", "features":[] },
+          { "component": "appverify", "features":[] },
+          { "component": "deviceauth_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "graphic",
+        "components": [
+          { "component": "graphic_utils", "features":[] },
+          { "component": "graphic_hals", "features":[] },
+          { "component": "ui", "features":[ "enable_graphic_font = true","enable_video_component=false"] },
+          { "component": "surface", "features":[] },
+          { "component": "wms", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "startup",
+        "components": [
+          { "component": "syspara_lite", "features":[] },
+          { "component": "bootstrap_lite", "features":[] },
+          { "component": "appspawn_lite", "features":[] },
+          { "component": "init_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "kernel",
+        "components": [
+          { "component": "liteos_a", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "communication",
+        "components": [
+          { "component": "ipc_lite", "features":[] },
+          { "component": "wpa_supplicant", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "ace",
+        "components": [
+          { "component": "ace_engine_lite", "features":[ "" ] }
+        ]
+      },
+      {
+        "subsystem": "drivers",
+        "components": [
+          { "component": "drivers_framework", "features":[] }, 
+          { "component": "peripheral_display", "features":[] },
+          { "component": "peripheral_input", "features":[] },
+          { "component": "peripheral_wlan", "features":[] }     
+        ]
+      },
+      {
+        "subsystem": "appexecfwk",
+        "components": [
+          { "component": "appexecfwk_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "global",
+        "components": [
+          { "component": "resmgr_lite", "features":[] },
+          { "component": "i18n_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "utils",
+        "components": [
+          { "component": "kv_store", "features":[] },
+          { "component": "os_dump", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "powermgr",
+        "components": [
+          { "component": "powermgr_lite", "features":[ "enable_screensaver = true" ] },
+          { "component": "battery_lite", "features":[ "enable_screensaver = true" ] }
+        ]
+      }
+    ],
+    "third_party_dir": "//third_party",
+    "product_adapter_dir": "//vendor/bearpi/demo_cenctrl_server/hals"
+  }
+  
