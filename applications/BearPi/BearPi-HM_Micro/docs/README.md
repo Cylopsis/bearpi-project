@@ -61,6 +61,7 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
     - [3. 智慧路灯E53_SC1扩展板开发](device-dev/智慧路灯E53_SC1扩展板功能使用指导.md)
     - [4. 智慧烟感E53_SF1扩展板开发](device-dev/智慧烟感E53_SF1扩展板功能使用指导.md)
     - [5. 人体感应E53_IS1扩展板开发](device-dev/人体感应E53_IS1扩展板功能使用指导.md)
+- [13. 基于UDP的中控面板开发](device-dev/基于UDP的中控面板开发指导.md)
 
 ## 四、开发板图片预览[（淘宝链接）](https://item.taobao.com/item.htm?id=662078665554)
 
