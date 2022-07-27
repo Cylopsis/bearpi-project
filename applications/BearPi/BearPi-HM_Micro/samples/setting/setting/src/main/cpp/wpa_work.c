@@ -203,13 +203,13 @@ void ExitWpa(void)
         printf("[INFO]wpa_ctrl_close(g_monitorConn).\n");
         g_monitorConn = NULL;
     }
-    char result[100] = {0};
-    size_t len = sizeof(result);
-    printf("[INFO]ExitWpa TERMINATE begin.\n");
-    SendCtrlCommand("TERMINATE", result, &len);
-    printf("[INFO]ExitWpa TERMINATE end.\n");
-    sleep(1);
-    DeinitWifiService();
+    // char result[100] = {0};
+    // size_t len = sizeof(result);
+    // printf("[INFO]ExitWpa TERMINATE begin.\n");
+    // SendCtrlCommand("TERMINATE", result, &len);
+    // printf("[INFO]ExitWpa TERMINATE end.\n");
+    // sleep(1);
+    // DeinitWifiService();
     if (g_threadId != 0) {
         ret = pthread_cancel(g_threadId);
         if (ret != 0) {
