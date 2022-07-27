@@ -61,7 +61,7 @@ BearPi-HM Micro开发板是一块高度集成并可运行Openharmony系统的开
     - [3. 智慧路灯E53_SC1扩展板开发](applications/BearPi/BearPi-HM_Micro/docs/device-dev/智慧路灯E53_SC1扩展板功能使用指导.md)
     - [4. 智慧烟感E53_SF1扩展板开发](applications/BearPi/BearPi-HM_Micro/docs/device-dev/智慧烟感E53_SF1扩展板功能使用指导.md)
     - [5. 人体感应E53_IS1扩展板开发](applications/BearPi/BearPi-HM_Micro/docs/device-dev/人体感应E53_IS1扩展板功能使用指导.md)
-
+- [13. 基于UDP的中控面板开发](applications/BearPi/BearPi-HM_Micro/docs/device-dev/基于UDP的中控面板开发指导.md)
 
 3、开发者贡献（以下教程为开发者贡献）
 - [1. 纯Linux搭建小熊派-鸿蒙·叔(BearPi-HM Micro)设备开发的开发环境](applications/BearPi/BearPi-HM_Micro/docs/device-dev/Linux下配置小熊派设备开发的开发环境.md)@nebula-yong
