@@ -11,10 +11,10 @@
     
     **注:** 若已有BearPi-HM Nano开发板的编译环境可以参考[将Nano编译环境升级至Micro编译环境](./Nano编译环境升级至Micro编译环境.md)
 - 下载并安装JRE
-    - 下载地址（百度云）：https://pan.baidu.com/s/1yuMn4YulfP6j50mQA8faoA 提取码：1234
+    - 下载地址（百度云）：https://pan.baidu.com/s/1y6ev83VV7mk7RMigdBDMmw?pwd=1234 提取码：1234
 
 - 下载并安装STM32CubeProgrammer(需要2.4.0+版本)
-    - 下载地址（百度云）：https://pan.baidu.com/s/1XfFFFs7UdE9TPdN0FdA6ag 提取码：1234
+    - 下载地址（百度云）：https://pan.baidu.com/s/1y6ev83VV7mk7RMigdBDMmw?pwd=1234 提取码：1234
 
 - 下载并安装虚拟机VMware Workstation
     - 下载地址：https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html
