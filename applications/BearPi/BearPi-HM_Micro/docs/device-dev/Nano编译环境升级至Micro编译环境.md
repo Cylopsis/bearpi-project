@@ -90,7 +90,7 @@
    ```
 2. 下载mkimage.stm32工具，并复制到/home/bearpi/tools/目录下
 
-    mkimage.stm32下载地址:  https://pan.baidu.com/s/1T2O8luJ0-8g5ZZYdOvWfqQ 提取码：1234
+    mkimage.stm32下载地址:  https://pan.baidu.com/s/1y6ev83VV7mk7RMigdBDMmw?pwd=1234 提取码：1234
 
     ![](figures/mkimage路径.png)
 
