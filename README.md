@@ -1,4 +1,4 @@
-
+# 教程及技术支持请跳转至官网：[www.bearpi.cn](https://www.bearpi.cn/dev_board/bearpi/hm/micro/)
 ---
 # 小熊派-鸿蒙·叔(BearPi-HM Micro)
 ### 资料导航
