@@ -1,0 +1,8 @@
+import("//drivers/adapter/khdf/liteos/hdf.gni")
+
+hdf_driver("hdf_led") {
+    sources = [
+    "led.c",
+    ]
+}
+

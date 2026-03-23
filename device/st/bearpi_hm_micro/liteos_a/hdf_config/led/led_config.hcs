@@ -1,0 +1,6 @@
+root {
+    LedDriverConfig {
+        led_gpio_num = 13;
+        match_attr = "st_stm32mp157_led";   //该字段的值必须和device_info.hcs中的deviceMatchAttr值一致
+    }
+}

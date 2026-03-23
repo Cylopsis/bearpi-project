@@ -1,5 +1,27 @@
 {
     "components": [
+        {
+          "component": "my_sample_app",
+          "description": "my samples",
+          "optional": "true",
+          "dirs": [
+          "applications/BearPi/BearPi-HM_Micro/samples/my_app",
+          "applications/BearPi/BearPi-HM_Micro/samples/led_app"
+          ],
+          "targets": [
+          "//applications/BearPi/BearPi-HM_Micro/samples/my_app:my_app",
+          "//applications/BearPi/BearPi-HM_Micro/samples/led_app:my_led_app"
+          ],
+          "rom": "",
+          "ram": "",
+          "output": [],
+          "adapted_kernel": [ "liteos_a" ],
+          "features": [],
+          "deps": {
+          "components": [],
+          "third_party": [ ]
+          }
+      },
       {
           "component": "bearpi_sample_app",
           "description": "bearpi_hm_micro samples.",

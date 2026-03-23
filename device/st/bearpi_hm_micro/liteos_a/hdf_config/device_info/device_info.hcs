@@ -19,6 +19,17 @@
         platform :: host {
             hostName = "platform_host";
             priority = 50;
+            device_led :: device {                  // led设备节点
+                device0 :: deviceNode {             // led驱动的DeviceNode节点
+                    policy = 2;                     // policy字段是驱动服务发布的策略，在驱动服务管理章节有详细介绍
+                    priority = 10;                  // 驱动启动优先级（0-200），值越大优先级越低，建议默认配100，优先级相同则不保证device的加载顺序
+                    preload = 1;                    // 驱动按需加载字段
+                    permission = 0777;              // 驱动创建设备节点权限
+                    moduleName = "HDF_LED";         // 驱动名称，该字段的值必须和驱动入口结构的moduleName值一致
+                    serviceName = "hdf_led";        // 驱动对外发布服务的名称，必须唯一
+                    deviceMatchAttr = "st_stm32mp157_led"; // 驱动私有数据匹配的关键字，必须和驱动私有数据配置表中的match_attr值相等
+                }
+            }  
             device_pwm :: device {
                 device0 :: deviceNode {
                     policy = 1;

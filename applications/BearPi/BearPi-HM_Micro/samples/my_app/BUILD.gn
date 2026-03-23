@@ -1,0 +1,16 @@
+import("//build/lite/config/component/lite_component.gni")
+
+executable("hello_world_lib") {
+    output_name = "hello_world"
+    sources = [ "hello.c" ]
+    include_dirs = []
+    defines = []
+    cflags_c = []
+    ldflags = []
+}
+
+lite_component("my_app") {
+    features = [
+        ":hello_world_lib",
+    ]
+}

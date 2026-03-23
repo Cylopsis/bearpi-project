@@ -21,6 +21,7 @@ group("drivers") {
     "iwdg",
     "i2c",
     "gpio",
+    "led",
     "e53_driver",
     "stm32mp1xx_hal",
   ]
