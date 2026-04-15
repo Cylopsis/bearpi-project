@@ -34,17 +34,18 @@ static int SendEvent(struct HdfIoService *serv, uint8_t eventData)
         goto out;
     }
     /* 通过Dispatch发送到驱动 */
-    if(eventData == 3) {
-        uint8_t tmp = 1;
-        for(int i = 0; i < 10; ++i) {
-            HdfSbufFlush(data);
-            HdfSbufFlush(reply);
-            HdfSbufWriteUint8(data, tmp);
-            ret |= serv->dispatcher->Dispatch(&serv->object, LED_WRITE_READ, data, reply);
-            tmp ^= 1;
-            sleep(1);
-        }
-    } else ret = serv->dispatcher->Dispatch(&serv->object, LED_WRITE_READ, data, reply);
+    // if(eventData == 3) {
+    //     uint8_t tmp = 1;
+    //     for(int i = 0; i < 10; ++i) {
+    //         HdfSbufFlush(data);
+    //         HdfSbufFlush(reply);
+    //         HdfSbufWriteUint8(data, tmp);
+    //         ret |= serv->dispatcher->Dispatch(&serv->object, LED_WRITE_READ, data, reply);
+    //         tmp ^= 1;
+    //         sleep(1);
+    //     }
+    // } else ret = serv->dispatcher->Dispatch(&serv->object, LED_WRITE_READ, data, reply);
+    ret = serv->dispatcher->Dispatch(&serv->object, LED_WRITE_READ, data, reply);
     if (ret != HDF_SUCCESS)
     {
         printf("fail to send service call!\r\n");

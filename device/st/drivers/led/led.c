@@ -9,10 +9,16 @@
 #define HDF_LOG_TAG led_driver // 打印日志所包含的标签，如果不定义则用默认定义的HDF_TAG标签
 #define LED_WRITE_READ 1       // 读写操作码1
 
+const int buttonPin = 16;
+const int ledPin = 17;
+
+
 enum LedOps {
-    LED_OFF,
+    LED_OFF = 0,
     LED_ON,  
     LED_TOGGLE,
+    LED_FLICKER,
+    LED_BUTTON
 };
 
 struct Stm32Mp1ILed {
@@ -20,6 +26,13 @@ struct Stm32Mp1ILed {
 };
 static struct Stm32Mp1ILed g_Stm32Mp1ILed;
 uint8_t status = 0;
+
+void _setup()
+{
+    GpioSetDir(buttonPin, 0);
+    GpioSetDir(ledPin, 1);
+}
+
 // Dispatch是用来处理用户态发下来的消息
 int32_t LedDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct HdfSBuf *data, struct HdfSBuf *reply)
 {
@@ -61,6 +74,27 @@ int32_t LedDriverDispatch(struct HdfDeviceIoClient *client, int cmdCode, struct 
                 GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_HIGH);
                 status = 0;
             }                                        
+            break;
+        case LED_FLICKER:
+            for(int i = 0; i < 10; ++i) {
+                GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_LOW);
+                usleep(300000); // 0.3 second
+                GpioWrite(g_Stm32Mp1ILed.gpioNum, GPIO_VAL_HIGH);
+                usleep(200000); // 0.2 second
+            }
+            status = 0;
+            break;
+        case LED_BUTTON:
+            _setup();
+            while(1) {
+                uint16_t val;
+                GpioRead(buttonPin, &val);
+                if(val == GPIO_VAL_LOW) {
+                    GpioWrite(ledPin, GPIO_VAL_LOW);
+                } else {
+                    GpioWrite(ledPin, GPIO_VAL_HIGH);
+                }
+            }
             break;
         default:
             break;
