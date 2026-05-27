@@ -29,6 +29,7 @@ public:
     AppModule() = default;
     ~AppModule() = default;
     static JSIValue GetInfo(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
+    static JSIValue ToggleLed(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
     static JSIValue Terminate(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
     static JSIValue E53IA1Service(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
     static JSIValue E53SF1Service(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
@@ -66,6 +67,7 @@ void InitAppModule(JSIValue exports)
 {
     JSI::SetModuleAPI(exports, "getInfo", AppModule::GetInfo);
     JSI::SetModuleAPI(exports, "terminate", AppModule::Terminate);
+    JSI::SetModuleAPI(exports, "toggleLed", AppModule::ToggleLed);
     JSI::SetModuleAPI(exports, "e53ia1service", AppModule::E53IA1Service);
     JSI::SetModuleAPI(exports, "e53sf1service", AppModule::E53SF1Service);
     JSI::SetModuleAPI(exports, "e53is1service", AppModule::E53IS1Service);
