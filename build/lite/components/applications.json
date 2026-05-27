@@ -6,11 +6,13 @@
           "optional": "true",
           "dirs": [
           "applications/BearPi/BearPi-HM_Micro/samples/my_app",
-          "applications/BearPi/BearPi-HM_Micro/samples/led_app"
+          "applications/BearPi/BearPi-HM_Micro/samples/led_app",
+          "applications/BearPi/BearPi-HM_Micro/samples/pwm_app"
           ],
           "targets": [
           "//applications/BearPi/BearPi-HM_Micro/samples/my_app:my_app",
-          "//applications/BearPi/BearPi-HM_Micro/samples/led_app:my_led_app"
+          "//applications/BearPi/BearPi-HM_Micro/samples/led_app:my_led_app",
+          "//applications/BearPi/BearPi-HM_Micro/samples/pwm_app:pwm_app"
           ],
           "rom": "",
           "ram": "",

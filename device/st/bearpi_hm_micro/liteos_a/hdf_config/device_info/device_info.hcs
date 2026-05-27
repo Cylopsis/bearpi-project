@@ -37,7 +37,7 @@
                     permission = 0644;
                     moduleName = "HDF_PLATFORM_PWM";
                     serviceName = "HDF_PLATFORM_PWM_2";
-                    deviceMatchAttr = "st_stm32mp157_pwm_2"; 
+                    deviceMatchAttr = "st_stm32mp157_pwm_2";
                 }
                 device1 :: deviceNode {
                     policy = 1;
@@ -45,7 +45,16 @@
                     permission = 0644;
                     moduleName = "HDF_PLATFORM_PWM";
                     serviceName = "HDF_PLATFORM_PWM_3";
-                    deviceMatchAttr = "st_stm32mp157_pwm_3"; 
+                    deviceMatchAttr = "st_stm32mp157_pwm_3";
+                }
+            }
+            device_pwm_user :: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 13;
+                    permission = 0777;
+                    moduleName = "HDF_PWM_USER";
+                    serviceName = "hdf_pwm_user";
                 }
             }
             device_gpio :: device {

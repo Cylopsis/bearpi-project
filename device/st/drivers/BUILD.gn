@@ -17,6 +17,7 @@ group("drivers") {
   deps = [
     "adc",
     "pwm",
+    "pwm_user",
     "uart",
     "iwdg",
     "i2c",

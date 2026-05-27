@@ -1,0 +1,11 @@
+import("//drivers/adapter/khdf/liteos/hdf.gni")
+
+hdf_driver("hdf_pwm_user") {
+    sources = [
+        "pwm_user.c",
+    ]
+    include_dirs = [
+        "//drivers/framework/support/platform/include",
+        "//drivers/framework/include/platform",
+    ]
+}
