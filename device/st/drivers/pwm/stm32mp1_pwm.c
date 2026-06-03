@@ -15,6 +15,16 @@
 #define GPIOA_SIZE 0x400
 #define TIM_REG_SIZE 0X70
 
+/* Direct CCR1 pointer for lock-free duty writes during audio playback (PA6/TIM3/CH1) */
+static volatile uint32_t *g_audioTimCCR1 = NULL;
+
+void Stm32PwmAudioSetDuty(uint32_t dutyTicks)
+{
+    if (g_audioTimCCR1 != NULL) {
+        *g_audioTimCCR1 = dutyTicks;
+    }
+}
+
 #define PWM_DEFAULT_OCIDLESTATE 0
 #define PWM_DEFAULT_PERIOD 263
 #define PWM_DEFAULT_DUTY 131
@@ -423,8 +433,13 @@ int32_t HdfPwmDriverInit(struct HdfDeviceObject *device)
     if (PwmDeviceAdd(device, &(sp->dev)) != HDF_SUCCESS) {
         return HDF_FAILURE;
     }
-    
-    return Stm32PwmHalInit(sp,uwTimclock);
+
+    int32_t ret = Stm32PwmHalInit(sp, uwTimclock);
+    if (ret == HDF_SUCCESS && sp->dev.num == 3) {
+        /* PA6 / TIM3 / CH1: expose CCR1 for direct audio writes */
+        g_audioTimCCR1 = &sp->htim.Instance->CCR1;
+    }
+    return ret;
 }
 
 void HdfPwnDriverRelease(struct HdfDeviceObject *device)

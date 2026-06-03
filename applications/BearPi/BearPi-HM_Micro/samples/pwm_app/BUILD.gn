@@ -9,6 +9,7 @@ executable("pwm_lib") {
     ]
 
     include_dirs = [
+        ".",
         "$HDF_FRAMEWORKS/ability/sbuf/include",
         "$HDF_FRAMEWORKS/core/shared/include",
         "$HDF_FRAMEWORKS/core/host/include",
