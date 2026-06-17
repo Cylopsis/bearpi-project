@@ -5,6 +5,7 @@ executable("control_lib") {
     sources = [
         "pid_control.c",
         "hardware.c",
+        "bme280.c",
         "remote.c",
     ]
 
@@ -17,6 +18,7 @@ executable("control_lib") {
         "//drivers/framework/include/utils",
         "//drivers/framework/utils/include",
         "//drivers/framework/include/osal",
+        "//drivers/framework/include/platform",
         "//drivers/adapter/uhdf/posix/include",
         "//third_party/bounds_checking_function/include",
         "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits",
@@ -25,6 +27,7 @@ executable("control_lib") {
     deps = [
         "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
         "//drivers/adapter/uhdf/manager:hdf_core",
+        "//drivers/adapter/uhdf/platform:hdf_platform",
         "//drivers/adapter/uhdf/posix:hdf_posix_osal",
     ]
 

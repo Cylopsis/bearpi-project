@@ -10,10 +10,10 @@
 #define COOL 1      /* PB1 high -> PWM drives fan      */
 
 /*******************************************************************************
- * ADC channels (both on ADC instance 1)
+ * ADC channels (ADC instance 1)
+ *   Box/ambient temperature now comes from the BME280 (I2C), not an ADC.
  ******************************************************************************/
 #define ADC_CH_NTC      1       /* E53_ADC1_INP1 : PTC temperature NTC */
-#define ADC_CH_LM35     9       /* PB0           : box temperature LM35 */
 
 /*******************************************************************************
  * Sensor / control constants
@@ -23,7 +23,6 @@
 #define NTC_SERIES_R        10000.0f    /* series resistor (10k)            */
 #define ADC_REF_VOLTAGE     3300.0f     /* reference voltage (mV)           */
 #define ADC_RESOLUTION      65535.0f    /* 16-bit ADC                       */
-#define LM35_MV_PER_DEG     10.0f       /* LM35 10mV/C                      */
 #define PTC_MAX_SAFE_TEMP   110.0f      /* PTC over-temperature cutoff      */
 #define SAMPLE_PERIOD_MS    1000        /* main loop sample period          */
 #define CONTROL_PERIOD_MS   100         /* PID loop period                  */
@@ -50,7 +49,9 @@ typedef enum {
 /*******************************************************************************
  * Shared state (defined in pid_control.c)
  ******************************************************************************/
-extern volatile float current_temperature;    /* box temp (LM35) */
+extern volatile float current_temperature;    /* box temp (BME280) */
+extern volatile float box_pressure;            /* box pressure, hPa (BME280)  */
+extern volatile float box_humidity;            /* box humidity, %RH (BME280)  */
 extern volatile float target_temperature;      /* setpoint        */
 extern volatile float ptc_temperature;         /* PTC temp (NTC)  */
 extern volatile float ptc_target_temp;         /* PTC setpoint    */

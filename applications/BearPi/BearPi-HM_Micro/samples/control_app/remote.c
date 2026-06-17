@@ -11,7 +11,7 @@
 
 #define SERVER_PORT     5000
 #define RECV_BUFSZ      256
-#define SEND_BUFSZ      630
+#define SEND_BUFSZ      700
 #define MAX_ARGS        16
 
 static pthread_t g_server_thread;
@@ -93,6 +93,8 @@ static void *remote_server_thread_entry(void *parameter)
                 int len = snprintf(send_buf, sizeof(send_buf), "{"
                     "\"current_ptc_temperature\":%.2f,"
                     "\"current_temperature\":%.2f,"
+                    "\"box_pressure\":%.2f,"
+                    "\"box_humidity\":%.2f,"
                     "\"target_temperature\":%.2f,"
                     "\"ptc_target_temperature\":%.2f,"
                     "\"ptc_state\":\"%s\","
@@ -104,7 +106,8 @@ static void *remote_server_thread_entry(void *parameter)
                     "\"warming_bias\":%.2f,\"heating_bias\":%.2f,"
                     "\"warming_threshold\":%.2f,\"hysteresis_band\":%.2f"
                     "}\r\n",
-                    ptc_temperature, current_temperature, target_temperature, ptc_target_temp,
+                    ptc_temperature, current_temperature, box_pressure, box_humidity,
+                    target_temperature, ptc_target_temp,
                     ptc_state_str, ctrl_state_str, final_pwm_duty,
                     pid_ptc.kp, pid_ptc.ki, pid_ptc.kd,
                     pid_box.kp, pid_box.ki, pid_box.kd,
