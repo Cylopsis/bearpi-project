@@ -57,6 +57,33 @@
                     serviceName = "hdf_pwm_user";
                 }
             }
+            device_adc_user :: device {
+                device0 :: deviceNode {
+                    policy = 2;                     // kernel + user accessible
+                    priority = 60;                  // after ADC manager(50)/chip(55)
+                    permission = 0777;
+                    moduleName = "HDF_ADC_USER";
+                    serviceName = "hdf_adc_user";
+                }
+            }
+            device_state_user :: device {
+                device0 :: deviceNode {
+                    policy = 2;                     // kernel + user accessible
+                    priority = 20;                  // after GPIO platform driver(10)
+                    permission = 0777;
+                    moduleName = "HDF_STATE_USER";
+                    serviceName = "hdf_state_user";
+                }
+            }
+            device_audio :: device {
+                device0 :: deviceNode {
+                    policy = 2;
+                    priority = 80;
+                    permission = 0777;
+                    moduleName = "HDF_AUDIO_WM8988";
+                    serviceName = "hdf_audio";
+                }
+            }
             device_gpio :: device {
                 device0 :: deviceNode {
                     policy = 0;

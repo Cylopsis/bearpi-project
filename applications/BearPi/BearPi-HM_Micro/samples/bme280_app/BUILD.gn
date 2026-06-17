@@ -1,0 +1,34 @@
+import("//build/lite/config/component/lite_component.gni")
+
+HDF_FRAMEWORKS = "//drivers/framework"
+
+executable("bme280_lib") {
+    output_name = "bme280"
+    sources = [
+        "bme280.c",
+    ]
+
+    include_dirs = [
+        "$HDF_FRAMEWORKS/include/platform",
+        "$HDF_FRAMEWORKS/include/core",
+        "$HDF_FRAMEWORKS/include/utils",
+        "$HDF_FRAMEWORKS/include/osal",
+        "$HDF_FRAMEWORKS/ability/sbuf/include",
+        "//drivers/adapter/uhdf/posix/include",
+        "//third_party/bounds_checking_function/include",
+        "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits",
+    ]
+
+    deps = [
+        "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+        "//drivers/adapter/uhdf/manager:hdf_core",
+        "//drivers/adapter/uhdf/platform:hdf_platform",
+        "//drivers/adapter/uhdf/posix:hdf_posix_osal",
+    ]
+}
+
+lite_component("bme280_app") {
+    features = [
+        ":bme280_lib",
+    ]
+}

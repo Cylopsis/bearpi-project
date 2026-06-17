@@ -8,11 +8,11 @@ root {
                 adc_enable = false;
                 reg_pbase = 0x48003000;
                 reg_size = 0x100;
-                sample_time = 0x0; // 1.5 ADC clock cycles
+                sample_time = 0x7; // 810.5 ADC clock cycles (max) — needed for high-impedance LM35 + multi-channel crosstalk
                 /*
                     From left to right, indicate channels from low to high; 0:disable 1:enable 
                 */
-                channel_enable = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                channel_enable = [0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0];
                 data_width = 16;
                 /* [port,pin]
                     <port> 0:GPIOA 1:GPIOB 2:GPIOC ...... 253:internal channel  254:ADC dedicated pin  255:unavailable
@@ -28,7 +28,7 @@ root {
             adc_1_0x48003000 :: stm32mp1_adc_device {
                 dev_num = 1;
                 adc_enable = true;
-                data_width = 8;
+                data_width = 16;    // full 16-bit resolution for temperature PID (was 8)
             }
 
             adc_2_0x48003100 :: stm32mp1_adc_device {

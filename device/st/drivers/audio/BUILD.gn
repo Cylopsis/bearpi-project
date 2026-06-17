@@ -1,0 +1,12 @@
+import("//drivers/adapter/khdf/liteos/hdf.gni")
+
+hdf_driver("hdf_audio_wm8988") {
+    sources = [
+        "wm8988.c",
+    ]
+    include_dirs = [
+        "//drivers/framework/support/platform/include",
+        "//drivers/framework/include/platform",
+        "//device/st/drivers/stm32mp1xx_hal/STM32MP1xx_HAL_Driver/Inc",
+    ]
+}

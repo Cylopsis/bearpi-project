@@ -25,6 +25,9 @@
 
 #define HDF_LOG_TAG stm32mp1_adc
 
+/* GPIOA physical base; ports are 0x1000 apart (GPIOA=port0, GPIOB=port1, ...). */
+#define MP1XX_GPIOA_PHYS_BASE 0x50002000U
+
 static void Mp1xxAdcPinInit(struct Mp1xxAdcDevice *stm32mp1)
 {
     uint32_t i;
@@ -32,18 +35,28 @@ static void Mp1xxAdcPinInit(struct Mp1xxAdcDevice *stm32mp1)
     volatile unsigned char  *gpioBase;
     volatile unsigned char  *comBase;
 
-    gpioBase = OsalIoRemap(MP1XX_GPIO_BASE + MP1XX_GPIO_MODE_REG_OFFSET,
-        MP1XX_GPIO_GROUP_NUMBER * MP1XX_GPIO_GROUP_SIZE);
+    /* Map the whole GPIO bank from GPIOA so each port's MODER is reachable. */
+    gpioBase = OsalIoRemap(MP1XX_GPIOA_PHYS_BASE,
+        (MP1XX_GPIO_GROUP_NUMBER + 1) * MP1XX_GPIO_GROUP_SIZE);
+    if (gpioBase == NULL) {
+        HDF_LOGE("%s: gpio remap failed", __func__);
+        return;
+    }
     for (i = 0; i < MP1XX_ADC_CHANNEL_COUNT_MAX; i++) {
-        if (stm32mp1->validChannel[i] == 0 || stm32mp1->pins[i * MP1_ADC_PIN_DATA_WIDTH] >= MP1XX_GPIO_GROUP_NUMBER) {
+        uint32_t port = stm32mp1->pins[i * MP1_ADC_PIN_DATA_WIDTH];
+        uint32_t pin = stm32mp1->pins[i * MP1_ADC_PIN_DATA_WIDTH + 1];
+        volatile unsigned char *moder = NULL;
+        if (stm32mp1->validChannel[i] == 0 || port >= MP1XX_GPIO_GROUP_NUMBER) {
             continue;
         }
-        
-        value = OSAL_READL(gpioBase);
-        value |= (MP1XX_GPIO_ANALOG_MODE_MASK << MP1XX_GPIO_REG_PIN_SHIFT);
-        OSAL_WRITEL(value, MP1XX_GPIO_BASE + MP1XX_GPIO_MODE_REG_OFFSET);
+        /* Enable the port clock first so the MODER write takes effect. */
+        RCC->MC_AHB4ENSETR |= 0x1U << port;
 
-        RCC->MC_AHB4ENSETR |= 0x1U << stm32mp1->pins[i * MP1_ADC_PIN_DATA_WIDTH];
+        /* Set this pin's 2-bit MODER field to analog (0b11) on its own port. */
+        moder = gpioBase + port * MP1XX_GPIO_GROUP_SIZE + MP1XX_GPIO_MODE_REG_OFFSET;
+        value = OSAL_READL(moder);
+        value |= (MP1XX_GPIO_ANALOG_MODE_MASK << (pin * MP1XX_GPIO_REG_PIN_SHIFT));
+        OSAL_WRITEL(value, moder);
     }
     RCC->PLL4CR |= 0x1U;
     comBase = OsalIoRemap(MP1XX_ADC_COMMON_REG_BASE, MP1XX_ADC_COMMON_REG_SIZE);

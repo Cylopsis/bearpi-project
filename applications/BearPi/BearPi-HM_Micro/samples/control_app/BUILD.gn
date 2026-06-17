@@ -1,0 +1,38 @@
+import("//build/lite/config/component/lite_component.gni")
+
+executable("control_lib") {
+    output_name = "control"
+    sources = [
+        "pid_control.c",
+        "hardware.c",
+        "remote.c",
+    ]
+
+    include_dirs = [
+        "//drivers/framework/ability/sbuf/include",
+        "//drivers/framework/core/shared/include",
+        "//drivers/framework/core/host/include",
+        "//drivers/framework/core/master/include",
+        "//drivers/framework/include/core",
+        "//drivers/framework/include/utils",
+        "//drivers/framework/utils/include",
+        "//drivers/framework/include/osal",
+        "//drivers/adapter/uhdf/posix/include",
+        "//third_party/bounds_checking_function/include",
+        "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits",
+    ]
+
+    deps = [
+        "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+        "//drivers/adapter/uhdf/manager:hdf_core",
+        "//drivers/adapter/uhdf/posix:hdf_posix_osal",
+    ]
+
+    libs = [ "m" ]
+}
+
+lite_component("control_app") {
+    features = [
+        ":control_lib",
+    ]
+}

@@ -7,12 +7,18 @@
           "dirs": [
           "applications/BearPi/BearPi-HM_Micro/samples/my_app",
           "applications/BearPi/BearPi-HM_Micro/samples/led_app",
-          "applications/BearPi/BearPi-HM_Micro/samples/pwm_app"
+          "applications/BearPi/BearPi-HM_Micro/samples/pwm_app",
+          "applications/BearPi/BearPi-HM_Micro/samples/audio_app",
+          "applications/BearPi/BearPi-HM_Micro/samples/control_app",
+          "applications/BearPi/BearPi-HM_Micro/samples/bme280_app"
           ],
           "targets": [
           "//applications/BearPi/BearPi-HM_Micro/samples/my_app:my_app",
           "//applications/BearPi/BearPi-HM_Micro/samples/led_app:my_led_app",
-          "//applications/BearPi/BearPi-HM_Micro/samples/pwm_app:pwm_app"
+          "//applications/BearPi/BearPi-HM_Micro/samples/pwm_app:pwm_app",
+          "//applications/BearPi/BearPi-HM_Micro/samples/audio_app:audio_app",
+          "//applications/BearPi/BearPi-HM_Micro/samples/control_app:control_app",
+          "//applications/BearPi/BearPi-HM_Micro/samples/bme280_app:bme280_app"
           ],
           "rom": "",
           "ram": "",
