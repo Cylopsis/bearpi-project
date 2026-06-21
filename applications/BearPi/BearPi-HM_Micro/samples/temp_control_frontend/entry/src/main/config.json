@@ -1,0 +1,46 @@
+{
+  "app": {
+    "apiVersion": {
+      "compatible": 6,
+      "releaseType": "Release",
+      "target": 6
+    },
+    "vendor": "bearpi",
+    "bundleName": "com.bearpi.tempcontrol",
+    "version": {
+      "code": 1000000,
+      "name": "1.0.0"
+    }
+  },
+  "deviceConfig": {
+    "default": {
+      "debug": true
+    }
+  },
+  "module": {
+    "abilities": [
+      {
+        "label": "TempControl",
+        "name": "default",
+        "type": "page",
+        "homeAbility": false
+      }
+    ],
+    "deviceType": [
+      "smartVision"
+    ],
+    "distro": {
+      "moduleType": "entry",
+      "deliveryWithInstall": true,
+      "moduleName": "entry"
+    },
+    "js": [
+      {
+        "pages": [
+          "pages/index/index"
+        ],
+        "name": "default"
+      }
+    ]
+  }
+}

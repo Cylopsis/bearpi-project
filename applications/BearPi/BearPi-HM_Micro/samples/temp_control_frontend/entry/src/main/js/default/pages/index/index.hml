@@ -1,0 +1,100 @@
+<div class="page">
+  <div class="topbar">
+    <text class="title">PID 温控面板</text>
+    <text class="state">{{connectionText}}</text>
+  </div>
+
+  <div class="summary">
+    <div class="temperature">
+      <text class="label">箱体温度</text>
+      <text class="main-value">{{currentTemperature}}</text>
+      <text class="unit">°C</text>
+    </div>
+    <div class="temperature target">
+      <text class="label">目标温度</text>
+      <text class="main-value">{{targetTemperature}}</text>
+      <text class="unit">°C</text>
+    </div>
+    <div class="control-buttons">
+      <div class="step-button" onclick="targetDown">
+        <text class="step-text">-1</text>
+      </div>
+      <div class="step-button-primary" onclick="applyTarget">
+        <text class="step-text-light">设定</text>
+      </div>
+      <div class="step-button" onclick="targetUp">
+        <text class="step-text">+1</text>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-grid">
+    <div class="status-cell">
+      <text class="cell-label">PTC 温度</text>
+      <text class="cell-value">{{ptcTemperature}} °C</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">PTC 目标</text>
+      <text class="cell-value">{{ptcTargetTemperature}} °C</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">PWM</text>
+      <text class="cell-value">{{currentPwm}} %</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">模式</text>
+      <text class="cell-value">{{controlState}}</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">PTC</text>
+      <text class="cell-value">{{ptcState}}</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">回差</text>
+      <text class="cell-value">{{hysteresisBand}} °C</text>
+    </div>
+  </div>
+
+  <div class="tuning">
+    <div class="tuning-header">
+      <text class="section-title">PID 参数</text>
+      <text class="updated">{{updatedAt}}</text>
+    </div>
+    <div class="pid-row">
+      <div class="pid-button" onclick="selectPrevParam">
+        <text class="pid-button-text">上一项</text>
+      </div>
+      <div class="pid-field">
+        <text class="pid-label">{{selectedParamLabel}}</text>
+        <text class="pid-value">{{selectedParamValue}}</text>
+      </div>
+      <div class="pid-button" onclick="selectNextParam">
+        <text class="pid-button-text">下一项</text>
+      </div>
+    </div>
+    <div class="pid-row adjust-row">
+      <div class="pid-button-small" onclick="paramDownLarge">
+        <text class="pid-button-text">-0.10</text>
+      </div>
+      <div class="pid-button-small" onclick="paramDown">
+        <text class="pid-button-text">-0.01</text>
+      </div>
+      <div class="pid-button-apply" onclick="applyParam">
+        <text class="pid-button-text-light">应用</text>
+      </div>
+      <div class="pid-button-small" onclick="paramUp">
+        <text class="pid-button-text">+0.01</text>
+      </div>
+      <div class="pid-button-small" onclick="paramUpLarge">
+        <text class="pid-button-text">+0.10</text>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <text class="message">{{message}}</text>
+    <div class="refresh" onclick="refreshStatus">
+      <text class="refresh-text">刷新</text>
+    </div>
+  </div>
+</div>

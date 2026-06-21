@@ -1,0 +1,272 @@
+.page {
+  width: 800px;
+  height: 480px;
+  flex-direction: column;
+  background-color: #f3f6f5;
+  padding: 16px;
+}
+
+.topbar {
+  width: 768px;
+  height: 44px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 28px;
+  color: #1d2b2a;
+}
+
+.state {
+  width: 180px;
+  font-size: 20px;
+  color: #3b625f;
+  text-align: right;
+}
+
+.summary {
+  width: 768px;
+  height: 112px;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.temperature {
+  width: 210px;
+  height: 104px;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 16px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  margin-right: 12px;
+}
+
+.target {
+  background-color: #eef7f1;
+}
+
+.label {
+  font-size: 18px;
+  color: #5d6f70;
+}
+
+.main-value {
+  font-size: 44px;
+  color: #122625;
+}
+
+.unit {
+  font-size: 18px;
+  color: #59706c;
+}
+
+.control-buttons {
+  width: 312px;
+  height: 104px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step-button {
+  width: 92px;
+  height: 72px;
+  justify-content: center;
+  align-items: center;
+  background-color: #dbe7e3;
+  border-radius: 6px;
+}
+
+.step-button-primary {
+  width: 92px;
+  height: 72px;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f6b5f;
+  border-radius: 6px;
+}
+
+.step-text {
+  font-size: 24px;
+  color: #102321;
+  text-align: center;
+}
+
+.step-text-light {
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.status-grid {
+  width: 768px;
+  height: 134px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.status-cell {
+  width: 246px;
+  height: 58px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  border-radius: 6px;
+}
+
+.cell-label {
+  width: 92px;
+  font-size: 18px;
+  color: #657272;
+}
+
+.cell-value {
+  width: 126px;
+  font-size: 20px;
+  color: #172726;
+  text-align: right;
+}
+
+.tuning {
+  width: 768px;
+  height: 124px;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.tuning-header {
+  width: 748px;
+  height: 28px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.section-title {
+  font-size: 20px;
+  color: #172726;
+}
+
+.updated {
+  width: 220px;
+  font-size: 16px;
+  color: #687c7a;
+  text-align: right;
+}
+
+.pid-row {
+  width: 748px;
+  height: 42px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adjust-row {
+  margin-top: 4px;
+}
+
+.pid-button {
+  width: 96px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5ece9;
+  border-radius: 6px;
+}
+
+.pid-button-small {
+  width: 86px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5ece9;
+  border-radius: 6px;
+}
+
+.pid-button-apply {
+  width: 108px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f6b5f;
+  border-radius: 6px;
+}
+
+.pid-button-text {
+  font-size: 18px;
+  color: #172726;
+  text-align: center;
+}
+
+.pid-button-text-light {
+  font-size: 18px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.pid-field {
+  width: 520px;
+  height: 38px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #f5f8f7;
+  border-radius: 6px;
+}
+
+.pid-label {
+  width: 360px;
+  font-size: 18px;
+  color: #435856;
+}
+
+.pid-value {
+  width: 120px;
+  font-size: 22px;
+  color: #102321;
+  text-align: right;
+}
+
+.footer {
+  width: 768px;
+  height: 42px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.message {
+  width: 620px;
+  font-size: 18px;
+  color: #7a4835;
+}
+
+.refresh {
+  width: 116px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  background-color: #d7e4df;
+  border-radius: 6px;
+}
+
+.refresh-text {
+  font-size: 18px;
+  color: #172726;
+  text-align: center;
+}
