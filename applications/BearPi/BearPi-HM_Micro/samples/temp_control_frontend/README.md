@@ -30,14 +30,48 @@ Supported commands are the backend protocol commands exposed by `control`:
 
 ## Build and install
 
-Build this folder with the OpenHarmony/DevEco JS toolchain as an ACE Lite JS
-application, then install the generated HAP on the board:
+This app is built through the OpenHarmony HAP build templates, not by manually
+zipping the source tree. The build depends on the JS HAP toolchain under:
+
+```text
+prebuilts/sdk/js-loader/build-tools/ace-loader
+prebuilts/build-tools/common/nodejs/node-v12.18.4-<host>-x64
+prebuilts/build-tools/common/restool/restool
+```
+
+Build only this HAP target from the repository root:
 
 ```sh
+hb build -T //applications/BearPi/BearPi-HM_Micro/samples/temp_control_frontend:temp_control_hap
+```
+
+If the JS HAP toolchain is missing, prepare it first from the Linux build
+environment:
+
+```sh
+bash scripts/prepare_tempcontrol_hap_env.sh
+```
+
+The generated HAP path is:
+
+```text
+out/<product>/system/internal/TempControl.hap
+```
+
+Copy it to the board storage as `/storage/TempControl.hap`, then install it from
+the board shell:
+
+```sh
+cd /vendor/hap_tools
 ./bm set -s disable
 ./bm set -d enable
-./bm install -p TempControl_1.0.0.hap
+./bm uninstall -n com.bearpi.tempcontrol
+./bm install -p /storage/TempControl.hap
+./bm dump -n com.bearpi.tempcontrol
 ```
 
 The `control` backend should be running on the same board and listening on
 `127.0.0.1:5000`.
+
+Launch the app from the Launcher icon. The BearPi image used during bring-up
+does not provide the standard `aa` command-line launcher.

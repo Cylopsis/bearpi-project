@@ -114,6 +114,34 @@
           }
         },
         {
+          "component": "bearpi_tempcontrol_app",
+          "description": "BearPi PID temperature control JS HAP.",
+          "optional": "true",
+          "dirs": [
+            "applications/BearPi/BearPi-HM_Micro/samples/temp_control_frontend"
+          ],
+          "targets": [
+            "//applications/BearPi/BearPi-HM_Micro/samples/temp_control_frontend:temp_control_hap"
+          ],
+          "rom": "",
+          "ram": "",
+          "output": [
+            "TempControl.hap"
+          ],
+          "adapted_kernel": [ "liteos_a" ],
+          "features": [],
+          "deps": {
+            "third_party": [],
+            "kernel_special": {},
+            "board_special": {},
+            "components": [
+              "appexecfwk_lite",
+              "ace_engine_lite",
+              "utils_base"
+            ]
+          }
+        },
+        {
           "component": "bearpi_sample_communication",
           "description": "Communication related samples.",
           "optional": "true",

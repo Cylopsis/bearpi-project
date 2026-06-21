@@ -1,17 +1,17 @@
 import app from '@system.app';
 
 const PARAMS = [
-  { label: '箱体外环 Kp', command: 'tune box kp ', key: 'box_kp' },
-  { label: '箱体外环 Ki', command: 'tune box ki ', key: 'box_ki' },
-  { label: '箱体外环 Kd', command: 'tune box kd ', key: 'box_kd' },
-  { label: 'PTC 内环 Kp', command: 'tune heat kp ', key: 'heat_kp' },
-  { label: 'PTC 内环 Ki', command: 'tune heat ki ', key: 'heat_ki' },
-  { label: 'PTC 内环 Kd', command: 'tune heat kd ', key: 'heat_kd' },
-  { label: '制冷风扇 Kp', command: 'tune cool kp ', key: 'cool_kp' },
-  { label: '制冷风扇 Ki', command: 'tune cool ki ', key: 'cool_ki' },
-  { label: '回差温度', command: 'tune hys ', key: 'hysteresis_band' },
-  { label: '保温偏置', command: 'tune warmbias ', key: 'warming_bias' },
-  { label: '升温偏置', command: 'tune heatbias ', key: 'heating_bias' }
+  { label: 'Box loop Kp', command: 'tune box kp ', key: 'box_kp' },
+  { label: 'Box loop Ki', command: 'tune box ki ', key: 'box_ki' },
+  { label: 'Box loop Kd', command: 'tune box kd ', key: 'box_kd' },
+  { label: 'PTC loop Kp', command: 'tune heat kp ', key: 'heat_kp' },
+  { label: 'PTC loop Ki', command: 'tune heat ki ', key: 'heat_ki' },
+  { label: 'PTC loop Kd', command: 'tune heat kd ', key: 'heat_kd' },
+  { label: 'Cool fan Kp', command: 'tune cool kp ', key: 'cool_kp' },
+  { label: 'Cool fan Ki', command: 'tune cool ki ', key: 'cool_ki' },
+  { label: 'Hysteresis', command: 'tune hys ', key: 'hysteresis_band' },
+  { label: 'Warm bias', command: 'tune warmbias ', key: 'warming_bias' },
+  { label: 'Heat bias', command: 'tune heatbias ', key: 'heating_bias' }
 ];
 
 export default {
@@ -25,8 +25,8 @@ export default {
     controlState: '--',
     ptcState: '--',
     hysteresisBand: '--',
-    connectionText: '未连接',
-    updatedAt: '等待数据',
+    connectionText: 'Disconnected',
+    updatedAt: 'Waiting',
     message: '',
     paramIndex: 0,
     selectedParamLabel: PARAMS[0].label,
@@ -54,12 +54,17 @@ export default {
     if (this.busy && command === 'get_status') {
       return;
     }
+    if (!app || !app.tempcontrol) {
+      this.connectionText = 'Bridge missing';
+      this.message = 'tempcontrol API missing';
+      return;
+    }
     this.busy = true;
     app.tempcontrol({
       command: command,
       success: (res) => {
         this.busy = false;
-        this.connectionText = '已连接';
+        this.connectionText = 'Connected';
         this.message = '';
         if (onSuccess) {
           onSuccess(res.response);
@@ -67,8 +72,8 @@ export default {
       },
       fail: (err) => {
         this.busy = false;
-        this.connectionText = '连接失败';
-        this.message = err && err.message ? err.message : '命令失败';
+        this.connectionText = 'Connect failed';
+        this.message = err && err.message ? err.message : 'Command failed';
       },
       complete: () => {}
     });
@@ -80,7 +85,7 @@ export default {
       try {
         next = JSON.parse(response);
       } catch (err) {
-        this.message = '状态数据解析失败';
+        this.message = 'Status parse failed';
         return;
       }
       this.status = next;
@@ -93,7 +98,7 @@ export default {
       this.controlState = next.control_state || '--';
       this.ptcState = next.ptc_state || '--';
       this.hysteresisBand = this.format(next.hysteresis_band, 1);
-      this.updatedAt = '刚刚更新';
+      this.updatedAt = 'Updated';
       this.syncSelectedParam();
     });
   },
@@ -111,7 +116,7 @@ export default {
   applyTarget() {
     const value = this.format(this.pendingTarget, 1);
     this.sendCommand('tune target ' + value, () => {
-      this.message = '目标温度已设定';
+      this.message = 'Target applied';
       this.refreshStatus();
     });
   },
@@ -155,7 +160,7 @@ export default {
     const item = PARAMS[this.paramIndex];
     const value = this.format(Number(this.selectedParamValue), 2);
     this.sendCommand(item.command + value, () => {
-      this.message = item.label + ' 已应用';
+      this.message = item.label + ' applied';
       this.refreshStatus();
     });
   },

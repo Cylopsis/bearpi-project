@@ -1,0 +1,28 @@
+# Copyright (c) 2026 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0.
+
+import("//build/ohos.gni")
+
+ohos_hap("temp_control_hap") {
+  hap_profile = "entry/src/main/config.json"
+
+  deps = [
+    ":temp_control_js_assets",
+    ":temp_control_resources",
+  ]
+
+  hap_name = "TempControl"
+  final_hap_path = "$root_out_dir/system/internal/TempControl.hap"
+  subsystem_name = "applications"
+  part_name = "bearpi_tempcontrol_app"
+  js2abc = false
+}
+
+ohos_js_assets("temp_control_js_assets") {
+  source_dir = "entry/src/main/js/default"
+}
+
+ohos_resources("temp_control_resources") {
+  sources = [ "entry/src/main/resources" ]
+  hap_profile = "entry/src/main/config.json"
+}

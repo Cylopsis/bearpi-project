@@ -20,10 +20,12 @@
   "module": {
     "abilities": [
       {
+        "icon": "$media:icon_small",
         "label": "TempControl",
         "name": "default",
         "type": "page",
-        "homeAbility": false
+        "homeAbility": false,
+        "visible": true
       }
     ],
     "deviceType": [
@@ -39,7 +41,11 @@
         "pages": [
           "pages/index/index"
         ],
-        "name": "default"
+        "name": "default",
+        "window": {
+          "designWidth": 454,
+          "autoDesignWidth": false
+        }
       }
     ]
   }
