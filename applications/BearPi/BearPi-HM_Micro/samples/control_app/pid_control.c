@@ -11,6 +11,8 @@
  * Shared state
  ******************************************************************************/
 volatile float current_temperature = 25.0f;
+volatile float box_pressure        = 0.0f;
+volatile float box_humidity        = 0.0f;
 volatile float target_temperature  = 40.0f;
 volatile float ptc_temperature     = 25.0f;
 volatile float ptc_target_temp     = 40.0f;
@@ -115,13 +117,6 @@ static float ntc_adc_to_temp(uint32_t adc_val)
     float ln_r = logf(r_ntc / NTC_R25);
     float t_kelvin = 1.0f / ((1.0f / 298.15f) + (ln_r / NTC_B_VALUE));
     return t_kelvin - 273.15f;
-}
-
-/* LM35: 10 mV/C linear, output on PB0 */
-static float lm35_adc_to_temp(uint32_t adc_val)
-{
-    float voltage_mv = (float)adc_val * ADC_REF_VOLTAGE / ADC_RESOLUTION;
-    return voltage_mv / LM35_MV_PER_DEG;
 }
 
 /*******************************************************************************
@@ -258,9 +253,11 @@ int main(void)
     remote_start();
 
     while (1) {
-        uint32_t adc_value = 0;
-        if (hw_adc_read(ADC_CH_LM35, &adc_value) == 0) {
-            current_temperature = lm35_adc_to_temp(adc_value);
+        float box_temp = 0.0f, box_press = 0.0f, box_hum = 0.0f;
+        if (hw_box_env_read(&box_temp, &box_press, &box_hum) == 0) {
+            current_temperature = box_temp;   /* BME280 (replaces LM35) */
+            box_pressure        = box_press;
+            box_humidity        = box_hum;
         }
 
         control_state_t previous_state = control_state;

@@ -44,11 +44,19 @@ static int8_t   dig_H6;
 static int32_t  t_fine;        /* 温度补偿中间量, 供压力/湿度使用 */
 static uint16_t g_addr = BME280_ADDR_LOW;
 
+/*
+ * 注意: 本平台 HDF I2C 驱动 (stm32mp1_i2c.c) 直接把 msg.addr 传给
+ * HAL_I2C_Master_Transmit, 而 STM32 HAL 要求的是"已左移的 8 位地址"
+ * (读时驱动内部再 +1 置读位)。因此这里必须传 7 位地址左移一位的值,
+ * 与已工作的 E53 驱动 (BH1750_Addr<<1) 保持一致。
+ */
+#define I2C_HW_ADDR(a) ((uint16_t)((a) << 1))
+
 /* 写一个寄存器: [reg, val] */
 static int BmeWrite(DevHandle h, uint8_t reg, uint8_t val)
 {
     uint8_t buf[2] = { reg, val };
-    struct I2cMsg msg = { .addr = g_addr, .buf = buf, .len = 2, .flags = 0 };
+    struct I2cMsg msg = { .addr = I2C_HW_ADDR(g_addr), .buf = buf, .len = 2, .flags = 0 };
     return (I2cTransfer(h, &msg, 1) == 1) ? 0 : -1;
 }
 
@@ -56,8 +64,8 @@ static int BmeWrite(DevHandle h, uint8_t reg, uint8_t val)
 static int BmeRead(DevHandle h, uint8_t reg, uint8_t *data, uint16_t len)
 {
     struct I2cMsg msgs[2];
-    msgs[0].addr = g_addr; msgs[0].buf = &reg; msgs[0].len = 1; msgs[0].flags = 0;
-    msgs[1].addr = g_addr; msgs[1].buf = data; msgs[1].len = len; msgs[1].flags = I2C_FLAG_READ;
+    msgs[0].addr = I2C_HW_ADDR(g_addr); msgs[0].buf = &reg; msgs[0].len = 1; msgs[0].flags = 0;
+    msgs[1].addr = I2C_HW_ADDR(g_addr); msgs[1].buf = data; msgs[1].len = len; msgs[1].flags = I2C_FLAG_READ;
     return (I2cTransfer(h, msgs, 2) == 2) ? 0 : -1;
 }
 
@@ -153,9 +161,11 @@ static int Bme280Probe(DevHandle h)
     int i;
     for (i = 0; i < 2; i++) {
         uint8_t id = 0;
+        int ret;
         g_addr = addrs[i];
-        if (BmeRead(h, REG_ID, &id, 1) == 0 &&
-            (id == BME280_CHIP_ID || id == BMP280_CHIP_ID)) {
+        ret = BmeRead(h, REG_ID, &id, 1);
+        printf("[bme280] probe addr 0x%02x: read_ret=%d id=0x%02x\r\n", g_addr, ret, id);
+        if (ret == 0 && (id == BME280_CHIP_ID || id == BMP280_CHIP_ID)) {
             printf("[bme280] found chip id=0x%02x at addr 0x%02x\r\n", id, g_addr);
             return id;
         }

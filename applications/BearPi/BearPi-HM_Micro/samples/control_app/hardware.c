@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include "hdf_sbuf.h"
 #include "hdf_io_service_if.h"
+#include "bme280.h"
 
 /* Service names (must match the HDF driver serviceName fields) */
 #define ADC_SERVICE     "hdf_adc_user"
@@ -38,6 +39,10 @@ int hw_init(void)
         printf("[hw] bind %s failed\n", STATE_SERVICE);
         return -1;
     }
+    if (bme280_init() != 0) {
+        printf("[hw] bme280 init failed\n");
+        return -1;
+    }
     printf("[hw] all services bound\n");
     return 0;
 }
@@ -47,6 +52,7 @@ void hw_deinit(void)
     if (g_adcServ != NULL)   { HdfIoServiceRecycle(g_adcServ);   g_adcServ = NULL; }
     if (g_pwmServ != NULL)   { HdfIoServiceRecycle(g_pwmServ);   g_pwmServ = NULL; }
     if (g_stateServ != NULL) { HdfIoServiceRecycle(g_stateServ); g_stateServ = NULL; }
+    bme280_deinit();
 }
 
 /* Number of raw samples averaged per ADC read to suppress noise. */
@@ -100,6 +106,14 @@ int hw_adc_read(uint32_t channel, uint32_t *val)
     }
     *val = (uint32_t)(acc / got);
     return 0;
+}
+
+int hw_box_env_read(float *temp_c, float *press_hpa, float *humidity_rh)
+{
+    pthread_mutex_lock(&g_hwLock);
+    int ret = bme280_read(temp_c, press_hpa, humidity_rh);
+    pthread_mutex_unlock(&g_hwLock);
+    return ret;
 }
 
 int hw_pwm_set_duty(uint32_t percent)
