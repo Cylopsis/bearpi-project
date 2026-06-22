@@ -19,6 +19,8 @@ export default {
     currentTemperature: '--',
     targetTemperature: '40.0',
     pendingTarget: 40,
+    targetDirty: false,
+    paramDirty: false,
     ptcTemperature: '--',
     ptcTargetTemperature: '--',
     currentPwm: '--',
@@ -90,8 +92,10 @@ export default {
       }
       this.status = next;
       this.currentTemperature = this.format(next.current_temperature, 1);
-      this.targetTemperature = this.format(next.target_temperature, 1);
-      this.pendingTarget = Number(next.target_temperature);
+      if (!this.targetDirty) {
+        this.targetTemperature = this.format(next.target_temperature, 1);
+        this.pendingTarget = Number(next.target_temperature);
+      }
       this.ptcTemperature = this.format(next.current_ptc_temperature, 1);
       this.ptcTargetTemperature = this.format(next.ptc_target_temperature, 1);
       this.currentPwm = this.format(Number(next.current_pwm) * 100, 0);
@@ -106,28 +110,33 @@ export default {
   targetDown() {
     this.pendingTarget = this.clamp(Number(this.pendingTarget) - 1, 20, 90);
     this.targetTemperature = this.format(this.pendingTarget, 1);
+    this.targetDirty = true;
   },
 
   targetUp() {
     this.pendingTarget = this.clamp(Number(this.pendingTarget) + 1, 20, 90);
     this.targetTemperature = this.format(this.pendingTarget, 1);
+    this.targetDirty = true;
   },
 
   applyTarget() {
     const value = this.format(this.pendingTarget, 1);
     this.sendCommand('tune target ' + value, () => {
       this.message = 'Target applied';
+      this.targetDirty = false;
       this.refreshStatus();
     });
   },
 
   selectPrevParam() {
     this.paramIndex = (this.paramIndex + PARAMS.length - 1) % PARAMS.length;
+    this.paramDirty = false;
     this.syncSelectedParam();
   },
 
   selectNextParam() {
     this.paramIndex = (this.paramIndex + 1) % PARAMS.length;
+    this.paramDirty = false;
     this.syncSelectedParam();
   },
 
@@ -154,6 +163,7 @@ export default {
     }
     value = this.clamp(value + delta, 0, 120);
     this.selectedParamValue = this.format(value, 2);
+    this.paramDirty = true;
   },
 
   applyParam() {
@@ -161,6 +171,7 @@ export default {
     const value = this.format(Number(this.selectedParamValue), 2);
     this.sendCommand(item.command + value, () => {
       this.message = item.label + ' applied';
+      this.paramDirty = false;
       this.refreshStatus();
     });
   },
@@ -168,7 +179,7 @@ export default {
   syncSelectedParam() {
     const item = PARAMS[this.paramIndex];
     this.selectedParamLabel = item.label;
-    if (this.status && this.status[item.key] !== undefined) {
+    if (!this.paramDirty && this.status && this.status[item.key] !== undefined) {
       this.selectedParamValue = this.format(this.status[item.key], 2);
     }
   },

@@ -152,13 +152,26 @@ static bool IsAllowedTempControlCommand(const char *command)
     return false;
 }
 
-static int TempControlExchange(const char *command, char *response, size_t responseLen, char *error, size_t errorLen)
+// Persistent connection to the temp control backend. The socket is opened once and
+// reused across commands; it is closed (and lazily reopened) only when an exchange
+// fails. Access is serialized by g_tempControlLock so concurrent JS calls cannot
+// interleave their request/response on the shared socket.
+static int g_tempControlSock = -1;
+static pthread_mutex_t g_tempControlLock = PTHREAD_MUTEX_INITIALIZER;
+
+static void CloseTempControlSock()
 {
-    if (response == nullptr || responseLen == 0 || error == nullptr || errorLen == 0) {
-        return -1;
+    if (g_tempControlSock >= 0) {
+        close(g_tempControlSock);
+        g_tempControlSock = -1;
     }
-    response[0] = '\0';
-    error[0] = '\0';
+}
+
+static int EnsureTempControlConnected(char *error, size_t errorLen)
+{
+    if (g_tempControlSock >= 0) {
+        return 0;
+    }
 
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
@@ -188,20 +201,35 @@ static int TempControlExchange(const char *command, char *response, size_t respo
         return -1;
     }
 
+    g_tempControlSock = sock;
+    return 0;
+}
+
+// Single attempt over the persistent socket. On any failure the socket is closed so
+// the next attempt reconnects; on success the socket is kept open for reuse.
+static int TempControlExchangeOnce(const char *command, char *response, size_t responseLen,
+    char *error, size_t errorLen)
+{
+    response[0] = '\0';
+
+    if (EnsureTempControlConnected(error, errorLen) != 0) {
+        return -1;
+    }
+
     char line[TEMP_CONTROL_CMD_MAX + 3];
     int lineLen = snprintf(line, sizeof(line), "%s\r\n", command);
     if (lineLen <= 0 || lineLen >= static_cast<int>(sizeof(line))) {
         (void)snprintf(error, errorLen, "command too long");
-        close(sock);
+        CloseTempControlSock();
         return -1;
     }
 
     int sent = 0;
     while (sent < lineLen) {
-        int ret = send(sock, line + sent, lineLen - sent, 0);
+        int ret = send(g_tempControlSock, line + sent, lineLen - sent, 0);
         if (ret <= 0) {
             (void)snprintf(error, errorLen, "send failed: %d", errno);
-            close(sock);
+            CloseTempControlSock();
             return -1;
         }
         sent += ret;
@@ -210,10 +238,10 @@ static int TempControlExchange(const char *command, char *response, size_t respo
     size_t used = 0;
     while (used + 1 < responseLen) {
         char ch;
-        int ret = recv(sock, &ch, 1, 0);
+        int ret = recv(g_tempControlSock, &ch, 1, 0);
         if (ret <= 0) {
             (void)snprintf(error, errorLen, "recv failed: %d", errno);
-            close(sock);
+            CloseTempControlSock();
             return -1;
         }
         if (ch == '\n') {
@@ -224,13 +252,33 @@ static int TempControlExchange(const char *command, char *response, size_t respo
         }
     }
     response[used] = '\0';
-    close(sock);
 
     if (used == 0) {
         (void)snprintf(error, errorLen, "empty response");
+        CloseTempControlSock();
         return -1;
     }
     return 0;
+}
+
+// Reuses a single persistent connection to the temp control backend. If the first
+// attempt fails (e.g. the backend restarted or closed an idle connection), the socket
+// is dropped and a single reconnect+retry is performed before giving up.
+static int TempControlExchange(const char *command, char *response, size_t responseLen, char *error, size_t errorLen)
+{
+    if (response == nullptr || responseLen == 0 || error == nullptr || errorLen == 0) {
+        return -1;
+    }
+    response[0] = '\0';
+    error[0] = '\0';
+
+    pthread_mutex_lock(&g_tempControlLock);
+    int ret = TempControlExchangeOnce(command, response, responseLen, error, errorLen);
+    if (ret != 0) {
+        ret = TempControlExchangeOnce(command, response, responseLen, error, errorLen);
+    }
+    pthread_mutex_unlock(&g_tempControlLock);
+    return ret;
 }
 
 static void ReleaseTempControlParams(TempControlParams *params)
