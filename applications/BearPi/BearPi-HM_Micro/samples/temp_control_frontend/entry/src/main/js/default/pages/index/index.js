@@ -17,15 +17,17 @@ export default {
     ptcState: '--',
     hysteresisBand: '--',
     connectionText: '未连接',
-    updatedAt: '等待中',
     message: '',
     status: null,
     timer: null,
     busy: false,
-    chartData: [{ strokeColor: '#2f6b5f', fillColor: '#2f6b5f', data: [45] }],
+    chartData: [
+      { strokeColor: '#2f6b5f', fillColor: '#2f6b5f', data: [45] },
+      { strokeColor: '#c0504d', fillColor: '#c0504d', data: [45] }
+    ],
     chartOptions: {
       xAxis: { min: 0, max: 60, display: false },
-      yAxis: { min: 20, max: 70, axisTick: 5, display: true },
+      yAxis: { min: 20, max: 70, axisTick: 5, display: false },
       series: { loop: { display: true, margin: 1 } }
     }
   },
@@ -84,7 +86,7 @@ export default {
       }
       this.status = next;
       this.currentTemperature = this.format(next.current_temperature, 1);
-      this.pushTemp(Number(next.current_temperature));
+      this.pushChart(Number(next.current_temperature), Number(next.current_ptc_temperature));
       this.appliedTarget = this.format(next.target_temperature, 1);
       if (!this.targetDirty) {
         this.pendingTarget = Number(next.target_temperature);
@@ -99,7 +101,6 @@ export default {
       this.controlState = this.mapControlState(next.control_state);
       this.ptcState = this.mapPtcState(next.ptc_state);
       this.hysteresisBand = this.format(next.hysteresis_band, 1);
-      this.updatedAt = '已更新';
     });
   },
 
@@ -127,12 +128,15 @@ export default {
     });
   },
 
-  pushTemp(value) {
-    if (isNaN(value)) {
+  pushChart(box, ptc) {
+    if (!(this.$refs && this.$refs.chart && this.$refs.chart.append)) {
       return;
     }
-    if (this.$refs && this.$refs.chart && this.$refs.chart.append) {
-      this.$refs.chart.append({ serial: 0, data: [value] });
+    if (!isNaN(box)) {
+      this.$refs.chart.append({ serial: 0, data: [box] });
+    }
+    if (!isNaN(ptc)) {
+      this.$refs.chart.append({ serial: 1, data: [ptc] });
     }
   },
 

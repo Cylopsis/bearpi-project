@@ -71,12 +71,22 @@
   </div>
 
   <div class="history">
-    <text class="history-title">箱体温度历史(近 60s)</text>
-    <chart class="history-chart" type="line" ref="chart" datasets="{{chartData}}" options="{{chartOptions}}" />
+    <div class="history-head">
+      <text class="history-title">温度趋势(近 60s)</text>
+      <text class="legend-box">■ 箱体</text>
+      <text class="legend-ptc">■ PTC</text>
+    </div>
+    <div class="chart-row">
+      <div class="yaxis-labels">
+        <text class="yaxis-tick">70</text>
+        <text class="yaxis-tick">45</text>
+        <text class="yaxis-tick">20</text>
+      </div>
+      <chart class="history-chart" type="line" ref="chart" datasets="{{chartData}}" options="{{chartOptions}}" />
+    </div>
   </div>
 
   <div class="footer">
-    <text class="foot-updated">{{updatedAt}}</text>
     <text class="foot-message">{{message}}</text>
   </div>
 </div>

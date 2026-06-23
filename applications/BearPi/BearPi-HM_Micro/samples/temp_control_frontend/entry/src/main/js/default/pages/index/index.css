@@ -145,7 +145,7 @@
 
 .status-grid {
   width: 768px;
-  height: 116px;
+  height: 104px;
   flex-direction: row;
   flex-wrap: wrap;
   margin-top: 10px;
@@ -153,7 +153,7 @@
 
 .status-cell {
   width: 180px;
-  height: 52px;
+  height: 48px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -180,7 +180,7 @@
 
 .history {
   width: 768px;
-  height: 112px;
+  height: 134px;
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 6px;
@@ -188,36 +188,73 @@
   margin-top: 10px;
 }
 
-.history-title {
+.history-head {
   width: 752px;
-  height: 18px;
+  height: 20px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.history-title {
+  width: 560px;
   font-size: 15px;
   color: #687c7a;
 }
 
-.history-chart {
+.legend-box {
+  width: 86px;
+  font-size: 14px;
+  color: #2f6b5f;
+  text-align: right;
+}
+
+.legend-ptc {
+  width: 86px;
+  font-size: 14px;
+  color: #c0504d;
+  text-align: right;
+}
+
+.chart-row {
   width: 752px;
-  height: 72px;
+  height: 96px;
+  flex-direction: row;
+  align-items: center;
   margin-top: 2px;
+}
+
+.yaxis-labels {
+  width: 30px;
+  height: 94px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-right: 4px;
+}
+
+.yaxis-tick {
+  width: 28px;
+  font-size: 13px;
+  color: #687c7a;
+  text-align: right;
+}
+
+.history-chart {
+  width: 716px;
+  height: 94px;
 }
 
 .footer {
   width: 768px;
-  height: 24px;
+  height: 20px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-top: 8px;
 }
 
-.foot-updated {
-  width: 140px;
-  font-size: 15px;
-  color: #687c7a;
-}
-
 .foot-message {
-  width: 600px;
+  width: 752px;
   font-size: 15px;
   color: #7a4835;
   text-align: right;
