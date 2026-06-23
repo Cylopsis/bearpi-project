@@ -72,7 +72,7 @@
 
   <div class="history">
     <text class="history-title">箱体温度历史(近 60s)</text>
-    <chart class="history-chart" type="line" datasets="{{chartData}}" options="{{chartOptions}}" />
+    <chart class="history-chart" type="line" ref="chart" datasets="{{chartData}}" options="{{chartOptions}}" />
   </div>
 
   <div class="footer">

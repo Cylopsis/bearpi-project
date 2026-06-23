@@ -22,23 +22,11 @@ export default {
     status: null,
     timer: null,
     busy: false,
-    tempHistory: [],
-    chartData: [{ strokeColor: '#2f6b5f', fillColor: '#cfe5dd', gradient: true, data: [] }],
+    chartData: [{ strokeColor: '#2f6b5f', fillColor: '#2f6b5f', data: [45] }],
     chartOptions: {
       xAxis: { min: 0, max: 60, display: false },
-      yAxis: { min: 0, max: 100, axisTick: 5, display: true },
-      series: {
-        lineStyle: { width: 2 },
-        smooth: true,
-        headPoint: {
-          shape: 'circle',
-          size: 5,
-          strokeWidth: 2,
-          fillColor: '#2f6b5f',
-          strokeColor: '#2f6b5f',
-          display: true
-        }
-      }
+      yAxis: { min: 20, max: 70, axisTick: 5, display: true },
+      series: { loop: { display: true, margin: 1 } }
     }
   },
 
@@ -143,16 +131,9 @@ export default {
     if (isNaN(value)) {
       return;
     }
-    this.tempHistory.push(value);
-    while (this.tempHistory.length > 60) {
-      this.tempHistory.shift();
+    if (this.$refs && this.$refs.chart && this.$refs.chart.append) {
+      this.$refs.chart.append({ serial: 0, data: [value] });
     }
-    this.chartData = [{
-      strokeColor: '#2f6b5f',
-      fillColor: '#cfe5dd',
-      gradient: true,
-      data: this.tempHistory.slice()
-    }];
   },
 
   mapControlState(state) {
