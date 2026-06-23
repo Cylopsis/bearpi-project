@@ -1,0 +1,13 @@
+{
+  "appID": "com.bearpi.tempcontrol",
+  "appName": "TempControl",
+  "versionName": "1.0.0",
+  "versionCode": 1000000,
+  "minPlatformVersion": 6,
+  "pages": [
+    "pages/index/index"
+  ],
+  "deviceType": [
+    "smartVision"
+  ]
+}

@@ -15,20 +15,37 @@
 
 #include "app_module.h"
 #include "ace_log.h"
+#include "js_async_work.h"
 #include "js_app_context.h"
 #ifdef FEATURE_SCREEN_ON_VISIBLE
-#include "js_async_work.h"
 #include "product_adapter.h"
 #endif
 
 #include "hdf_sbuf.h"
 #include "hdf_io_service_if.h"
 
+#include <arpa/inet.h>
+#include <errno.h>
+#include <netinet/in.h>
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <unistd.h>
+
 #define E53_IS1_SERVICE "hdf_e53_is1"
 #define E53_SF1_SERVICE "hdf_e53_sf1"
 #define E53_SC2_SERVICE "hdf_e53_sc2"
 #define E53_SC1_SERVICE "hdf_e53_sc1"
 #define E53_IA1_SERVICE "hdf_e53_ia1"
+
+#define TEMP_CONTROL_HOST "127.0.0.1"
+#define TEMP_CONTROL_PORT 5000
+#define TEMP_CONTROL_TIMEOUT_MS 500
+#define TEMP_CONTROL_CMD_MAX 128
+#define TEMP_CONTROL_RESPONSE_MAX 1024
 
 namespace OHOS {
 namespace ACELite {
@@ -53,6 +70,330 @@ struct AsyncParams : public MemoryHeap {
     JSIValue context;
 };
 #endif
+
+struct TempControlParams : public MemoryHeap {
+    ACE_DISALLOW_COPY_AND_MOVE(TempControlParams);
+    TempControlParams() : context(nullptr), success(nullptr), fail(nullptr), complete(nullptr), ok(false)
+    {
+        command[0] = '\0';
+        response[0] = '\0';
+        error[0] = '\0';
+    }
+
+    JSIValue context;
+    JSIValue success;
+    JSIValue fail;
+    JSIValue complete;
+    char command[TEMP_CONTROL_CMD_MAX];
+    char response[TEMP_CONTROL_RESPONSE_MAX];
+    char error[128];
+    bool ok;
+};
+
+static bool IsNumericToken(const char *value)
+{
+    if (value == nullptr || value[0] == '\0') {
+        return false;
+    }
+    char *end = nullptr;
+    errno = 0;
+    (void)strtod(value, &end);
+    return (errno == 0 && end != value && end != nullptr && *end == '\0');
+}
+
+static bool IsAllowedTuneCommand(int argc, char **argv)
+{
+    if (argc == 3) {
+        if (!IsNumericToken(argv[2])) {
+            return false;
+        }
+        return strcmp(argv[1], "target") == 0 || strcmp(argv[1], "hys") == 0 ||
+               strcmp(argv[1], "warmbias") == 0 || strcmp(argv[1], "heatbias") == 0;
+    }
+    if (argc != 4 || !IsNumericToken(argv[3])) {
+        return false;
+    }
+    if (strcmp(argv[1], "box") == 0 || strcmp(argv[1], "heat") == 0) {
+        return strcmp(argv[2], "kp") == 0 || strcmp(argv[2], "ki") == 0 || strcmp(argv[2], "kd") == 0;
+    }
+    if (strcmp(argv[1], "cool") == 0) {
+        return strcmp(argv[2], "kp") == 0 || strcmp(argv[2], "ki") == 0;
+    }
+    return false;
+}
+
+static bool IsAllowedTempControlCommand(const char *command)
+{
+    if (command == nullptr || command[0] == '\0' || strlen(command) >= TEMP_CONTROL_CMD_MAX - 3) {
+        return false;
+    }
+    char copy[TEMP_CONTROL_CMD_MAX];
+    if (snprintf(copy, sizeof(copy), "%s", command) < 0) {
+        return false;
+    }
+
+    char *argv[5] = { nullptr };
+    int argc = 0;
+    char *saveptr = nullptr;
+    char *token = strtok_r(copy, " ", &saveptr);
+    while (token != nullptr && argc < 5) {
+        argv[argc++] = token;
+        token = strtok_r(nullptr, " ", &saveptr);
+    }
+    if (token != nullptr || argc == 0) {
+        return false;
+    }
+    if (argc == 1) {
+        return strcmp(argv[0], "get_status") == 0;
+    }
+    if (strcmp(argv[0], "tune") == 0) {
+        return IsAllowedTuneCommand(argc, argv);
+    }
+    return false;
+}
+
+// Persistent connection to the temp control backend. The socket is opened once and
+// reused across commands; it is closed (and lazily reopened) only when an exchange
+// fails. Access is serialized by g_tempControlLock so concurrent JS calls cannot
+// interleave their request/response on the shared socket.
+static int g_tempControlSock = -1;
+static pthread_mutex_t g_tempControlLock = PTHREAD_MUTEX_INITIALIZER;
+
+static void CloseTempControlSock()
+{
+    if (g_tempControlSock >= 0) {
+        close(g_tempControlSock);
+        g_tempControlSock = -1;
+    }
+}
+
+static int EnsureTempControlConnected(char *error, size_t errorLen)
+{
+    if (g_tempControlSock >= 0) {
+        return 0;
+    }
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0) {
+        (void)snprintf(error, errorLen, "socket failed: %d", errno);
+        return -1;
+    }
+
+    struct timeval timeout = {
+        TEMP_CONTROL_TIMEOUT_MS / 1000,
+        (TEMP_CONTROL_TIMEOUT_MS % 1000) * 1000
+    };
+    (void)setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+    (void)setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
+
+    struct sockaddr_in addr;
+    (void)memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(TEMP_CONTROL_PORT);
+    if (inet_pton(AF_INET, TEMP_CONTROL_HOST, &addr.sin_addr) <= 0) {
+        (void)snprintf(error, errorLen, "invalid temp control host");
+        close(sock);
+        return -1;
+    }
+    if (connect(sock, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr)) < 0) {
+        (void)snprintf(error, errorLen, "connect failed: %d", errno);
+        close(sock);
+        return -1;
+    }
+
+    g_tempControlSock = sock;
+    return 0;
+}
+
+// Single attempt over the persistent socket. On any failure the socket is closed so
+// the next attempt reconnects; on success the socket is kept open for reuse.
+static int TempControlExchangeOnce(const char *command, char *response, size_t responseLen,
+    char *error, size_t errorLen)
+{
+    response[0] = '\0';
+
+    if (EnsureTempControlConnected(error, errorLen) != 0) {
+        return -1;
+    }
+
+    char line[TEMP_CONTROL_CMD_MAX + 3];
+    int lineLen = snprintf(line, sizeof(line), "%s\r\n", command);
+    if (lineLen <= 0 || lineLen >= static_cast<int>(sizeof(line))) {
+        (void)snprintf(error, errorLen, "command too long");
+        CloseTempControlSock();
+        return -1;
+    }
+
+    int sent = 0;
+    while (sent < lineLen) {
+        int ret = send(g_tempControlSock, line + sent, lineLen - sent, 0);
+        if (ret <= 0) {
+            (void)snprintf(error, errorLen, "send failed: %d", errno);
+            CloseTempControlSock();
+            return -1;
+        }
+        sent += ret;
+    }
+
+    size_t used = 0;
+    while (used + 1 < responseLen) {
+        char ch;
+        int ret = recv(g_tempControlSock, &ch, 1, 0);
+        if (ret <= 0) {
+            (void)snprintf(error, errorLen, "recv failed: %d", errno);
+            CloseTempControlSock();
+            return -1;
+        }
+        if (ch == '\n') {
+            break;
+        }
+        if (ch != '\r') {
+            response[used++] = ch;
+        }
+    }
+    response[used] = '\0';
+
+    if (used == 0) {
+        (void)snprintf(error, errorLen, "empty response");
+        CloseTempControlSock();
+        return -1;
+    }
+    return 0;
+}
+
+// Reuses a single persistent connection to the temp control backend. If the first
+// attempt fails (e.g. the backend restarted or closed an idle connection), the socket
+// is dropped and a single reconnect+retry is performed before giving up.
+static int TempControlExchange(const char *command, char *response, size_t responseLen, char *error, size_t errorLen)
+{
+    if (response == nullptr || responseLen == 0 || error == nullptr || errorLen == 0) {
+        return -1;
+    }
+    response[0] = '\0';
+    error[0] = '\0';
+
+    pthread_mutex_lock(&g_tempControlLock);
+    int ret = TempControlExchangeOnce(command, response, responseLen, error, errorLen);
+    if (ret != 0) {
+        ret = TempControlExchangeOnce(command, response, responseLen, error, errorLen);
+    }
+    pthread_mutex_unlock(&g_tempControlLock);
+    return ret;
+}
+
+static void ReleaseTempControlParams(TempControlParams *params)
+{
+    if (params == nullptr) {
+        return;
+    }
+    JSI::ReleaseValueList(params->context, params->success, params->fail, params->complete);
+    delete params;
+}
+
+static void CompleteTempControl(void *data)
+{
+    TempControlParams *params = static_cast<TempControlParams *>(data);
+    if (params == nullptr) {
+        return;
+    }
+
+    JSIValue result = JSI::CreateObject();
+    if (params->ok) {
+        JSI::SetStringProperty(result, "response", params->response);
+        if (JSI::ValueIsFunction(params->success)) {
+            JSIValue argv[ARGC_ONE] = { result };
+            JSI::CallFunction(params->success, params->context, argv, ARGC_ONE);
+        }
+    } else {
+        JSI::SetStringProperty(result, "message", params->error);
+        if (JSI::ValueIsFunction(params->fail)) {
+            JSIValue argv[ARGC_ONE] = { result };
+            JSI::CallFunction(params->fail, params->context, argv, ARGC_ONE);
+        }
+    }
+    if (JSI::ValueIsFunction(params->complete)) {
+        JSI::CallFunction(params->complete, params->context, nullptr, 0);
+    }
+    JSI::ReleaseValue(result);
+    ReleaseTempControlParams(params);
+}
+
+static void *TempControlThreadEntry(void *data)
+{
+    TempControlParams *params = static_cast<TempControlParams *>(data);
+    if (params == nullptr) {
+        return nullptr;
+    }
+    params->ok = (TempControlExchange(params->command, params->response, sizeof(params->response),
+        params->error, sizeof(params->error)) == 0);
+
+    if (!JsAsyncWork::DispatchAsyncWork(CompleteTempControl, static_cast<void *>(params))) {
+        HILOG_ERROR(HILOG_MODULE_ACE, "TempControl: failed to dispatch JS callback");
+    }
+    return nullptr;
+}
+
+static JSIValue CallTempControlFail(const JSIValue thisVal, const JSIValue *args, const char *message)
+{
+    if ((args == nullptr) || JSI::ValueIsUndefined(args[0])) {
+        return JSI::CreateUndefined();
+    }
+    JSIValue fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    JSIValue complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+    JSIValue result = JSI::CreateObject();
+    JSI::SetStringProperty(result, "message", message);
+    if (JSI::ValueIsFunction(fail)) {
+        JSIValue argv[ARGC_ONE] = { result };
+        JSI::CallFunction(fail, thisVal, argv, ARGC_ONE);
+    }
+    if (JSI::ValueIsFunction(complete)) {
+        JSI::CallFunction(complete, thisVal, nullptr, 0);
+    }
+    JSI::ReleaseValueList(fail, complete, result);
+    return JSI::CreateUndefined();
+}
+
+JSIValue AppModule::TempControl(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
+        return JSI::CreateUndefined();
+    }
+
+    char *command = JSI::GetStringProperty(args[0], "command");
+    if (!IsAllowedTempControlCommand(command)) {
+        JSI::ReleaseString(command);
+        return CallTempControlFail(thisVal, args, "invalid temp control command");
+    }
+
+    TempControlParams *params = new TempControlParams();
+    if (params == nullptr) {
+        JSI::ReleaseString(command);
+        return CallTempControlFail(thisVal, args, "out of memory");
+    }
+    (void)snprintf(params->command, sizeof(params->command), "%s", command);
+    JSI::ReleaseString(command);
+
+    params->context = JSI::AcquireValue(thisVal);
+    params->success = JSI::GetNamedProperty(args[0], CB_SUCCESS);
+    params->fail = JSI::GetNamedProperty(args[0], CB_FAIL);
+    params->complete = JSI::GetNamedProperty(args[0], CB_COMPLETE);
+
+    pthread_t threadId;
+    pthread_attr_t attr;
+    if (pthread_attr_init(&attr) != 0) {
+        ReleaseTempControlParams(params);
+        return CallTempControlFail(thisVal, args, "failed to create worker");
+    }
+    (void)pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    int ret = pthread_create(&threadId, &attr, TempControlThreadEntry, static_cast<void *>(params));
+    (void)pthread_attr_destroy(&attr);
+    if (ret != 0) {
+        ReleaseTempControlParams(params);
+        return CallTempControlFail(thisVal, args, "failed to create worker");
+    }
+
+    return JSI::CreateUndefined();
+}
 
 static int E53IS1Control(struct HdfIoService *serv, int32_t cmd, const char* buf, char **val)
 {

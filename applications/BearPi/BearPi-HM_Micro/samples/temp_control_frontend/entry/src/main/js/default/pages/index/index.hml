@@ -1,0 +1,92 @@
+<div class="page">
+  <div class="topbar">
+    <text class="title">PID 温控面板</text>
+    <text class="state">{{connectionText}}</text>
+  </div>
+
+  <div class="summary">
+    <div class="temperature">
+      <text class="label">箱体温度</text>
+      <text class="main-value">{{currentTemperature}}</text>
+      <text class="unit">℃</text>
+    </div>
+    <div class="temperature target">
+      <text class="label">已设定目标</text>
+      <text class="main-value">{{appliedTarget}}</text>
+      <text class="unit">℃</text>
+    </div>
+    <div class="adjust-box">
+      <div class="adjust-head">
+        <text class="adjust-title">调整目标</text>
+        <text class="pending-badge">{{targetHint}}</text>
+      </div>
+      <div class="adjust-controls">
+        <div class="adjust-btn" onclick="targetDown">
+          <text class="step-text">-1</text>
+        </div>
+        <text class="pending-value">{{pendingTargetText}}</text>
+        <div class="adjust-btn" onclick="targetUp">
+          <text class="step-text">+1</text>
+        </div>
+        <div class="adjust-apply" onclick="applyTarget">
+          <text class="step-text-light">设定</text>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-grid">
+    <div class="status-cell">
+      <text class="cell-label">PTC 温度</text>
+      <text class="cell-value">{{ptcTemperature}} ℃</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">PTC 目标</text>
+      <text class="cell-value">{{ptcTargetTemperature}} ℃</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">PWM</text>
+      <text class="cell-value">{{currentPwm}} %</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">模式</text>
+      <text class="cell-value">{{controlState}}</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">PTC 状态</text>
+      <text class="cell-value">{{ptcState}}</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">回差</text>
+      <text class="cell-value">{{hysteresisBand}} ℃</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">湿度</text>
+      <text class="cell-value">{{boxHumidity}} %</text>
+    </div>
+    <div class="status-cell">
+      <text class="cell-label">压强</text>
+      <text class="cell-value">{{boxPressure}} hPa</text>
+    </div>
+  </div>
+
+  <div class="history">
+    <div class="history-head">
+      <text class="history-title">温度趋势(近 60s)</text>
+      <text class="legend-box">■ 箱体</text>
+      <text class="legend-ptc">■ PTC</text>
+    </div>
+    <div class="chart-row">
+      <div class="yaxis-labels">
+        <text class="yaxis-tick">70</text>
+        <text class="yaxis-tick">45</text>
+        <text class="yaxis-tick">20</text>
+      </div>
+      <chart class="history-chart" type="line" ref="chart" datasets="{{chartData}}" options="{{chartOptions}}" />
+    </div>
+  </div>
+
+  <div class="footer">
+    <text class="foot-message">{{message}}</text>
+  </div>
+</div>

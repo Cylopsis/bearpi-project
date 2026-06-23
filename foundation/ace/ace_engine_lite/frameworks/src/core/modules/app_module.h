@@ -36,6 +36,7 @@ public:
     static JSIValue E53IS1Service(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
     static JSIValue E53SC1Service(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
     static JSIValue E53SC2Service(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
+    static JSIValue TempControl(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
 #ifdef FEATURE_SCREEN_ON_VISIBLE
     static JSIValue ScreenOnVisible(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 #endif
@@ -73,6 +74,7 @@ void InitAppModule(JSIValue exports)
     JSI::SetModuleAPI(exports, "e53is1service", AppModule::E53IS1Service);
     JSI::SetModuleAPI(exports, "e53sc1service", AppModule::E53SC1Service);
     JSI::SetModuleAPI(exports, "e53sc2service", AppModule::E53SC2Service);
+    JSI::SetModuleAPI(exports, "tempcontrol", AppModule::TempControl);
 #ifdef FEATURE_SCREEN_ON_VISIBLE
     JSI::SetModuleAPI(exports, "screenOnVisible", AppModule::ScreenOnVisible);
 #endif
