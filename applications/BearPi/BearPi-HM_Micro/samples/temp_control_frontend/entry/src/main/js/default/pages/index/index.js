@@ -21,7 +21,25 @@ export default {
     message: '',
     status: null,
     timer: null,
-    busy: false
+    busy: false,
+    tempHistory: [],
+    chartData: [{ strokeColor: '#2f6b5f', fillColor: '#cfe5dd', gradient: true, data: [] }],
+    chartOptions: {
+      xAxis: { min: 0, max: 60, display: false },
+      yAxis: { min: 0, max: 100, axisTick: 5, display: true },
+      series: {
+        lineStyle: { width: 2 },
+        smooth: true,
+        headPoint: {
+          shape: 'circle',
+          size: 5,
+          strokeWidth: 2,
+          fillColor: '#2f6b5f',
+          strokeColor: '#2f6b5f',
+          display: true
+        }
+      }
+    }
   },
 
   onInit() {
@@ -78,6 +96,7 @@ export default {
       }
       this.status = next;
       this.currentTemperature = this.format(next.current_temperature, 1);
+      this.pushTemp(Number(next.current_temperature));
       this.appliedTarget = this.format(next.target_temperature, 1);
       if (!this.targetDirty) {
         this.pendingTarget = Number(next.target_temperature);
@@ -118,6 +137,22 @@ export default {
       this.targetHint = '';
       this.refreshStatus();
     });
+  },
+
+  pushTemp(value) {
+    if (isNaN(value)) {
+      return;
+    }
+    this.tempHistory.push(value);
+    while (this.tempHistory.length > 60) {
+      this.tempHistory.shift();
+    }
+    this.chartData = [{
+      strokeColor: '#2f6b5f',
+      fillColor: '#cfe5dd',
+      gradient: true,
+      data: this.tempHistory.slice()
+    }];
   },
 
   mapControlState(state) {

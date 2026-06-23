@@ -70,11 +70,13 @@
     </div>
   </div>
 
+  <div class="history">
+    <text class="history-title">箱体温度历史(近 60s)</text>
+    <chart class="history-chart" type="line" datasets="{{chartData}}" options="{{chartOptions}}"></chart>
+  </div>
+
   <div class="footer">
-    <text class="updated">{{updatedAt}}</text>
-    <text class="message">{{message}}</text>
-    <div class="refresh" onclick="refreshStatus">
-      <text class="refresh-text">刷新</text>
-    </div>
+    <text class="foot-updated">{{updatedAt}}</text>
+    <text class="foot-message">{{message}}</text>
   </div>
 </div>
