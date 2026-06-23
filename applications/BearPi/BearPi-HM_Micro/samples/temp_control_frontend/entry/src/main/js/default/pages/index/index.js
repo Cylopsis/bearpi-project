@@ -1,38 +1,24 @@
 import app from '@system.app';
 
-const PARAMS = [
-  { label: 'Box loop Kp', command: 'tune box kp ', key: 'box_kp' },
-  { label: 'Box loop Ki', command: 'tune box ki ', key: 'box_ki' },
-  { label: 'Box loop Kd', command: 'tune box kd ', key: 'box_kd' },
-  { label: 'PTC loop Kp', command: 'tune heat kp ', key: 'heat_kp' },
-  { label: 'PTC loop Ki', command: 'tune heat ki ', key: 'heat_ki' },
-  { label: 'PTC loop Kd', command: 'tune heat kd ', key: 'heat_kd' },
-  { label: 'Cool fan Kp', command: 'tune cool kp ', key: 'cool_kp' },
-  { label: 'Cool fan Ki', command: 'tune cool ki ', key: 'cool_ki' },
-  { label: 'Hysteresis', command: 'tune hys ', key: 'hysteresis_band' },
-  { label: 'Warm bias', command: 'tune warmbias ', key: 'warming_bias' },
-  { label: 'Heat bias', command: 'tune heatbias ', key: 'heating_bias' }
-];
-
 export default {
   data: {
     currentTemperature: '--',
-    targetTemperature: '40.0',
+    appliedTarget: '--',
     pendingTarget: 40,
+    pendingTargetText: '40.0',
     targetDirty: false,
-    paramDirty: false,
+    targetHint: '',
+    boxHumidity: '--',
+    boxPressure: '--',
     ptcTemperature: '--',
     ptcTargetTemperature: '--',
     currentPwm: '--',
     controlState: '--',
     ptcState: '--',
     hysteresisBand: '--',
-    connectionText: 'Disconnected',
-    updatedAt: 'Waiting',
+    connectionText: '未连接',
+    updatedAt: '等待中',
     message: '',
-    paramIndex: 0,
-    selectedParamLabel: PARAMS[0].label,
-    selectedParamValue: '--',
     status: null,
     timer: null,
     busy: false
@@ -57,8 +43,8 @@ export default {
       return;
     }
     if (!app || !app.tempcontrol) {
-      this.connectionText = 'Bridge missing';
-      this.message = 'tempcontrol API missing';
+      this.connectionText = '桥接缺失';
+      this.message = 'tempcontrol 接口缺失';
       return;
     }
     this.busy = true;
@@ -66,7 +52,7 @@ export default {
       command: command,
       success: (res) => {
         this.busy = false;
-        this.connectionText = 'Connected';
+        this.connectionText = '已连接';
         this.message = '';
         if (onSuccess) {
           onSuccess(res.response);
@@ -74,8 +60,8 @@ export default {
       },
       fail: (err) => {
         this.busy = false;
-        this.connectionText = 'Connect failed';
-        this.message = err && err.message ? err.message : 'Command failed';
+        this.connectionText = '连接失败';
+        this.message = err && err.message ? err.message : '命令失败';
       },
       complete: () => {}
     });
@@ -87,101 +73,74 @@ export default {
       try {
         next = JSON.parse(response);
       } catch (err) {
-        this.message = 'Status parse failed';
+        this.message = '状态解析失败';
         return;
       }
       this.status = next;
       this.currentTemperature = this.format(next.current_temperature, 1);
+      this.appliedTarget = this.format(next.target_temperature, 1);
       if (!this.targetDirty) {
-        this.targetTemperature = this.format(next.target_temperature, 1);
         this.pendingTarget = Number(next.target_temperature);
+        this.pendingTargetText = this.appliedTarget;
+        this.targetHint = '';
       }
+      this.boxHumidity = this.format(next.box_humidity, 1);
+      this.boxPressure = this.format(next.box_pressure, 0);
       this.ptcTemperature = this.format(next.current_ptc_temperature, 1);
       this.ptcTargetTemperature = this.format(next.ptc_target_temperature, 1);
       this.currentPwm = this.format(Number(next.current_pwm) * 100, 0);
-      this.controlState = next.control_state || '--';
-      this.ptcState = next.ptc_state || '--';
+      this.controlState = this.mapControlState(next.control_state);
+      this.ptcState = this.mapPtcState(next.ptc_state);
       this.hysteresisBand = this.format(next.hysteresis_band, 1);
-      this.updatedAt = 'Updated';
-      this.syncSelectedParam();
+      this.updatedAt = '已更新';
     });
   },
 
   targetDown() {
     this.pendingTarget = this.clamp(Number(this.pendingTarget) - 1, 20, 90);
-    this.targetTemperature = this.format(this.pendingTarget, 1);
+    this.pendingTargetText = this.format(this.pendingTarget, 1);
     this.targetDirty = true;
+    this.targetHint = '待设定';
   },
 
   targetUp() {
     this.pendingTarget = this.clamp(Number(this.pendingTarget) + 1, 20, 90);
-    this.targetTemperature = this.format(this.pendingTarget, 1);
+    this.pendingTargetText = this.format(this.pendingTarget, 1);
     this.targetDirty = true;
+    this.targetHint = '待设定';
   },
 
   applyTarget() {
     const value = this.format(this.pendingTarget, 1);
     this.sendCommand('tune target ' + value, () => {
-      this.message = 'Target applied';
+      this.message = '目标已设定';
       this.targetDirty = false;
+      this.targetHint = '';
       this.refreshStatus();
     });
   },
 
-  selectPrevParam() {
-    this.paramIndex = (this.paramIndex + PARAMS.length - 1) % PARAMS.length;
-    this.paramDirty = false;
-    this.syncSelectedParam();
-  },
-
-  selectNextParam() {
-    this.paramIndex = (this.paramIndex + 1) % PARAMS.length;
-    this.paramDirty = false;
-    this.syncSelectedParam();
-  },
-
-  paramDownLarge() {
-    this.adjustParam(-0.1);
-  },
-
-  paramDown() {
-    this.adjustParam(-0.01);
-  },
-
-  paramUp() {
-    this.adjustParam(0.01);
-  },
-
-  paramUpLarge() {
-    this.adjustParam(0.1);
-  },
-
-  adjustParam(delta) {
-    let value = Number(this.selectedParamValue);
-    if (isNaN(value)) {
-      value = 0;
+  mapControlState(state) {
+    if (state === 'HEATING') {
+      return '加热';
     }
-    value = this.clamp(value + delta, 0, 120);
-    this.selectedParamValue = this.format(value, 2);
-    this.paramDirty = true;
-  },
-
-  applyParam() {
-    const item = PARAMS[this.paramIndex];
-    const value = this.format(Number(this.selectedParamValue), 2);
-    this.sendCommand(item.command + value, () => {
-      this.message = item.label + ' applied';
-      this.paramDirty = false;
-      this.refreshStatus();
-    });
-  },
-
-  syncSelectedParam() {
-    const item = PARAMS[this.paramIndex];
-    this.selectedParamLabel = item.label;
-    if (!this.paramDirty && this.status && this.status[item.key] !== undefined) {
-      this.selectedParamValue = this.format(this.status[item.key], 2);
+    if (state === 'WARMING') {
+      return '保温';
     }
+    if (state === 'COOLING') {
+      return '制冷';
+    }
+    return state || '--';
+  },
+
+  mapPtcState(state) {
+    if (state === 'ON') {
+      return '开';
+    }
+    if (state === 'OFF') {
+      return '关';
+    }
+    return state || '--';
   },
 
   format(value, digits) {
