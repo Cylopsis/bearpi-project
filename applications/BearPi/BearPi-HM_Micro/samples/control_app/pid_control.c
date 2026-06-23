@@ -233,6 +233,37 @@ static int control_init(void)
 }
 
 /*******************************************************************************
+ * Wi-Fi association
+ *
+ * On the board, Wi-Fi is brought up simply by running:
+ *   ./bin/wpa_supplicant -i wlan0 -d -c /etc/wpa_supplicant.conf
+ * (SSID/PSK come from /etc/wpa_supplicant.conf). The -d form runs in the
+ * foreground and stays alive holding the association, so we launch it from a
+ * detached thread: system() blocks there, never on the main control path.
+ ******************************************************************************/
+static void *wifi_thread_entry(void *parameter)
+{
+    (void)parameter;
+    int ret = system("./bin/wpa_supplicant -i wlan0 -d -c /etc/wpa_supplicant.conf");
+    /* Only reached if wpa_supplicant exits (e.g. config missing / AP gone). */
+    printf("[wifi] wpa_supplicant exited, ret=%d\n", ret);
+    return NULL;
+}
+
+static void try_connect_wifi(void)
+{
+    pthread_t tid;
+    if (pthread_create(&tid, NULL, wifi_thread_entry, NULL) != 0) {
+        printf("[wifi] failed to launch wpa_supplicant thread\n");
+        return;
+    }
+    pthread_detach(tid);
+    printf("[wifi] associating on wlan0 via wpa_supplicant...\n");
+    /* Give the association a moment to come up before clients connect. */
+    sleep(3);
+}
+
+/*******************************************************************************
  * Main: state machine loop
  ******************************************************************************/
 int main(void)
@@ -249,7 +280,7 @@ int main(void)
         return -1;
     }
 
-    /* TODO: associate WiFi here (OHOS wifi_device API) before remote_start */
+    try_connect_wifi();
     remote_start();
 
     while (1) {

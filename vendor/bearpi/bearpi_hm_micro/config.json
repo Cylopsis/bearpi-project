@@ -17,8 +17,7 @@
         "components": [
            { "component": "my_sample_app", "features":[] },
            { "component": "bearpi_sample_app", "features":[] },
-           { "component": "bearpi_screensaver_app", "features":[] },
-           { "component": "bearpi_tempcontrol_app", "features":[] },
+{ "component": "bearpi_screensaver_app", "features":[] },
            { "component": "bearpi_sample_communication", "features":[] }
         ]
       },

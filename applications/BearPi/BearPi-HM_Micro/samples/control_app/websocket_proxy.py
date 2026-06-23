@@ -3,7 +3,7 @@ import json
 import websockets
 
 # 板子的TCP服务器地址和端口
-TCP_SERVER_IP = "192.168.123.219"
+TCP_SERVER_IP = "192.168.31.219"
 TCP_SERVER_PORT = 5000
 
 # WebSocket服务器的地址和端口
